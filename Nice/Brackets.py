@@ -42,11 +42,11 @@ def index_laws(box_variable):
 
 
 def only_one(box):
-# working progress this is
-# broken
-# prob dont even need, depends on how prodcuts are treated
-# fix
-# good night
+    # working progress this is
+    # broken
+    # prob dont even need, depends on how prodcuts are treated
+    # fix
+    # good night
     box_variable = box[0]
     if len(box_variable) == 1:
         return True
