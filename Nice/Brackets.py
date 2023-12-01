@@ -100,11 +100,43 @@ def power_converter(box_variable):
     # testing to see if there is a power on last bracket
     if box_variable.rfind(")") == box_variable.rfind(")^"):
         try:
-            return [box_variable, int(box_variable[box_variable.rfind(")^") + 2:len(box_variable)-1])]
+            return [box_variable, int(box_variable[box_variable.rfind(")^") + 2:])]
         except:
-            return [box_variable, float(box_variable[box_variable.rfind(")^") + 2:len(box_variable)-1])]
+            return [box_variable, float(box_variable[box_variable.rfind(")^") + 2:])]
     else:
         return [box_variable,1]
 
 
-def
+# returns true if dealing with a exponentials in the for e^f(x) not g(x)e^f(x) (unless g(x) is constant)
+def dealing_with_exponentials(box_variable):
+    if "^" in box_variable:
+        # need to make sure it isn't e^xf(x) by using closed()
+        if box_variable.find("e") == 0 and closed(box_variable[2:]):
+            return True
+        elif box_variable[1:box_variable.find(")^")].isdigit():
+            return True
+        try:
+            float(box_variable[1:box_variable.find(")^")])
+            return True
+        except:
+            return False
+    else:
+        return False
+
+
+# serves to convert some (a^box)^b into a^bbox
+def exponentials_simplifier(box_variable, power):
+    # test if there is already some constant b
+    if box_variable[box_variable.find("^") + 1] == "(":
+        # this is the case where there isn't some b
+        return box_variable[:box_variable.find("^") + 1] + str(power) + box_variable[box_variable.find("^") +1:]
+
+    # already some number b
+    b_constant = box_variable[box_variable.find("^")+1: box_variable.find("^") + box_variable[box_variable.find("^"):].find("(")]
+    # for b an integer
+    if b_constant.isdigit():
+        return box_variable[:box_variable.find("^") + 1] + str(power*int(b_constant)) + box_variable[box_variable.find("^") +1+len(b_constant):]
+    # for b a float
+    else:
+        return box_variable[:box_variable.find("^") + 1] + str(power*float(b_constant)) + box_variable[box_variable.find("^") +1+len(b_constant):]
+
