@@ -1,10 +1,15 @@
+from Nice import Brackets
 # This will be used to display the function input to be differentiated
 def interpret(list):
-    if list[0][0] == 0:
-        sign = "+"
-    else:
-        sign = "-"
     shift, power, coefficient, base, function_determiner, box_v, box_c = list[0][1], list[1],list[2], list[3], list[4], list[5][0], list[5][1]
+    if list[0][0] == 0:
+        sign = " + "
+    else:
+        sign = " - "
+    # to avoid some (x - 0) or (x + 0)
+    if shift == 0:
+        shift = ""
+        sign = ""
     # if our constant is 1 we don't want 1box we just want box
     if box_c == 1:
         box_c = ""
@@ -15,34 +20,25 @@ def interpret(list):
         index = ""
     # for box^n
     if function_determiner == 0:
-        if shift != 0:
-            return [f"({box_c}{box_v} {sign} {shift}){index}", coefficient]
-        else:
-            return [f"({box_c}{box_v}){index}", coefficient]
+        return [f"({box_c}{box_v}{sign}{shift}){index}", coefficient]
+
     # for trig
     if 1 <= function_determiner <= 3 or 6 <= function_determiner <= 8:
         master_key = [0,"sin", "cos", "tan", 0, 0, "arcsin", "arccos", "arctan"]
-        if shift != 0:
-            return [f"{master_key[function_determiner]}({box_c}{box_v} {sign} {shift}){index}", coefficient]
-        else:
-            return [f"{master_key[function_determiner]}({box_c}{box_v}){index}", coefficient]
+        return [f"{master_key[function_determiner]}({box_c}{box_v}{sign}{shift}){index}", coefficient]
     # for exponentials
     if function_determiner == 4:
         if base == 1:
-            base = "e"
-        if shift != 0:
-            return [f"{base}^({box_c}{box_v} {sign} {index})", coefficient]
+            bottom = "e"
         else:
-            return [f"({base})^{box_c}{box_v}", coefficient]
+            bottom = f"({base})"
+        return [f"{bottom}^{power}({box_c}{box_v}{sign}{shift})", coefficient]
     # for logs
     if function_determiner == 5:
         ln_or_logb = f"log{base}"
         if base == 1:
             ln_or_logb = "ln"
-        if shift != 0:
-            return [f"{ln_or_logb}({box_c}{box_v} {sign} {shift}){index}", coefficient]
-        else:
-            return [f"{ln_or_logb}({box_c}{box_v}){index}", coefficient]
+        return [f"{ln_or_logb}({box_c}{box_v}{sign}{shift}){index}", coefficient]
 
 # an example to play around with
 list = [[1, 0], 2, 6, 1, 5, ["x", 3]]
