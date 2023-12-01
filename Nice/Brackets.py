@@ -16,6 +16,8 @@ def coefficient_power_direct(box_v, box_c, power, constant_product):
         return [box_v, box_c, power, constant_product]
 
 
+# need to fix this whole thing
+# kinda got replaced by power_converter
 def index_laws(box_variable):
     if "^" in box_variable:
         function = ["sin", "cos", "tan", "ln", "(", "log", "arcsin","arccos", "arctan"]
@@ -36,7 +38,7 @@ def index_laws(box_variable):
                 except:
                     pass
         # need to fix this part
-        elif box_variable[box_variable.find("^")-2] == "e":
+        if box_variable[box_variable.find("^")-2] == "e":
             if box_variable[box_variable.find("^")+1] == "(":
                 return
         else:
@@ -45,6 +47,7 @@ def index_laws(box_variable):
 
 # only_one will return true if box_dash would not involve calling upon convoluted
 # don't use when dealing with exponentials
+# can't find a use for this yet
 def only_one(box_variable):
     if box_variable.count("x") == 1:
         return True
@@ -59,14 +62,49 @@ def only_one(box_variable):
         return False
 
 
-# closed will return true is the variable is open and shut without powers e.g. sin(box), ln(box) but not sin(box)ln(box)n or ln(box)^n
+# will return true is the variable is open and shut e.g. sin(box), ln(box), (sin(box)ln(box)), ln(box)^n but not sin(box)ln(box)
 # don't use when dealing with exponentials
-def closed_and_no_powers(box_variable):
-    if len(box_variable) == 1
+def closed(box_variable):
+    # for the case of x
+    if len(box_variable) == 1:
         return True
-    function = ["sin", "cos", "tan", "ln", "(", "log", "arcsin","arccos", "arctan"]
+    # in the case of x^n
+    if box_variable.find(f"x^") == 0 and box_variable.count("x") == 1:
+        return  True
+    # for the case of a function
+    function = ["sin", "cos", "tan", "ln", "log", "arcsin","arccos", "arctan", "("]
     for i in function:
-        if box_variable[len(box_variable)-1] == ")" and box_variable.find("i") == 0 and only_one(box_variable):
-            return True
+        if box_variable.find(f"{i}") == 0:
+            # this loop ensures our start bracket isn't closed unit the end
+            for letter in box_variable:
+                counter_a = 0
+                counter_b = 0
+                if letter == "(":
+                    counter_a += 1
+                if letter == ")":
+                    counter_a -= 1
+                    if counter_a == 0:
+                        counter_b += 1
+            # counter_b represents the number of times brackets were completely closed, we need one
+            if counter_b == 1:
+                return True
+            else:
+                break
     else:
         return False
+
+
+# for closed box_variables, power_converter separates the power within the string
+# again, don't use when dealing with exponentials
+def power_converter(box_variable):
+    # testing to see if there is a power on last bracket
+    if box_variable.rfind(")") == box_variable.rfind(")^"):
+        try:
+            return [box_variable, int(box_variable[box_variable.rfind(")^") + 2:len(box_variable)-1])]
+        except:
+            return [box_variable, float(box_variable[box_variable.rfind(")^") + 2:len(box_variable)-1])]
+    else:
+        return [box_variable,1]
+
+
+def
