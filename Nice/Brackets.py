@@ -15,9 +15,10 @@ def coefficient_power_direct(box_v, box_c, power, constant_product):
         box_v = "-" + box_v
         return [box_v, box_c, power, constant_product]
 
-
+# don't look at this one
 # need to fix this whole thing
 # kinda got replaced by power_converter
+# just here for reminder
 def index_laws(box_variable):
     if "^" in box_variable:
         function = ["sin", "cos", "tan", "ln", "(", "log", "arcsin","arccos", "arctan"]
@@ -76,16 +77,19 @@ def closed(box_variable):
     for i in function:
         if box_variable.find(f"{i}") == 0:
             # this loop ensures our start bracket isn't closed unit the end
+            counter_a = 0
+            counter_b = 0
             for letter in box_variable:
-                counter_a = 0
-                counter_b = 0
                 if letter == "(":
                     counter_a += 1
+                    print(counter_a)
                 if letter == ")":
                     counter_a -= 1
+                    print(counter_a)
                     if counter_a == 0:
                         counter_b += 1
             # counter_b represents the number of times brackets were completely closed, we need one
+            print(counter_b)
             if counter_b == 1:
                 return True
             else:
@@ -139,4 +143,5 @@ def exponentials_simplifier(box_variable, power):
     # for b a float
     else:
         return box_variable[:box_variable.find("^") + 1] + str(power*float(b_constant)) + box_variable[box_variable.find("^") +1+len(b_constant):]
+
 
