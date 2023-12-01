@@ -6,14 +6,13 @@ def coefficient_power_direct(box_v, box_c, power, constant_product):
     # say if our a is -1 and power is 0.5, we don't want that
     if not isinstance(box_c**power, complex):
         constant_product *= box_c**power
-        box_c = 1
-        return [box_v, box_c, power, constant_product]
+        box_c = ""
+        return [box_c, power, constant_product]
     # To remedy it occuring we simply take the magnitude of the constant and switch the sign
     if isinstance(box_c**power, complex):
         constant_product *= -(-box_c)**power
-        box_c = 1
-        box_v = "-" + box_v
-        return [box_v, box_c, power, constant_product]
+        box_c = "-"
+        return [box_c, power, constant_product]
 
 # don't look at this one
 # need to fix this whole thing
@@ -104,11 +103,11 @@ def power_converter(box_variable):
     # testing to see if there is a power on last bracket
     if box_variable.rfind(")") == box_variable.rfind(")^"):
         try:
-            return [box_variable, int(box_variable[box_variable.rfind(")^") + 2:])]
+            return box_variable, int(box_variable[box_variable.rfind(")^") + 2:])
         except:
-            return [box_variable, float(box_variable[box_variable.rfind(")^") + 2:])]
+            return box_variable, float(box_variable[box_variable.rfind(")^") + 2:])
     else:
-        return [box_variable,1]
+        return box_variable,1
 
 
 # returns true if dealing with a exponentials in the for e^f(x) not g(x)e^f(x) (unless g(x) is constant)
@@ -145,3 +144,13 @@ def exponentials_simplifier(box_variable, power):
         return box_variable[:box_variable.find("^") + 1] + str(power*float(b_constant)) + box_variable[box_variable.find("^") +1+len(b_constant):]
 
 
+# input is a list containing sign and magnitude, output is it assembled and a boolean value for if there is no shift (0)
+def shift_assembler(sign, magnitude):
+    if sign == 0:
+        can_think_of_a_name = "+"
+    if sign == 1:
+        can_think_of_a_name = "-"
+    if magnitude == 0:
+        return "", True
+    else:
+        return f" {can_think_of_a_name} {magnitude}", False
