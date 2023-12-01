@@ -1,3 +1,6 @@
+# look at this file last (It's fucked)
+
+
 # coefficient_power_direct
 def coefficient_power_direct(box_v, box_c, box_dash_c, power, coefficient):
     if not isinstance(box_c**power, complex):
@@ -10,6 +13,7 @@ def coefficient_power_direct(box_v, box_c, box_dash_c, power, coefficient):
         box_dash_c = box_dash_c*(-1)
         box_v = "-" + box_v
         return [box_v, box_c, box_dash_c, power, coefficient]
+
 
 def index_laws(box_variable):
     if "^" in box_variable:
@@ -36,8 +40,11 @@ def index_laws(box_variable):
     else:
         return [box_variable, 1]
 
+
 def only_one(box):
-# workingprogress this is
+# working progress this is
+# broken
+# prob dont even need, depends on how prodcuts are treated
 # fix
 # good night
     box_variable = box[0]
