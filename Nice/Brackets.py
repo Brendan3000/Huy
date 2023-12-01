@@ -42,18 +42,31 @@ def index_laws(box_variable):
         else:
             return [box_variable, 1]
 
+
 # only_one will return true if box_dash would not involve calling upon convoluted
-# fix for exponentials
+# don't use when dealing with exponentials
 def only_one(box_variable):
     if box_variable.count("x") == 1:
         return True
     elif box_variable.find("(") == 0:
         return True
-    index_of_first_x = box_variable.fin("x")
-    nearest_close_bracket = box_variable[index_of_first_x:].fin(")")
-    nearest_open_bracket = box_variable[:index_of_first_x].rfin("(")
+    index_of_first_x = box_variable.find("x")
+    nearest_close_bracket = box_variable[index_of_first_x:].find(")") + index_of_first_x
+    nearest_open_bracket = box_variable[:index_of_first_x].rfind("(")
     if box_variable.count("x") == box_variable[nearest_open_bracket:nearest_close_bracket].count("x"):
         return True
     else:
         return False
 
+
+# closed will return true is the variable is open and shut without powers e.g. sin(box), ln(box) but not sin(box)ln(box)n or ln(box)^n
+# don't use when dealing with exponentials
+def closed_and_no_powers(box_variable):
+    if len(box_variable) == 1
+        return True
+    function = ["sin", "cos", "tan", "ln", "(", "log", "arcsin","arccos", "arctan"]
+    for i in function:
+        if box_variable[len(box_variable)-1] == ")" and box_variable.find("i") == 0 and only_one(box_variable):
+            return True
+    else:
+        return False
