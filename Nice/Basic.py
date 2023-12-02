@@ -22,14 +22,6 @@ def power(box_code, box_dash):
         if box_c != "":
             a = Brackets.coefficient_power_direct(box_c,power, constant_product)
             box_c, constant_product = a[0], a[1]
-        # adjustment for some case ((box)^n)^m just to tidy up
-        if Brackets.closed(box_v):
-            box_v, adjustment = Brackets.power_converter(box_v)
-            power *= adjustment
-            if power != 2:
-                index = f"^{power-1}"
-            else:
-                index = ""
         # for simplifying some (e^box)^3 into e^3box
         if Brackets.dealing_with_exponentials(box_v):
             box_v = Brackets.exponentials_simplifier(box_v, power)
@@ -39,6 +31,15 @@ def power(box_code, box_dash):
                 imaginary = ""
             return [f"{imaginary}{box_dash_v}{box_v}",
                 constant_product]
+        # adjustment for some case ((box)^n)^m just to tidy up
+        if Brackets.closed(box_v):
+            box_v, adjustment = Brackets.power_converter(box_v)
+            power *= adjustment
+            if power != 2:
+                index = f"^{power-1}"
+            else:
+                index = ""
+            box_dash_v = ""
     # This serves to add brackets only when required
     if not need_to_tidy_up or not Brackets.closed(box_v):
         box_c = "(" + str(box_c)
