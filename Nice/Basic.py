@@ -8,9 +8,6 @@ def power(box_code, box_dash):
     box_dash_v, box_dash_c = box_dash[0], box_dash[1]
     constant_product = coefficient*power*box_dash_c
     shift, need_to_tidy_up = Brackets.shift_assembler(box_code[0][0], box_code[0][1])
-    # if our box_dash is 1 we don't want 1f(x) we want f(x)
-    if box_dash_v == "1":
-        box_dash_v = ""
     # if our power is 1 we don't want box^1 we just want box
     if power != 2:
         index = f"^{power-1}"
@@ -24,10 +21,10 @@ def power(box_code, box_dash):
         # adjustment for some case ((box)^n)^m just to tidy up
         if Brackets.closed(box_v):
             box_v, adjustment = Brackets.exponentials_simplifier(box_v, power)
-            power //= adjustment
+            power /= adjustment
         # adjustment for some case (a*box)^n just to tidy up into a^n(box)^n where a is a constant (calculated)
         a = Brackets.coefficient_power_direct(box_v, box_c, constant_product)
-        box_c, power, constant_product = a[0], a[1], a[2]
+        box_c, constant_product = a[0], a[1]
         # for simplifying some (e^box)^3 into e^3box
         if Brackets.dealing_with_exponentials(box_v):
             box_v = Brackets.exponentials_simplifier(box_v, power)
@@ -37,6 +34,8 @@ def power(box_code, box_dash):
                 imaginary = ""
             return [f"{imaginary}{box_dash_v}{box_v}",
                 constant_product]
+    # This serves to add brackets only when required
+    # need to fix
     if not need_to_tidy_up or not Brackets.closed(box_v):
         box_v = "(" + box_v
         shift += ")"
@@ -53,9 +52,7 @@ def sin(box_code, box_dash):
     power, coefficient, box_v, box_c = box_code[1],box_code[2], box_code[5][0], box_code[5][1]
     box_dash_v, box_dash_c = box_dash[0], box_dash[1]
     constant_product = coefficient*power*box_dash_c
-    # if our box_dash is 1 we don't want 1f(x) we want f(x)
-    if box_dash_v == "1":
-        box_dash_v = ""
+    shift, need_to_tidy_up = Brackets.shift_assembler(box_code[0][0], box_code[0][1])
     # if our constant is 1 we don't want 1box we just want box
     if box_c == 1:
         box_c = ""
@@ -65,16 +62,17 @@ def sin(box_code, box_dash):
     else:
         index = ""
     if power == 1:
-        return [f"{box_dash_v}cos({box_c}{box_v})",
+        return [f"{box_dash_v}cos({box_c}{box_v}{shift})",
                 constant_product]
     if power == 2:
-        return [f"{box_dash_v}sin(2{box_c}{box_v})",
+        return [f"{box_dash_v}sin(2{box_c}{box_v}{shift})",
                 constant_product*0.5]
+    # This is just to only use an expression sin^n(box) for nice n e.g. sin^2(box). Else we do sin(box)^n e.g. sin(box)^-2.21
     elif power > 0 and isinstance(power,int):
-        return [f"{box_dash_v}cos({box_c}{box_v})sin{index}({box_c}{box_v})",
+        return [f"{box_dash_v}cos({box_c}{box_v}{shift})sin{index}({box_c}{box_v}{shift})",
                 constant_product]
     else:
-        return [f"{box_dash_v}cos({box_c}{box_v})sin({box_c}{box_v}){index}",
+        return [f"{box_dash_v}cos({box_c}{box_v}{shift})sin({box_c}{box_v}{shift}){index}",
                 constant_product]
 
 
@@ -83,9 +81,7 @@ def cos(box_code, box_dash):
     power, coefficient, box_v, box_c = box_code[1],box_code[2], box_code[5][0], box_code[5][1]
     box_dash_v, box_dash_c = box_dash[0], box_dash[1]
     constant_product = coefficient*power*box_dash_c
-    # if our box_dash is 1 we don't want 1f(x) we want f(x)
-    if box_dash_v == "1":
-        box_dash_v = ""
+    shift, need_to_tidy_up = Brackets.shift_assembler(box_code[0][0], box_code[0][1])
     # if our constant is 1 we don't want 1box we just want box
     if box_c == 1:
         box_c = ""
@@ -95,16 +91,17 @@ def cos(box_code, box_dash):
     else:
         index = ""
     if power == 1:
-        return [f"{box_dash_v}cos({box_c}{box_v})",
+        return [f"{box_dash_v}cos({box_c}{box_v}{shift})",
                 -constant_product]
     if power ==2:
-        return [f"{box_dash_v}sin(2{box_c}{box_v})",
+        return [f"{box_dash_v}sin(2{box_c}{box_v}{shift})",
                 -constant_product*0.5]
+    # This is just to only use an expression sin^n(box) for nice n e.g. sin^2(box). Else we do sin(box)^n e.g. sin(box)^-2.21
     elif power > 0 and isinstance(power,int):
-        return [f"{box_dash_v}sin({box_c}{box_v})cos{index}({box_c}{box_v})",
+        return [f"{box_dash_v}sin({box_c}{box_v}{shift})cos{index}({box_c}{box_v}{shift})",
                 -constant_product]
     else:
-        return [f"{box_dash_v}sin({box_c}{box_v})cos({box_c}{box_v}){index}",
+        return [f"{box_dash_v}sin({box_c}{box_v}{shift})cos({box_c}{box_v}{shift}){index}",
                 -constant_product]
 
 
@@ -113,9 +110,7 @@ def tan(box_code, box_dash):
     power, coefficient, box_v, box_c = box_code[1],box_code[2], box_code[5][0], box_code[5][1]
     box_dash_v, box_dash_c = box_dash[0], box_dash[1]
     constant_product = coefficient*power*box_dash_c
-    # if our box_dash is 1 we don't want 1f(x) we want f(x)
-    if box_dash_v == "1":
-        box_dash_v = ""
+    shift, need_to_tidy_up = Brackets.shift_assembler(box_code[0][0], box_code[0][1])
     # if our constant is 1 we don't want 1box we just want box
     if box_c == 1:
         box_c = ""
@@ -125,11 +120,12 @@ def tan(box_code, box_dash):
     else:
         index = ""
     if power == 1:
-        return [f"{box_dash_v}sec^2({box_c}{box_v})",
+        return [f"{box_dash_v}sec^2({box_c}{box_v}{shift})",
                 constant_product]
-    elif power > 0:
-        return [f"{box_dash_v}sec^2({box_c}{box_v})tan{index}({box_c}{box_v})",
+    # This is just to only use an expression sin^n(box) for nice n e.g. sin^2(box). Else we do sin(box)^n e.g. sin(box)^-2.21
+    elif power > 0 and power.isdigit():
+        return [f"{box_dash_v}sec^2({box_c}{box_v}{shift})tan{index}({box_c}{box_v}{shift})",
                 constant_product]
     else:
-        return [f"{box_dash_v}sec^2({box_c}{box_v})tan({box_c}{box_v}){index}",
+        return [f"{box_dash_v}sec^2({box_c}{box_v}{shift})tan({box_c}{box_v}{shift}){index}",
                 constant_product]

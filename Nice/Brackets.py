@@ -7,12 +7,12 @@ def coefficient_power_direct(box_v, box_c, power, constant_product):
     if not isinstance(box_c**power, complex):
         constant_product *= box_c**power
         box_c = ""
-        return [box_c, power, constant_product]
+        return [box_c, constant_product]
     # To remedy it occuring we simply take the magnitude of the constant and switch the sign
     if isinstance(box_c**power, complex):
         constant_product *= -(-box_c)**power
         box_c = "-"
-        return [box_c, power, constant_product]
+        return [box_c, constant_product]
 
 # don't look at this one
 # need to fix this whole thing
