@@ -94,7 +94,7 @@ def cos(box_code, box_dash):
         return [f"{box_dash_v}sin(2{box_c}{box_v}{shift})",
                 -constant_product*0.5]
     # This is just to only use an expression sin^n(box) for nice n e.g. sin^2(box). Else we do sin(box)^n e.g. sin(box)^-2.21
-    elif power > 0 and isinstance(power,int):
+    elif power > 0 and type(power,int):
         return [f"{box_dash_v}sin({box_c}{box_v}{shift})cos{index}({box_c}{box_v}{shift})",
                 -constant_product]
     else:
