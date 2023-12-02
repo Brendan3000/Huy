@@ -67,12 +67,12 @@ def sin_cos_tan(box_code, box_dash):
     # This serves to avoid the possibility of some sin((f(x))) (i.e. avoid double brackets when not required)
     if need_to_tidy_up and box_c == "":
         Brackets.brackets_remover(box_v)
-    return constant_product, box_v, box_c, shift, index, box_dash_v
+    return constant_product, box_v, box_c, shift, index, box_dash_v, power
 
 
 # sin [has function_determiner value = 1]
 def sin(box_code, box_dash):
-    constant_product, box_v, box_c, shift, index,box_dash_v  = sin_cos_tan(box_code, box_dash)
+    constant_product, box_v, box_c, shift, index,box_dash_v,power = sin_cos_tan(box_code, box_dash)
     if power == 1:
         return [f"{box_dash_v}cos({box_c}{box_v}{shift})",
                 constant_product]
@@ -90,7 +90,7 @@ def sin(box_code, box_dash):
 
 # cos [has function_determiner value = 2]
 def cos(box_code, box_dash):
-    constant_product, box_v, box_c, shift, index, box_dash_v = sin_cos_tan(box_code, box_dash)
+    constant_product, box_v, box_c, shift, index, box_dash_v, power = sin_cos_tan(box_code, box_dash)
     if power == 1:
         return [f"{box_dash_v}cos({box_c}{box_v}{shift})",
                 -constant_product]
@@ -108,7 +108,7 @@ def cos(box_code, box_dash):
 
 # tan [has function_determiner value = 3]
 def tan(box_code, box_dash):
-    constant_product, box_v, box_c, shift, index, box_dash_v = sin_cos_tan(box_code, box_dash)
+    constant_product, box_v, box_c, shift, index, box_dash_v, power= sin_cos_tan(box_code, box_dash)
     if power == 1:
         return [f"{box_dash_v}sec^2({box_c}{box_v}{shift})",
                 constant_product]
@@ -119,4 +119,4 @@ def tan(box_code, box_dash):
     else:
         return [f"{box_dash_v}sec^2({box_c}{box_v}{shift})tan({box_c}{box_v}{shift}){index}",
                 constant_product]
-tan()
+

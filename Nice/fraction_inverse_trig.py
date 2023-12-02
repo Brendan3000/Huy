@@ -1,10 +1,9 @@
 from Nice import Brackets
 
 
-# add only one
-# inverse sin [has function_determiner value = 6]
-def arcsin(box_code, box_dash):
-    power, coefficient, box_v, box_c = box_code[1],box_code[2], box_code[5][0], box_code[5][1]
+# code commmon to the inverse sin, cos and tan function
+def inverse_sin_cos_tan(box_code, box_dash):
+    coefficient, box_v, box_c = box_code[1],box_code[2], box_code[5][0], box_code[5][1]
     box_dash_v, box_dash_c = box_dash[0], box_dash[1]
     constant_product = coefficient*power*box_dash_c
     shift, need_to_tidy_up = Brackets.shift_assembler(box_code[0][0], box_code[0][1])
@@ -16,6 +15,13 @@ def arcsin(box_code, box_dash):
         index = f"^{power-1}"
     else:
         index = ""
+    return constant_product, box_v, box_c, shift, index,box_dash_v
+
+
+# add only one
+# inverse sin [has function_determiner value = 6]
+def arcsin(box_code, box_dash):
+    constant_product, box_v, box_c, shift, index,box_dash_v, power = inverse_sin_cos_tan(box_code, box_dash)
     if power == 1:
         return [[f"{box_dash_v}",f"(1 + {box_c}{box_v}{shift}^2)^1/2"], constant_product]
     else:
