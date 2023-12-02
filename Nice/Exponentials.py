@@ -5,7 +5,7 @@ from Nice import Brackets
 def exponential(box_code, box_dash):
     power, coefficient, base, box_v, box_c = box_code[1],box_code[2],box_code[3], box_code[5][0], box_code[5][1]
     box_dash_v, box_dash_c = box_dash[0], box_dash[1]
-    constant_product = coefficient*box_dash_c
+    constant_product = coefficient*box_dash_c*power
     shift, need_to_tidy_up = Brackets.shift_assembler(box_code[0][0], box_code[0][1])
     # if our constant is 1 we don't want 1box we just want box
     if box_c == 1:

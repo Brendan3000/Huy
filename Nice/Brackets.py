@@ -10,7 +10,7 @@ def trig_nice_power(box_variable, power):
 
 
 # returns true if box_variable begins with a trig function
-def trig_basic(box_variable):
+def basic_trig(box_variable):
     basic_trig = ["sin", "cos", "tan"]
     for i in basic_trig:
         if box_variable.find(i) == 0:

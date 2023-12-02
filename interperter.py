@@ -20,7 +20,7 @@ def interpret(list):
         # To avoid unnecessary brackets
         if Brackets.closed(box_v) and box_c == "" and need_to_tidy_up:
             # To allow for sin^n(x) where n is a positive integer
-            if Brackets.closed_no_powers(box_v) and Brackets.basic_trig(box_v) and isinstance(power, int) and power > 1:
+            if Brackets.closed_no_power(box_v) and Brackets.basic_trig(box_v) and isinstance(power, int) and power > 1:
                 return [Brackets.trig_nice_power(box_v, power), coefficient]
         else:
             box_c = "(" + str(box_c)
