@@ -42,11 +42,7 @@ def inverse_sin_cos_tan(box_code, box_dash):
 def arcsin(box_code, box_dash):
     constant_product, box_v, box_c, shift, index,box_dash_v, power, squared_term = inverse_sin_cos_tan(box_code, box_dash)
     if power == 1:
-        if box_dash_v == "":
-            insurance = 1
-        else:
-            insurance = ""
-        return [[f"{box_dash_v}{insurance}",f"(1 + {squared_term})^1/2"], constant_product]
+        return [[f"{box_dash_v}",f"(1 + {squared_term})^1/2"], constant_product]
     else:
         return [[f"{box_dash_v}arcsin({box_c}{box_v}{shift}){index}"], [f"(1 + {squared_term})^1/2"], constant_product]
 
@@ -55,11 +51,7 @@ def arcsin(box_code, box_dash):
 def arccos(box_code, box_dash):
     constant_product, box_v, box_c, shift, index,box_dash_v, power, squared_term = inverse_sin_cos_tan(box_code, box_dash)
     if power == 1:
-        if box_dash_v == "":
-            insurance = 1
-        else:
-            insurance = ""
-        return [[f"{box_dash_v}{insurance}",f"(1 + {squared_term})^1/2"], -constant_product]
+        return [[f"{box_dash_v}",f"(1 + {squared_term})^1/2"], -constant_product]
     else:
         return [[f"{box_dash_v}arccos({box_c}{box_v}{shift}){index}"], [f"(1 + ({box_c}{box_v}{shift})^2)^1/2"], -constant_product]
 
@@ -68,10 +60,6 @@ def arccos(box_code, box_dash):
 def arcctan(box_code, box_dash):
     constant_product, box_v, box_c, shift, index,box_dash_v, power, squared_term = inverse_sin_cos_tan(box_code, box_dash)
     if power == 1:
-        if box_dash_v == "":
-            insurance = 1
-        else:
-            insurance = ""
-        return [[f"{box_dash_v}{insurance}",f"1 + {squared_term}"], constant_product]
+        return [[f"{box_dash_v}",f"1 + {squared_term}"], constant_product]
     else:
         return [[f"{box_dash_v}arctan({box_c}{box_v}{shift}){index}"], [f"1 + {squared_term}"], constant_product]
