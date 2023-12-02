@@ -54,7 +54,10 @@ def power(box_code, box_dash):
         return [f"{box_dash_v}{box_c}{box_v}{shift}{index}",
                 constant_product]
 
-
+box_code = [[0,0],1,1,0,0,["x",1]]
+box_dash = ["",1]
+a = power(box_code, box_dash)
+print(f"{a[0], a[1]}")
 # code commmon to the sin, cos and tan function
 def sin_cos_tan(box_code, box_dash):
     power, coefficient, box_v, box_c = box_code[1],box_code[2], box_code[5][0], box_code[5][1]

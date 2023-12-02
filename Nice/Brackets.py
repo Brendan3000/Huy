@@ -55,7 +55,6 @@ def index_laws(box_variable):
 
 # only_one will return true if box_dash would not involve calling upon convoluted
 # don't use when dealing with exponentials
-# can't find a use for this yet
 def only_one(box_variable):
     if box_variable.count("x") == 1:
         return True
@@ -109,7 +108,7 @@ def closed(box_variable):
 # again, don't use when dealing with exponentials
 def power_converter(box_variable):
     # testing to see if there is a power on last bracket
-    if box_variable.rfind(")") == box_variable.rfind(")^"):
+    if box_variable.rfind(")") == box_variable.rfind(")^") and "^)" in box_variable:
         try:
             return box_variable[:box_variable.rfind("^")], int(box_variable[box_variable.rfind(")^") + 2:])
         except:
