@@ -36,6 +36,8 @@ def interpret(list):
     if function_determiner == 4:
         if base == 1:
             base = "e"
+        else:
+            base = f"({base})"
         if shift != 0:
             return [f"{base}^({box_c}{box_v}{index})", coefficient]
         else:
