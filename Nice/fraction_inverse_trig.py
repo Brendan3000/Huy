@@ -49,7 +49,7 @@ def arcsin(box_code, box_dash):
     if power == 1:
         return [[f"{box_dash_v}",f"(1 + {squared_term})^0.5"], constant_product]
     else:
-        return [[f"{box_dash_v}arcsin({box_c}{box_v}{shift}){index}"], [f"(1 + {squared_term})^0.5"], constant_product]
+        return [[f"{box_dash_v}arcsin({box_c}{box_v}{shift}){index}", f"(1 + {squared_term})^0.5"], constant_product]
 
 
 # inverse cosine [has function_determiner value = 7]
@@ -58,7 +58,7 @@ def arccos(box_code, box_dash):
     if power == 1:
         return [[f"{box_dash_v}",f"(1 + {squared_term})^0.5"], -constant_product]
     else:
-        return [[f"{box_dash_v}arccos({box_c}{box_v}{shift}){index}"], [f"(1 + {squared_term})^0.5"], -constant_product]
+        return [[f"{box_dash_v}arccos({box_c}{box_v}{shift}){index}", f"(1 + {squared_term})^0.5"], -constant_product]
 
 
 # inverse tangent [has function_determiner value = 8]
@@ -67,4 +67,4 @@ def arcctan(box_code, box_dash):
     if power == 1:
         return [[f"{box_dash_v}",f"1 + {squared_term}"], constant_product]
     else:
-        return [[f"{box_dash_v}arctan({box_c}{box_v}{shift}){index}"], [f"1 + {squared_term}"], constant_product]
+        return [[f"{box_dash_v}arctan({box_c}{box_v}{shift}){index}", f"1 + {squared_term}"], constant_product]

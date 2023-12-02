@@ -157,7 +157,16 @@ def closed(box_variable):
 # for closed box_variables, power_converter separates the power within the string
 # again, don't use when dealing with exponentials
 def power_converter(box_variable):
-    # testing to see if there is a power on last bracket
+    # case of some x^n
+    if box_variable.rfind("x") == 0:
+        if len(box_variable) == 1:
+            return box_variable, 1
+        else:
+            try:
+                return "x", int(box_variable[2:])
+            except:
+                return "x", float(box_variable[2:])
+    # testing to see if there is a power on last bracket (case of a function)
     if box_variable.rfind(")") == box_variable.rfind(")^") and "^)" in box_variable:
         try:
             return box_variable[:box_variable.rfind("^")], int(box_variable[box_variable.rfind(")^") + 2:])
