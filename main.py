@@ -21,27 +21,27 @@ def GenBox():
         boxCode[5][1] = random.randint(1,9)
 
         if boxCode[4] == 0:
-            boxdash = Basic.power(boxCode, [0,1])
+            boxdash = Basic.power(boxCode, ["",1])
         elif boxCode[4] == 1:
-            boxdash = Basic.sin(boxCode, [0,1])
+            boxdash = Basic.sin(boxCode, ["",1])
         elif boxCode[4] == 2:
-            boxdash = Basic.cos(boxCode, [0,1])
+            boxdash = Basic.cos(boxCode, ["",1])
         elif boxCode[4] == 3:
-            boxdash = Basic.tan(boxCode, [0,1])
+            boxdash = Basic.tan(boxCode, ["",1])
         elif boxCode[4] == 4:
-            boxdash = Exponentials.exponential(boxCode, [0,1])
+            boxdash = Exponentials.exponential(boxCode, ["",1])
         elif boxCode[4] == 5:
-            boxdash = fraction_logs.Logarithm(boxCode, [0,1])
+            boxdash = fraction_logs.Logarithm(boxCode, ["",1])
         elif boxCode[4] == 6:
-            boxdash = fraction_inverse_trig.arcsin(boxCode, [0,1])
+            boxdash = fraction_inverse_trig.arcsin(boxCode, ["",1])
         elif boxCode[4] == 7:
-            boxdash = fraction_inverse_trig.arccos(boxCode, [0,1])
+            boxdash = fraction_inverse_trig.arccos(boxCode, ["",1])
         else: #tan^-1
-            boxdash = fraction_inverse_trig.arcctan(boxCode, [0,1])
+            boxdash = fraction_inverse_trig.arcctan(boxCode, ["",1])
 
 
         result = interpret(boxCode)
-        gen1list.append([result], boxdash)
+        gen1list.append([result, boxdash])
         print(f"{result[1]}{result[0]}", boxdash)
         return gen1list
 
