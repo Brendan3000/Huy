@@ -6,7 +6,7 @@ def interpret(list):
         sign = "+"
     else:
         sign = "-"
-    shift, power, coefficient, base, function_determiner, box_v, box_c = list[0][1], list[1],list[2], list[3], list[4], list[5][1], list[5][1]
+    shift, power, coefficient, base, function_determiner, box_v, box_c = list[0][1], list[1],list[2], list[3], list[4], list[5][0], list[5][1]
     # if our constant is 1 we don't want 1box we just want box
     if box_c == 1:
         box_c = ""
