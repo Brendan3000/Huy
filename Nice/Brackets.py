@@ -107,7 +107,6 @@ def closed(box_variable):
 
 # for closed box_variables, power_converter separates the power within the string
 # again, don't use when dealing with exponentials
-# don't need?
 def power_converter(box_variable):
     # testing to see if there is a power on last bracket
     if box_variable.rfind(")") == box_variable.rfind(")^"):
@@ -124,7 +123,6 @@ def power_converter(box_variable):
         return box_variable, 1
 
 
-print(power_converter("cos^2(x)"))
 # returns true if dealing with a exponentials in the for e^f(x) not g(x)e^f(x) (unless g(x) is constant)
 def dealing_with_exponentials(box_variable):
     if "^" in box_variable:

@@ -18,17 +18,18 @@ def power(box_code, box_dash):
         box_c = ""
     # where there is no shift, presentation must be enhanced
     if need_to_tidy_up:
+        # adjustment for some case (a*box)^n just to tidy up into a^n(box)^n where a is a constant (calculated)
+        if box_c != "":
+            a = Brackets.coefficient_power_direct(box_c,power, constant_product)
+            box_c, constant_product = a[0], a[1]
         # adjustment for some case ((box)^n)^m just to tidy up
         if Brackets.closed(box_v):
-            box_v, adjustment = Brackets.power_converter(box_v, power)
+            box_v, adjustment = Brackets.power_converter(box_v)
             power *= adjustment
             if power != 2:
                 index = f"^{power-1}"
             else:
                 index = ""
-        # adjustment for some case (a*box)^n just to tidy up into a^n(box)^n where a is a constant (calculated)
-        a = Brackets.coefficient_power_direct(box_c,power, constant_product)
-        box_c, constant_product = a[0], a[1]
         # for simplifying some (e^box)^3 into e^3box
         if Brackets.dealing_with_exponentials(box_v):
             box_v = Brackets.exponentials_simplifier(box_v, power)
@@ -43,7 +44,11 @@ def power(box_code, box_dash):
         box_c = "(" + str(box_c)
         shift += ")"
     if power == 1:
-        return [box_dash_v,
+        if box_dash_v == "":
+            insurance = 1
+        else:
+            insurance = ""
+        return [f"{insurance}{box_dash_v}",
                 constant_product]
     else:
         return [f"{box_dash_v}{box_c}{box_v}{shift}{index}",
