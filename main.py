@@ -15,7 +15,7 @@ for i in range(9):
     boxCode[0][1] = random.randint(0, 1)
     boxCode[1] = random.randrange(-8,8,1)/dividor
     boxCode[2] = random.randint(1, 9)
-    boxCode[3] = random.randint(0, 9)
+    boxCode[3] = random.randint(1, 9)
     boxCode[4] = random.randint(0, 8)
     boxCode[5][1] = random.randint(1,9)
 
