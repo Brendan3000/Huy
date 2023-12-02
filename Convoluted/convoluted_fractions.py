@@ -1,27 +1,16 @@
-# add only_one
 # a function in the form of g(x)^f(x)
-def function_power(base, base_derivative, power, power_derivative):
-    base_v = base[0]
-    base_c = base[1]
-    base_derivative_v = base_derivative[0]
-    base_derivative_c = base_derivative[1]
-    power_v = base[0]
-    power_c = base[1]
-    power_derivative_v = base[0]
-    power_derivative_c = base[1]
-    return [[f"({base_c}{base_v})^({power_c}{power_v})({base_derivative_c*power_c}{base_derivative_v}{power_derivative_v} + {power_derivative_c*base_c}{power_derivative_v}{base_v}ln({base_c}{base_v}))",f"{base_c}{base_v}"], 1]
+def function_power(base, base_dx, power, power_dx):
+    base_v, base_c, base_dx_v, base_dx_c, power_v, power_c, power_dx_v, power_dx_c = base[0], base[1], base_dx[0], base_dx[1], power[0], power[1], power_dx[0], power_dx[1]
+    return [[f"({base_c}{base_v})^({power_c}{power_v})({base_dx_c*power_c}{base_dx_v}{power_dx_v} + {power_dx_c*base_c}{power_dx_v}{base_v}ln({base_c}{base_v}))",
+            f"{base_c}{base_v}"],
+            1]
 
 
 # quotient rule
-def quotient(numerator, numerator_derivative, denominator, denominator_derivative):
-    numerator_v = numerator[0]
-    numerator_c = numerator[1]
-    numerator_derivative_v = numerator_derivative[0]
-    numerator_derivative_c = numerator_derivative[1]
-    denominator_v = denominator[0]
-    denominator_c = denominator[1]
-    denominator_derivative_v = denominator_derivative[0]
-    denominator_derivative_c = denominator_derivative[1]
-    return [[f"{denominator_c*numerator_derivative_c}{denominator_v}{numerator_derivative_v} - {denominator_derivative_c*numerator_c}{denominator_derivative_v}{numerator_v}", f"{denominator}^2"], 1/denominator_c**2]
+def quotient(numerator, numerator_dx, denominator, denominator_dx):
+    n_v, n_c, n_dx_v, n_dx_c, d_v, d_c, d_dx_v, d_dx_c = numerator[0], numerator[1], denominator_dx[0], denominator_dx[1], denominator[0], denominator[1],denominator_dx[0], denominator_dx[1]
+    return [[f"{d_c*n_dx_c}{d_v}{n_dx_v} - {d_dx_c*n_c}{d_dx_v}{n_v}",
+             f"{d_v}^2"],
+            1/d_c**2]
 
 

@@ -1,26 +1,30 @@
-# ln()
-def natural_logaraithm(box, power, coefficient, base, box_dash):
-        box_dash_v = box_dash[0]
-        box_dash_c = box_dash[1]
-        box_v = box[0]
-        box_c = box[1]
-        if power == 1:
-                return [[f"{box_dash_v}", f"{box_c}{box_v}"], coefficient*power*box_dash_c]
+from Nice import Brackets
+
+
+# ln() or logb() [has function_determiner value = 5]
+def logaraithm(box_code, box_dash):
+        power, coefficient, base, box_v, box_c = box_code[1],box_code[2],box_code[3], box_code[5][0], box_code[5][1]
+        box_dash_v, box_dash_c = box_dash[0], box_dash[1]
+        constant_product = (coefficient*power*box_dash_c)/box_c
+        shift, need_to_tidy_up = Brackets.shift_assembler(box_code[0][0], box_code[0][1])
+        ln_or_logb = f"log{base}"
+        ln_base = f"ln({base})"
+        # if our constant is 1 we don't want 1box we just want box
+        if box_c == 1:
+                box_c = ""
+        # if our power is 1 we don't want box^1 we just want  box
+        if power != 2:
+                index = f"^{power-1}"
         else:
-                return [[f"{box_dash_v}ln({box_c}{box_v})^{power - 1}", box], coefficient*power*box_dash_c]
-
-
-# logb()
-def logaraithm(box, power, coefficient, base, box_dash):
-        box_dash_v = box_dash[0]
-        box_dash_c = box_dash[1]
-        box_v = box[0]
-        box_c = box[1]
+                index = ""
+        # we achieve ln if base = 1
+        if base == 1:
+                ln_or_logb = "ln"
+                ln_base = ""
         if power == 1:
-                return [[f"{box_dash_v}", f"ln({base}){box_c}{box_v}"], coefficient*power*box_dash_c]
+                return [[f"{box_dash_v}", f"{box_v}{ln_base}"], constant_product]
         else:
-                return [[f"{box_dash_v}log{base}({box_c}{box_v})^{power - 1}", f"ln({box_c}{box_v}){box_c}{box_v}"], coefficient*power*box_dash_c]
-
+                return [[f"{box_dash_v}{ln_or_logb}({box_c}{box_v}){index}", f"{box_v}{ln_base}"], constant_product]
 
 
 
