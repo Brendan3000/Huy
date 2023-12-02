@@ -35,11 +35,12 @@ def power(box_code, box_dash):
         if Brackets.closed(box_v):
             box_v, adjustment = Brackets.power_converter(box_v)
             power *= adjustment
-            if power != 2:
-                index = f"^{power-1}"
-            else:
-                index = ""
-            box_dash_v = ""
+            # just repeat of code to run again
+            if adjustment != 1:
+                if power != 2:
+                    index = f"^{power-1}"
+                else:
+                    index = ""
     # This serves to add brackets only when required
     if not need_to_tidy_up or not Brackets.closed(box_v):
         box_c = "(" + str(box_c)

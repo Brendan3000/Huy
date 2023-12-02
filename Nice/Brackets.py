@@ -1,6 +1,24 @@
 # look at this file last (It's fucked)
 
 
+# inputs a nice (positive integer power) power and a closed, without trig function and outputs some sin^n(x)
+def trig_nice_power(box_variable, power):
+    basic_trig = ["sin", "cos", "tan"]
+    for i in basic_trig:
+        if box_variable.find(i) == 0:
+            return f"{i}^{power}({box_variable})"
+
+
+# returns true if box_variable begins with a trig function
+def trig_basic(box_variable):
+    basic_trig = ["sin", "cos", "tan"]
+    for i in basic_trig:
+        if box_variable.find(i) == 0:
+            return True
+    else:
+        return False
+
+
 # severs to convert (f(x)g(x)...) into f(x)g(x)... only if in the form (f(x)g(x)...) (closed no power)
 def brackets_remover(box_variable):
     if box_variable.rfind(")") == (len(box_variable) - 1) and box_variable.rfind("(") == 0:
@@ -69,7 +87,39 @@ def only_one(box_variable):
         return False
 
 
-# will return true is the variable is open and shut e.g. sin(box), ln(box), (sin(box)ln(box)), ln(box)^n but not sin(box)ln(box)
+# will return true is the variable is open and shut (and not to a power) e.g. sin(box), ln(box), (sin(box)ln(box)) but not sin(box)ln(box) or ln(box)^n
+def closed_no_power(box_variable):
+    # for the case of x
+    if len(box_variable) == 1:
+        return True
+    # for the case of a function
+    if box_variable.rfind(")") == (len(box_variable) - 1):
+        function = ["sin", "cos", "tan", "ln", "log", "arcsin","arccos", "arctan", "("]
+        for i in function:
+            if box_variable.find(f"{i}") == 0:
+                # this loop ensures our start bracket isn't closed unit the end
+                counter_a = 0
+                counter_b = 0
+                for letter in box_variable:
+                    if letter == "(":
+                        counter_a += 1
+                        print(counter_a)
+                    if letter == ")":
+                        counter_a -= 1
+                        print(counter_a)
+                        if counter_a == 0:
+                            counter_b += 1
+                # counter_b represents the number of times brackets were completely closed, we need one
+                print(counter_b)
+                if counter_b == 1:
+                    return True
+                else:
+                    break
+    else:
+        return False
+
+
+# will return true is the variable is open and shut (and could be to a power) e.g. sin(box), ln(box), (sin(box)ln(box)), ln(box)^n but not sin(box)ln(box)
 # don't use when dealing with exponentials
 def closed(box_variable):
     # for the case of x

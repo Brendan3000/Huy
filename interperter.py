@@ -18,8 +18,10 @@ def interpret(list):
     # for box^n
     if function_determiner == 0:
         # To avoid unnecessary brackets
-        if Brackets.closed(box_v) and box_v.rfind(")") == (len(box_v)-1) and box_c == "" and need_to_tidy_up:
-            pass
+        if Brackets.closed(box_v) and box_c == "" and need_to_tidy_up:
+            # To allow for sin^n(x) where n is a positive integer
+            if Brackets.closed_no_powers(box_v) and Brackets.basic_trig(box_v) and isinstance(power, int) and power > 1:
+                return [Brackets.trig_nice_power(box_v, power), coefficient]
         else:
             box_c = "(" + str(box_c)
             shift += ")"
@@ -27,14 +29,18 @@ def interpret(list):
     # for trig
     if 1 <= function_determiner <= 3 or 6 <= function_determiner <= 8:
         master_key = [0,"sin", "cos", "tan", 0, 0, "arcsin", "arccos", "arctan"]
-        return [f"{master_key[function_determiner]}({box_c}{box_v}{shift}){index}", coefficient]
+        # To allow for sin^n(x) where n is a positive integer
+        if power > 1 and isinstance(power, int) and Brackets.basic_trig(master_key[function_determiner]):
+            return [f"{master_key[function_determiner]}{index}({box_c}{box_v}{shift})", coefficient]
+        else:
+            return [f"{master_key[function_determiner]}({box_c}{box_v}{shift}){index}", coefficient]
     # for exponentials
     if function_determiner == 4:
         if base == 1:
             base = "e"
         else:
             base = f"({base})"
-        return [f"({base})^{power}({box_c}{box_v}{shift})", coefficient]
+        return [f"{base}^{power}({box_c}{box_v}{shift})", coefficient]
     # for logs
     if function_determiner == 5:
         ln_or_logb = f"log{base}"
