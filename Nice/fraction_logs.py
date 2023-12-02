@@ -5,7 +5,7 @@ from Nice import Brackets
 def logaraithm(box_code, box_dash):
         power, coefficient, base, box_v, box_c = box_code[1],box_code[2],box_code[3], box_code[5][0], box_code[5][1]
         box_dash_v, box_dash_c = box_dash[0], box_dash[1]
-        constant_product = (coefficient*power*box_dash_c)/box_c
+        constant_product = coefficient*power*box_dash_c
         shift, need_to_tidy_up = Brackets.shift_assembler(box_code[0][0], box_code[0][1])
         ln_or_logb = f"log{base}"
         ln_base = f"ln({base})"
@@ -21,10 +21,13 @@ def logaraithm(box_code, box_dash):
         if base == 1:
                 ln_or_logb = "ln"
                 ln_base = ""
+        # This serves to avoid the possibility of some ((f(x))) (i.e. avoid double brackets when not required)
+        if need_to_tidy_up and box_c == "":
+                Brackets.brackets_remover(box_v)
         if power == 1:
-                return [[f"{box_dash_v}", f"{box_v}{ln_base}"], constant_product]
+                return [[f"{box_dash_v}", f"{ln_base}{box_c}{box_v}{shift}"], constant_product]
         else:
-                return [[f"{box_dash_v}{ln_or_logb}({box_c}{box_v}){index}", f"{box_v}{ln_base}"], constant_product]
+                return [[f"{box_dash_v}{ln_or_logb}({box_c}{box_v}{shift}){index}", f"{ln_base}{box_c}{box_v}{shift}"], constant_product]
 
 
 
