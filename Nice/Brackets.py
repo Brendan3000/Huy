@@ -1,8 +1,16 @@
 # look at this file last (It's fucked)
 
 
+# severs to convert (f(x)g(x)...) into f(x)g(x)... only if in the form (f(x)g(x)...) (closed no power)
+def brackets_remover(box_variable):
+    if box_variable.rfind(")") == (len(box_variable) - 1) and box_variable.rfind("(") == 0:
+        return box_variable[1,len(box_variable)-1]
+    else:
+        return box_variable
+
+
 # This serves the purpose to convert (af(x))^n into a^nf(x)^n to allow for simplification in differentiating (a is a constant)
-def coefficient_power_direct(box_v, box_c, power, constant_product):
+def coefficient_power_direct(box_c, power, constant_product):
     # say if our a is -1 and power is 0.5, we don't want that
     if not isinstance(box_c**power, complex):
         constant_product *= box_c**power
