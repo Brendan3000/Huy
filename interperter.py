@@ -44,7 +44,7 @@ def interpret(list):
     if function_determiner == 5:
         ln_or_logb = f"log{base}"
         if base == 1:
-            expression_of_log = "ln"
+            ln_or_logb = "ln"
         if shift != 0:
             return [f"{ln_or_logb}({box_c}{box_v} {sign} {shift}){index}", coefficient]
         else:
