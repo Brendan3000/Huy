@@ -35,12 +35,23 @@ def power(box_code, box_dash):
         if Brackets.closed(box_v):
             box_v, adjustment = Brackets.power_converter(box_v)
             power *= adjustment
-            # just repeat of code to run again
             if adjustment != 1:
+                # To adjust index
                 if power != 2:
                     index = f"^{power-1}"
                 else:
                     index = ""
+                # Case of basic trig, some sin^n(x)
+                if Brackets.trig_basic(box_v) and power > 2 and adjustment > 2 and isinstance(power,int) and isinstance(adjustment, int):
+                    sin_cos_or_tan = box_v[0:3]
+                    box_dash_v = box_dash_v[:box_dash_v.rfind(sin_cos_or_tan)]
+                    return [f"{box_dash_v}{sin_cos_or_tan}{index}{box_v[box_v.find('('):]}",
+                                    constant_product]
+                # To adjust box_dash
+                if adjustment != 2:
+                    box_dash_v = box_dash_v.remove(f"{box_v}^{adjustment-1}")
+                if adjustment == 2:
+                    box_dash_v = box_dash_v.remove(f"{box_v}")
     # This serves to add brackets only when required
     if not need_to_tidy_up or not Brackets.closed(box_v):
         box_c = "(" + str(box_c)

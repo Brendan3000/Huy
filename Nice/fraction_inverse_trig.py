@@ -25,7 +25,12 @@ def inverse_sin_cos_tan(box_code, box_dash):
         # adjustment for some case ((box)^n)^2 just to tidy up
         if Brackets.closed(box_v):
             box_v, adjustment = Brackets.power_converter(box_v)
-            box_v = f"{box_v}^{adjustment*2}"
+            # Case of basic trig, some sin^n(x)
+            if adjustment != 1 and isinstance(adjustment, int):
+                sin_cos_or_tan = box_v[0:3]
+                squared_term = f"{sin_cos_or_tan}^{adjustment*2}{box_v[box_v.find('('):]}"
+            else:
+                box_v = f"{box_v}^{adjustment*2}"
         else:
             box_v = "(" + box_v + ")"
         # for simplifying some (e^box)^2 into e^2box
