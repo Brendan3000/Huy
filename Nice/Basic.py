@@ -20,8 +20,12 @@ def power(box_code, box_dash):
     if need_to_tidy_up:
         # adjustment for some case ((box)^n)^m just to tidy up
         if Brackets.closed(box_v):
-            box_v, adjustment = Brackets.exponentials_simplifier(box_v, power)
-            power /= adjustment
+            box_v, adjustment = Brackets.power_converter(box_v, power)
+            power *= adjustment
+            if power != 2:
+                index = f"^{power-1}"
+            else:
+                index = ""
         # adjustment for some case (a*box)^n just to tidy up into a^n(box)^n where a is a constant (calculated)
         a = Brackets.coefficient_power_direct(box_c,power, constant_product)
         box_c, constant_product = a[0], a[1]
@@ -115,3 +119,4 @@ def tan(box_code, box_dash):
     else:
         return [f"{box_dash_v}sec^2({box_c}{box_v}{shift})tan({box_c}{box_v}{shift}){index}",
                 constant_product]
+tan()

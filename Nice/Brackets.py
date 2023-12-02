@@ -107,18 +107,24 @@ def closed(box_variable):
 
 # for closed box_variables, power_converter separates the power within the string
 # again, don't use when dealing with exponentials
+# don't need?
 def power_converter(box_variable):
     # testing to see if there is a power on last bracket
     if box_variable.rfind(")") == box_variable.rfind(")^"):
         try:
-            return box_variable, int(box_variable[box_variable.rfind(")^") + 2:])
+            return box_variable[:box_variable.rfind("^")], int(box_variable[box_variable.rfind(")^") + 2:])
         except:
-            return box_variable, float(box_variable[box_variable.rfind(")^") + 2:])
-
+            return box_variable[:box_variable.rfind("^")], float(box_variable[box_variable.rfind(")^") + 2:])
+    # for the case of some trig sin^n(x) where n is a integer (postive)
+    basic_trig = ["sin", "cos", "tan"]
+    for i in basic_trig:
+        if box_variable.find(i) == 0 and box_variable[3] == "^":
+            return box_variable[:3] + box_variable[box_variable.find("("):], int(box_variable[4:box_variable.find("(")])
     else:
-        return box_variable,1
+        return box_variable, 1
 
 
+print(power_converter("cos^2(x)"))
 # returns true if dealing with a exponentials in the for e^f(x) not g(x)e^f(x) (unless g(x) is constant)
 def dealing_with_exponentials(box_variable):
     if "^" in box_variable:
@@ -142,7 +148,6 @@ def exponentials_simplifier(box_variable, power):
     if box_variable[box_variable.find("^") + 1] == "(":
         # this is the case where there isn't some b
         return box_variable[:box_variable.find("^") + 1] + str(power) + box_variable[box_variable.find("^") +1:]
-
     # already some number b
     b_constant = box_variable[box_variable.find("^")+1: box_variable.find("^") + box_variable[box_variable.find("^"):].find("(")]
     # for b an integer
