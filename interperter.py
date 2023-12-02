@@ -6,6 +6,10 @@ def interpret(list):
         sign = "+"
     else:
         sign = "-"
+
+    if list[0][1] == 0:
+        sign = ""
+
     shift, power, coefficient, base, function_determiner, box_v, box_c = list[0][1], list[1],list[2], list[3], list[4], list[5][0], list[5][1]
     # if our constant is 1 we don't want 1box we just want box
     if box_c == 1:
@@ -33,7 +37,7 @@ def interpret(list):
         if base == 1:
             base = "e"
         if shift != 0:
-            return [f"{base}^({box_c}{box_v} {sign} {index})", coefficient]
+            return [f"{base}^({box_c}{box_v}{index})", coefficient]
         else:
             return [f"({base})^{box_c}{box_v}", coefficient]
     # for logs
@@ -46,9 +50,10 @@ def interpret(list):
         else:
             return [f"{ln_or_logb}({box_c}{box_v}){index}", coefficient]
 
-
+"""
 list = [[1, 0], 2, 6, 1, 5, ["x", 3]]
 for k in range(1,3):
     for i in range(9):
         list = [[1, 0], 0.5, 6, k, i, ["cos(e^3x)", 8]]
         print(f"{interpret(list)[1]}{interpret(list)[0]}")
+"""
