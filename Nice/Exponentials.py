@@ -18,5 +18,8 @@ def exponential(box_code, box_dash):
         bottom = "e"
     else:
         bottom = f"({base})"
-    return [f"{box_dash_v}{bottom}^{power}{box_c}{box_v}{shift}",
+    # This serves to avoid the possibility of some sin((f(x))) (i.e. avoid double brackets when not required
+    if need_to_tidy_up and box_c == "":
+        Brackets.brackets_remover(box_v)
+    return [f"{box_dash_v}{bottom}^{power}({box_c}{box_v}{shift})",
             constant_product]
