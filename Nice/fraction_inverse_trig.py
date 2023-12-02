@@ -26,7 +26,7 @@ def inverse_sin_cos_tan(box_code, box_dash):
         if Brackets.closed(box_v):
             box_v, adjustment = Brackets.power_converter(box_v)
             # Case of basic trig, some sin^n(x)
-            if adjustment != 1 and isinstance(adjustment, int):
+            if adjustment != 1 and isinstance(adjustment, int) and Brackets.basic_trig(box_v):
                 sin_cos_or_tan = box_v[0:3]
                 squared_term = f"{sin_cos_or_tan}^{adjustment*2}{box_v[box_v.find('('):]}"
             else:

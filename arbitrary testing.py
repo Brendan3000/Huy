@@ -10,7 +10,8 @@ for i in range(100):
     dividor = random.randint(1,2)
     boxCode[0][0] = random.randint(0, 1)
     boxCode[0][1] = random.randint(0, 1)
-    number = random.randint(1,8)
+    boxCode[0][1] = 0
+    boxCode[1] = random.randint(1,8)
     boxCode[2] = random.randint(1, 9)
     boxCode[3] = random.randint(1, 2)
     boxCode[4] = random.randint(0, 8)
