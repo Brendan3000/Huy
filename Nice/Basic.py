@@ -46,7 +46,7 @@ def power(box_code, box_dash):
                 constant_product]
 
 
-# code commmon to the sin, cos and tan function to make dry
+# code commmon to the sin, cos and tan function
 def sin_cos_tan(box_code, box_dash):
     power, coefficient, box_v, box_c = box_code[1],box_code[2], box_code[5][0], box_code[5][1]
     box_dash_v, box_dash_c = box_dash[0], box_dash[1]

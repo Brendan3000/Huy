@@ -114,6 +114,7 @@ def power_converter(box_variable):
             return box_variable, int(box_variable[box_variable.rfind(")^") + 2:])
         except:
             return box_variable, float(box_variable[box_variable.rfind(")^") + 2:])
+
     else:
         return box_variable,1
 
