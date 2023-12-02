@@ -17,7 +17,13 @@ def interpret(list):
         box_v = Brackets.brackets_remover(box_v)
     # for box^n
     if function_determiner == 0:
-            return [f"({box_c}{box_v}{shift}){index}", coefficient]
+        # To avoid unnecessary brackets
+        if Brackets.closed(box_v) and box_v.rfind(")") == (len(box_v)-1) and box_c == "" and need_to_tidy_up:
+            pass
+        else:
+            box_c = "(" + str(box_c)
+            shift += ")"
+        return [f"{box_c}{box_v}{shift}{index}", coefficient]
     # for trig
     if 1 <= function_determiner <= 3 or 6 <= function_determiner <= 8:
         master_key = [0,"sin", "cos", "tan", 0, 0, "arcsin", "arccos", "arctan"]
