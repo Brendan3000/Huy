@@ -17,6 +17,7 @@ class Sum: #UNTESTED
                     continue
                 elif char == "-":
                     boxsignlist.append("-");
+                    term[0].replace("-", "", 1)
                 else:
                     boxsignlist.append("+");
 
@@ -26,6 +27,7 @@ class Sum: #UNTESTED
                     continue
                 elif char == "-":
                     boxdashsignlist.append("-");
+                    term[0].replace("-", "", 1)
                 else:
                     boxdashsignlist.append("+");
 
