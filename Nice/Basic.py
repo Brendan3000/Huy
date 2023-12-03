@@ -41,12 +41,6 @@ def power(box_code, box_dash):
                     index = f"^{power-1}"
                 else:
                     index = ""
-                # Case of basic trig, some sin^n(x)
-                if Brackets.basic_trig(box_v) and power > 2 and adjustment > 2 and isinstance(power,int) and isinstance(adjustment, int):
-                    sin_cos_or_tan = box_v[0:3]
-                    box_dash_v = box_dash_v[:box_dash_v.rfind(sin_cos_or_tan)]
-                    return [f"{box_dash_v}{sin_cos_or_tan}{index}{box_v[box_v.find('('):]}",
-                                    constant_product]
                 # To adjust box_dash
                 if adjustment != 2:
                     # removes f"{box_v}^{adjustment-1}") form box_dash_v
@@ -95,10 +89,6 @@ def sin(box_code, box_dash):
     if power == 2:
         return [f"{box_dash_v}sin(2{box_c}{box_v}{shift})",
                 constant_product*0.5]
-    # This is just to only use an expression sin^n(box) for nice n e.g. sin^2(box). Else we do sin(box)^n e.g. sin(box)^-2.21
-    elif power > 0 and isinstance(power,int):
-        return [f"{box_dash_v}cos({box_c}{box_v}{shift})sin{index}({box_c}{box_v}{shift})",
-                constant_product]
     else:
         return [f"{box_dash_v}cos({box_c}{box_v}{shift})sin({box_c}{box_v}{shift}){index}",
                 constant_product]
@@ -113,10 +103,6 @@ def cos(box_code, box_dash):
     if power ==2:
         return [f"{box_dash_v}sin(2{box_c}{box_v}{shift})",
                 -constant_product*0.5]
-    # This is just to only use an expression sin^n(box) for nice n e.g. sin^2(box). Else we do sin(box)^n e.g. sin(box)^-2.21
-    elif power > 0 and isinstance(power,int):
-        return [f"{box_dash_v}sin({box_c}{box_v}{shift})cos{index}({box_c}{box_v}{shift})",
-                -constant_product]
     else:
         return [f"{box_dash_v}sin({box_c}{box_v}{shift})cos({box_c}{box_v}{shift}){index}",
                 -constant_product]
@@ -126,13 +112,9 @@ def cos(box_code, box_dash):
 def tan(box_code, box_dash):
     constant_product, box_v, box_c, shift, index, box_dash_v, power= sin_cos_tan(box_code, box_dash)
     if power == 1:
-        return [f"{box_dash_v}sec^2({box_c}{box_v}{shift})",
-                constant_product]
-    # This is just to only use an expression sin^n(box) for nice n e.g. sin^2(box). Else we do sin(box)^n e.g. sin(box)^-2.21
-    elif power > 0 and isinstance(power, int):
-        return [f"{box_dash_v}sec^2({box_c}{box_v}{shift})tan{index}({box_c}{box_v}{shift})",
+        return [f"{box_dash_v}sec({box_c}{box_v}{shift})^2",
                 constant_product]
     else:
-        return [f"{box_dash_v}sec^2({box_c}{box_v}{shift})tan({box_c}{box_v}{shift}){index}",
+        return [f"{box_dash_v}sec({box_c}{box_v}{shift})^2 tan({box_c}{box_v}{shift}){index}",
                 constant_product]
 

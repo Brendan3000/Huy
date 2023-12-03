@@ -4,9 +4,9 @@ from interperter import interpret
 import random
 random.seed(None, 2)
 
-
+table = [[], []]
 boxCode = [[0,0],1,1,0,0,["x^2",1]]
-for i in range(100):
+for i in range(1,101):
     dividor = random.randint(1,2)
     boxCode[0][0] = random.randint(0, 1)
     boxCode[0][1] = random.randint(0, 1)
@@ -34,5 +34,14 @@ for i in range(100):
     else: #tan^-1
         boxdash = fraction_inverse_trig.arcctan(boxCode, ["x",2])
     result = interpret(boxCode)
-
-    print(f"d/dx of {result[1]}{result[0]} is {boxdash[1]}{boxdash[0]}")
+    if len(boxdash[0]) == 2:
+        table[0].append(f"{result[1]}{result[0]}")
+        table[1].append(f"{boxdash[1]}{boxdash[0][0]}/({boxdash[0][1]})")
+    else:
+        table[0].append(f"{result[1]}{result[0]}")
+        table[1].append(f"{boxdash[1]}{boxdash[0]}")
+for m in table[0]:
+    print(m)
+print(" ")
+for n in table[1]:
+    print(n)
