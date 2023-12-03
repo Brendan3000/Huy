@@ -44,7 +44,7 @@ class Sum: #UNTESTED
 
         return [returnbox, returnboxdash]
 
-#ideally checks if result is an integer, ie. box_v ==0 and adds the values if result is an integer (99% sure  DOESNT WORK) 
+#ideally checks if result is an integer, ie. box_v ==0 and adds the values if result is an integer (PROB DOESNT WORK) 
 def sums (box_v, box_c):
   result = box_v + box_c
   if isinstance(result, int):
