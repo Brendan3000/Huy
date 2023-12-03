@@ -29,7 +29,7 @@ def power(box_code, box_dash):
                 imaginary = f"(-1)^{power}"
             else:
                 imaginary = ""
-            return [f"{imaginary}{box_dash_v}{box_v}",
+            return [[f"{imaginary}{box_dash_v}{box_v}",""],
                 constant_product]
         # adjustment for some case ((box)^n)^m just to tidy up
         if Brackets.closed(box_v):
@@ -53,10 +53,10 @@ def power(box_code, box_dash):
         box_c = "(" + str(box_c)
         shift += ")"
     if power == 1:
-        return [f"{box_dash_v}",
+        return [[f"{box_dash_v}",],
                 constant_product]
     else:
-        return [f"{box_dash_v}{box_c}{box_v}{shift}{index}",
+        return [[f"{box_dash_v}{box_c}{box_v}{shift}{index}", ""],
                 constant_product]
 
 
@@ -84,13 +84,13 @@ def sin_cos_tan(box_code, box_dash):
 def sin(box_code, box_dash):
     constant_product, box_v, box_c, shift, index,box_dash_v,power = sin_cos_tan(box_code, box_dash)
     if power == 1:
-        return [f"{box_dash_v}cos({box_c}{box_v}{shift})",
+        return [[f"{box_dash_v}cos({box_c}{box_v}{shift})",""],
                 constant_product]
     if power == 2:
-        return [f"{box_dash_v}sin(2{box_c}{box_v}{shift})",
+        return [[f"{box_dash_v}sin(2{box_c}{box_v}{shift})",""],
                 constant_product*0.5]
     else:
-        return [f"{box_dash_v}cos({box_c}{box_v}{shift})sin({box_c}{box_v}{shift}){index}",
+        return [[f"{box_dash_v}cos({box_c}{box_v}{shift})sin({box_c}{box_v}{shift}){index}",],
                 constant_product]
 
 
@@ -98,13 +98,13 @@ def sin(box_code, box_dash):
 def cos(box_code, box_dash):
     constant_product, box_v, box_c, shift, index, box_dash_v, power = sin_cos_tan(box_code, box_dash)
     if power == 1:
-        return [f"{box_dash_v}cos({box_c}{box_v}{shift})",
+        return [[f"{box_dash_v}cos({box_c}{box_v}{shift})",""],
                 -constant_product]
     if power ==2:
-        return [f"{box_dash_v}sin(2{box_c}{box_v}{shift})",
+        return [[f"{box_dash_v}sin(2{box_c}{box_v}{shift})",""],
                 -constant_product*0.5]
     else:
-        return [f"{box_dash_v}sin({box_c}{box_v}{shift})cos({box_c}{box_v}{shift}){index}",
+        return [[f"{box_dash_v}sin({box_c}{box_v}{shift})cos({box_c}{box_v}{shift}){index}",""],
                 -constant_product]
 
 
@@ -112,9 +112,9 @@ def cos(box_code, box_dash):
 def tan(box_code, box_dash):
     constant_product, box_v, box_c, shift, index, box_dash_v, power= sin_cos_tan(box_code, box_dash)
     if power == 1:
-        return [f"{box_dash_v}sec({box_c}{box_v}{shift})^2",
+        return [[f"{box_dash_v}sec({box_c}{box_v}{shift})^2",""],
                 constant_product]
     else:
-        return [f"{box_dash_v}sec({box_c}{box_v}{shift})^2 tan({box_c}{box_v}{shift}){index}",
+        return [[f"{box_dash_v}sec({box_c}{box_v}{shift})^2 tan({box_c}{box_v}{shift}){index}",""],
                 constant_product]
 
