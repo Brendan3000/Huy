@@ -1,4 +1,4 @@
-from Nice import Brackets
+from Nice import Brackets, Exponentials
 
 
 # box to a power (straight power rule) [has function_determiner value = 0]
@@ -53,7 +53,7 @@ def power(box_code, box_dash):
         box_c = "(" + str(box_c)
         shift += ")"
     if power == 1:
-        return [[f"{box_dash_v}",],
+        return [[f"{box_dash_v}",""],
                 constant_product]
     else:
         return [[f"{box_dash_v}{box_c}{box_v}{shift}{index}", ""],
@@ -90,7 +90,7 @@ def sin(box_code, box_dash):
         return [[f"{box_dash_v}sin(2{box_c}{box_v}{shift})",""],
                 constant_product*0.5]
     else:
-        return [[f"{box_dash_v}cos({box_c}{box_v}{shift})sin({box_c}{box_v}{shift}){index}",],
+        return [[f"{box_dash_v}cos({box_c}{box_v}{shift})sin({box_c}{box_v}{shift}){index}",""],
                 constant_product]
 
 

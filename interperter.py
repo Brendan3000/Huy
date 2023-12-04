@@ -17,6 +17,8 @@ def interpret(list):
         box_v = Brackets.brackets_remover(box_v)
     # for box^n
     if function_determiner == 0:
+        if power == 1:
+            return [f"{box_c}{box_v}{shift}", coefficient]
         # To avoid unnecessary brackets
         if Brackets.closed_no_power(box_v) and box_c == "" and need_to_tidy_up:
            pass
