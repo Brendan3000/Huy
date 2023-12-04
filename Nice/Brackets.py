@@ -1,6 +1,7 @@
 # look at this file last (It's fucked)
 
 
+# This function is not used
 # inputs a nice (positive integer power) power and a closed, without trig function and outputs some sin^n(x)
 def trig_nice_power(box_variable, power):
     basic_trig = ["sin", "cos", "tan"]
@@ -9,6 +10,7 @@ def trig_nice_power(box_variable, power):
             return f"{i}^{power}({box_variable})"
 
 
+# This function is not used
 # returns true if box_variable begins with a trig function
 def basic_trig(box_variable):
     basic_trig = ["sin", "cos", "tan"]
@@ -19,6 +21,7 @@ def basic_trig(box_variable):
         return False
 
 
+# This function is used
 # severs to convert (f(x)g(x)...) into f(x)g(x)... only if in the form (f(x)g(x)...) (closed no power)
 def brackets_remover(box_variable):
     if box_variable.rfind(")") == (len(box_variable) - 1) and box_variable.rfind("(") == 0:
@@ -27,6 +30,7 @@ def brackets_remover(box_variable):
         return box_variable
 
 
+# This function is used
 # This serves the purpose to convert (af(x))^n into a^nf(x)^n to allow for simplification in differentiating (a is a constant)
 def coefficient_power_direct(box_c, power, constant_product):
     # say if our a is -1 and power is 0.5, we don't want that
@@ -40,6 +44,8 @@ def coefficient_power_direct(box_c, power, constant_product):
         box_c = "-"
         return [box_c, constant_product]
 
+
+# This function is not used
 # don't look at this one
 # need to fix this whole thing
 # kinda got replaced by power_converter
@@ -71,6 +77,7 @@ def index_laws(box_variable):
             return [box_variable, 1]
 
 
+# This function is not used
 # only_one will return true if box_dash would not involve calling upon convoluted
 # don't use when dealing with exponentials
 def only_one(box_variable):
@@ -87,6 +94,7 @@ def only_one(box_variable):
         return False
 
 
+# This function is used
 # will return true is the variable is open and shut (and not to a power) e.g. sin(box), ln(box), (sin(box)ln(box)) but not sin(box)ln(box) or ln(box)^n
 def closed_no_power(box_variable):
     # for the case of x
@@ -119,6 +127,7 @@ def closed_no_power(box_variable):
         return False
 
 
+# This function is used
 # will return true is the variable is open and shut (and could be to a power) e.g. sin(box), ln(box), (sin(box)ln(box)), ln(box)^n but not sin(box)ln(box)
 # don't use when dealing with exponentials
 def closed(box_variable):
@@ -138,14 +147,11 @@ def closed(box_variable):
             for letter in box_variable:
                 if letter == "(":
                     counter_a += 1
-                    print(counter_a)
                 if letter == ")":
                     counter_a -= 1
-                    print(counter_a)
                     if counter_a == 0:
                         counter_b += 1
             # counter_b represents the number of times brackets were completely closed, we need one
-            print(counter_b)
             if counter_b == 1:
                 return True
             else:
@@ -154,6 +160,7 @@ def closed(box_variable):
         return False
 
 
+# This function is used
 # for closed box_variables, power_converter separates the power within the string
 # again, don't use when dealing with exponentials
 def power_converter(box_variable):
@@ -181,23 +188,27 @@ def power_converter(box_variable):
         return box_variable, 1
 
 
+# This function is used
 # returns true if dealing with a exponentials in the for e^f(x) not g(x)e^f(x) (unless g(x) is constant)
 def dealing_with_exponentials(box_variable):
     if "^" in box_variable:
         # need to make sure it isn't e^xf(x) by using closed()
-        if box_variable.find("e") == 0 and closed(box_variable[2:]):
+        if box_variable.find("e") == 0 and closed(box_variable[box_variable.find("("):]):
             return True
-        elif box_variable[1:box_variable.find(")^")].isdigit():
+        print(box_variable[1:box_variable.find(")^")].isdigit())
+        if box_variable[1:box_variable.find(")^")].isdigit() and closed(box_variable[1+box_variable[1:].find("("):]):
             return True
         try:
-            float(box_variable[1:box_variable.find(")^")])
-            return True
+            a = float(box_variable[1:box_variable.find(")^")])
+            if closed(box_variable[box_variable.find("("):]):
+                return True
         except:
             return False
     else:
         return False
 
 
+# This function is used
 # serves to convert some (a^box)^b into a^bbox
 def exponentials_simplifier(box_variable, power):
     # test if there is already some constant b
@@ -214,6 +225,7 @@ def exponentials_simplifier(box_variable, power):
         return box_variable[:box_variable.find("^") + 1] + str(power*float(b_constant)) + box_variable[box_variable.find("^") +1+len(b_constant):]
 
 
+# This function is used
 # input is a list containing sign and magnitude, output is it assembled and a boolean value for if there is no shift (0)
 def shift_assembler(sign, magnitude):
     if sign == 0:
