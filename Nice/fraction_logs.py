@@ -39,7 +39,7 @@ def logaraithm(box_code, box_dash):
         if need_to_tidy_up and box_c == "":
                 Brackets.brackets_remover(box_v)
         if power == 1:
-                return [[f"{box_dash_v}", f"{ln_base}{box_c}{box_v}{shift}"], constant_product]
+                return [[f"{box_dash_v}", f"{ln_base}{bottom}"], constant_product]
         else:
                 if power > 0:
                     return [[f"{box_dash_v}{ln_or_logb}({box_c}{box_v}{shift}){index}", f"{ln_base}{bottom}"], constant_product]

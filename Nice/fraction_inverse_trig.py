@@ -24,9 +24,10 @@ def inverse_sin_cos_tan(box_code, box_dash):
     # This acts to enhance the presentation of the (box)^2 term
     if need_to_tidy_up:
         # adjustment for some case (a*box)^2 just to tidy up into a^2(box)^2 where a is a constant (calculated)
-        if box_c != "":
-            a = Brackets.coefficient_power_direct(box_c, 2, 1)
-            box_c = a[0]
+        if box_c != "" and box_c != "-":
+            box_c = box_c**2
+        if box_c == "-":
+            box_c == ""
         # adjustment for some case ((box)^n)^2 just to tidy up
         if Brackets.closed(box_v):
             box_v, adjustment = Brackets.power_converter(box_v)

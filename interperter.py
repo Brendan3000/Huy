@@ -4,8 +4,11 @@ from Nice import Brackets
 def interpret(list):
     shift, need_to_tidy_up = Brackets.shift_assembler(list[0][0], list[0][1])
     power, coefficient, base, function_determiner, box_v, box_c = list[1],list[2], list[3], list[4], list[5][0], list[5][1]
+    box_c_copy = box_c
     # if our constant is 1 we don't want 1box we just want box
     if box_c == 1:
+        box_c = ""
+    if box_c == -1:
         box_c = ""
     # if our power is 1 we don't want box^1 we just want  box
     if power != 1:
@@ -18,7 +21,10 @@ def interpret(list):
     # for box^n
     if function_determiner == 0:
         if power == 1:
-            return [f"{box_c}{box_v}{shift}", coefficient]
+            if need_to_tidy_up:
+                return [f"{box_v}", coefficient*box_c_copy]
+            else:
+                return [f"({box_c}{box_v}{shift})", coefficient]
         # To avoid unnecessary brackets
         if Brackets.closed_no_power(box_v) and box_c == "" and need_to_tidy_up:
            pass

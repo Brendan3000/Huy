@@ -8,6 +8,7 @@ def power(box_code, box_dash):
     box_dash_v, box_dash_c = box_dash[0], box_dash[1]
     constant_product = coefficient*power*box_dash_c
     shift, need_to_tidy_up = Brackets.shift_assembler(box_code[0][0], box_code[0][1])
+    box_dash_c_copy, coefficient_copy = box_dash_c, coefficient
     # if our power is 1 we don't want box^1 we just want box
     if power != 2:
         if power > 0:
@@ -28,7 +29,7 @@ def power(box_code, box_dash):
             a = Brackets.coefficient_power_direct(box_c,power, constant_product)
             box_c, constant_product = a[0], a[1]
         # for simplifying some (e^box)^3 into e^3box
-        if Brackets.dealing_with_exponentials(box_v):
+        if Brackets.dealing_with_exponentials(box_v) and power != 1:
             box_dash_v = box_dash_v[0:box_dash_v.find(box_v)]
             box_v = Brackets.exponentials_simplifier(box_v, power)
             if box_c == "-":
@@ -60,7 +61,7 @@ def power(box_code, box_dash):
         shift += ")"
     if power == 1:
         return [[f"{box_dash_v}",""],
-                constant_product]
+                box_dash_c_copy*coefficient_copy]
     else:
         if power < 0:
             return [[f"{box_dash_v}", f"{box_c}{box_v}{shift}{index}"],

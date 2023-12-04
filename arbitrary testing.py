@@ -14,14 +14,14 @@ for i in range(1,101):
     power = random.randint(-8,9)
     while power == 0:
         power = random.randint(-8,9)
-    coefficient = random.randint(-8,9)
+    boxCode[1] = power
     coefficient = random.randint(-8,9)
     while coefficient == 0:
         coefficient = random.randint(-8,9)
     boxCode[2] = coefficient
     base = random.randint(1, 3)
     boxCode[3] = base
-    boxCode[4] = random.randint(0, 8)
+    boxCode[4] = random.randint(0,8)
     if boxCode[4] == 0:
         boxdash = Basic.power(boxCode, ["e^(2x) ", 8])
     elif boxCode[4] == 1:
@@ -41,22 +41,23 @@ for i in range(1,101):
     else: #tan^-1
         boxdash = fraction_inverse_trig.arcctan(boxCode, ["e^(2x) ", 8])
     result = interpret(boxCode)
+    co, cop = result[1], boxdash[1]
     if result[1] == 1:
-        result[1] == ""
+        co = ""
     if result[1] == -1:
-        result[1] == "-"
+        co = "-"
     if boxdash[1] == 1:
-        boxdash[1] = ""
+        cop = ""
     if boxdash[1] == -1:
-        boxdash[1] == "-"
+        cop = "-"
     if len(boxdash[0][1]) != 0:
         print(i)
-        print((f"{result[1]}{result[0]}"))
-        print(f"{boxdash[1]}{boxdash[0][0]}/({boxdash[0][1]})")
+        print((f"{co}{result[0]}"))
+        print(f"{cop}{boxdash[0][0]}/({boxdash[0][1]})")
     else:
         print(i)
-        print(f"{result[1]}{result[0]}")
-        print(f"{boxdash[1]}{boxdash[0][0]}")
+        print(f"{co}{result[0]}")
+        print(f"{cop}{boxdash[0][0]}")
 
 
 

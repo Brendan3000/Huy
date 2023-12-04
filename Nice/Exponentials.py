@@ -22,9 +22,17 @@ def exponential(box_code, box_dash):
     else:
         bottom = f"({base})"
         ln_base = f"ln({base})"
+    if need_to_tidy_up:
+        power = power*box_c
+        box_c = ""
     # This serves to avoid the possibility of some ((f(x))) (i.e. avoid double brackets when not required)
-    if not need_to_tidy_up or not Brackets.closed(box_v) or not Brackets.dealing_with_exponentials(box_v):
-        box_c = "(" + str(box_c)
-        shift += ")"
+    if not need_to_tidy_up:
+        if Brackets.closed(box_v):
+            pass
+        if Brackets.dealing_with_exponentials(box_v):
+            pass
+        else:
+            box_c = "(" + str(box_c)
+            shift += ")"
     return [[f"{ln_base}{box_dash_v}{bottom}^({power}{box_c}{box_v}{shift}) ", ""],
             constant_product]
