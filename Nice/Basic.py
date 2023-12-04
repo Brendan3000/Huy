@@ -19,10 +19,12 @@ def power(box_code, box_dash):
     # if our constant is 1 we don't want 1box we just want box
     if box_c == 1:
         box_c = ""
+    if box_c == -1:
+        box_c = "-"
     # where there is no shift, presentation must be enhanced
     if need_to_tidy_up:
         # adjustment for some case (a*box)^n just to tidy up into a^n(box)^n where a is a constant (calculated)
-        if box_c != "":
+        if box_c != "" and box_c != "-":
             a = Brackets.coefficient_power_direct(box_c,power, constant_product)
             box_c, constant_product = a[0], a[1]
         # for simplifying some (e^box)^3 into e^3box
@@ -77,6 +79,8 @@ def sin_cos_tan(box_code, box_dash):
     # if our constant is 1 we don't want 1box we just want box
     if box_c == 1:
         box_c = ""
+    if box_c == -1:
+        box_c = "-"
     # if our power is 1 we don't want box^1 we just want  box
     if power != 2:
         if power > 0:
@@ -123,7 +127,7 @@ def cos(box_code, box_dash):
             return [[f"{box_dash_v}sin({box_c}{box_v}{shift})",f"cos({box_c}{box_v}{shift}){index}"],
                 -constant_product]
         if power > 0:
-            return [[f"{box_dash_v}cos({box_c}{box_v}{shift})cos({box_c}{box_v}{shift}){index}",""],
+            return [[f"{box_dash_v}sin({box_c}{box_v}{shift})cos({box_c}{box_v}{shift}){index}",""],
                 -constant_product]
 
 
@@ -131,13 +135,13 @@ def cos(box_code, box_dash):
 def tan(box_code, box_dash):
     constant_product, box_v, box_c, shift, index, box_dash_v, power= sin_cos_tan(box_code, box_dash)
     if power == 1:
-        return [[f"{box_dash_v}sec({box_c}{box_v}{shift})^2",""],
+        return [[f"{box_dash_v} sec({box_c}{box_v}{shift})^2",""],
                 constant_product]
     else:
         if power < 0:
-            return [[f"{box_dash_v}sec({box_c}{box_v}{shift})^2",f"tan({box_c}{box_v}{shift}){index}"],
+            return [[f"sec({box_c}{box_v}{shift})^2",f"tan({box_c}{box_v}{shift}){index}{box_dash_v} "],
                 constant_product]
         if power > 0:
-            return [[f"{box_dash_v}sec({box_c}{box_v}{shift})^2 tan({box_c}{box_v}{shift}){index}",""],
+            return [[f"sec({box_c}{box_v}{shift})^2 tan({box_c}{box_v}{shift}){index}{box_dash_v} ",""],
                 constant_product]
 

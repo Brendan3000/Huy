@@ -10,6 +10,8 @@ def inverse_sin_cos_tan(box_code, box_dash):
     # if our constant is 1 we don't want 1box we just want box
     if box_c == 1:
         box_c = ""
+    if box_c == -1:
+        box_c = "-"
     box_v_copy, box_c_copy = box_v, box_c
     # if our power is 1 we don't want box^1 we just want  box
     if power != 2:

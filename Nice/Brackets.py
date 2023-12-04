@@ -186,18 +186,17 @@ def power_converter(box_variable):
 
 
 # This function is used
-# returns true if dealing with a exponentials in the for e^f(x) not g(x)e^f(x) (unless g(x) is constant)
+# returns true if dealing with a exponentials in first position
 def dealing_with_exponentials(box_variable):
     if "^" in box_variable:
         # need to make sure it isn't e^xf(x) by using closed()
-        if box_variable.find("e") == 0 and closed(box_variable[box_variable.find("("):]):
+        if box_variable.find("e") == 0:
             return True
-        if box_variable[1:box_variable.find(")^")].isdigit() and closed(box_variable[1+box_variable[1:].find("("):]):
+        if box_variable[1:box_variable.find(")^")].isdigit():
             return True
         try:
             a = float(box_variable[1:box_variable.find(")^")])
-            if closed(box_variable[box_variable.find("("):]):
-                return True
+            return True
         except:
             return False
     else:

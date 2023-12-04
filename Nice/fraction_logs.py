@@ -12,6 +12,8 @@ def logaraithm(box_code, box_dash):
         # if our constant is 1 we don't want 1box we just want box
         if box_c == 1:
                 box_c = ""
+        if box_c == -1:
+                box_c = "-"
         # if our power is 1 we don't want box^1 we just want  box
         if power != 2:
                 if power > 0:
@@ -24,13 +26,18 @@ def logaraithm(box_code, box_dash):
         if base == 1:
                 ln_or_logb = "ln"
                 ln_base = ""
+        if need_to_tidy_up:
+                constant_product *= 1/(box_c)
+                box_c = ""
+        if need_to_tidy_up and Brackets.closed(box_v):
+                bottom = f"{box_c}{box_v}{shift}"
+        elif Brackets.dealing_with_exponentials(box_v) and need_to_tidy_up:
+                bottom = f"{box_c}{box_v}{shift}"
+        else:
+                bottom = f"({box_c}{box_v}{shift})"
         # This serves to avoid the possibility of some ((f(x))) (i.e. avoid double brackets when not required)
         if need_to_tidy_up and box_c == "":
                 Brackets.brackets_remover(box_v)
-        if not Brackets.dealing_with_exponentials(box_v) or not need_to_tidy_up or not Brackets.closed(box_v):
-                bottom = f"({box_c}{box_v}{shift})"
-        else:
-                bottom = f"{box_c}{box_v}{shift}"
         if power == 1:
                 return [[f"{box_dash_v}", f"{ln_base}{box_c}{box_v}{shift}"], constant_product]
         else:
@@ -38,8 +45,5 @@ def logaraithm(box_code, box_dash):
                     return [[f"{box_dash_v}{ln_or_logb}({box_c}{box_v}{shift}){index}", f"{ln_base}{bottom}"], constant_product]
                 if power < 0:
                     return [[f"{box_dash_v}", f"{ln_base}{bottom}{ln_or_logb}({box_c}{box_v}{shift}){index}"], constant_product]
-
-
-
 
 

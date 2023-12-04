@@ -38,7 +38,7 @@ def interpret(list):
             base = "e"
         else:
             base = f"({base})"
-        return [f"{base}^{power}({box_c}{box_v}{shift}) ", coefficient]
+        return [f"{base}^({power}({box_c}{box_v}{shift})) ", coefficient]
     # for logs
     if function_determiner == 5:
         ln_or_logb = f"log_{base} "
