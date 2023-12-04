@@ -56,8 +56,6 @@ def power(box_code, box_dash):
     if not need_to_tidy_up or not Brackets.closed(box_v):
         box_c = "(" + str(box_c)
         shift += ")"
-    if not Brackets.closed(box_dash_v) or Brackets.dealing_with_exponentials(box_dash_v):
-        box_dash_v = "(" + box_dash_v + ")"
     if power == 1:
         return [[f"{box_dash_v}",""],
                 constant_product]
@@ -90,8 +88,6 @@ def sin_cos_tan(box_code, box_dash):
     # This serves to avoid the possibility of some sin((f(x))) (i.e. avoid double brackets when not required)
     if need_to_tidy_up and box_c == "":
         Brackets.brackets_remover(box_v)
-    if not Brackets.closed(box_dash_v) or Brackets.dealing_with_exponentials(box_dash_v):
-        box_dash_v = "(" + box_dash_v + ")"
     return constant_product, box_v, box_c, shift, index, box_dash_v, power
 
 

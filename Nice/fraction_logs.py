@@ -27,8 +27,6 @@ def logaraithm(box_code, box_dash):
         # This serves to avoid the possibility of some ((f(x))) (i.e. avoid double brackets when not required)
         if need_to_tidy_up and box_c == "":
                 Brackets.brackets_remover(box_v)
-        if not Brackets.closed(box_dash_v) or Brackets.dealing_with_exponentials(box_dash_v):
-                box_dash_v = "(" + box_dash_v + ")"
         if not Brackets.dealing_with_exponentials(box_v) or not need_to_tidy_up or not Brackets.closed(box_v):
                 bottom = f"({box_c}{box_v}{shift})"
         else:

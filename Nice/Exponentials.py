@@ -24,7 +24,5 @@ def exponential(box_code, box_dash):
     if not need_to_tidy_up or not Brackets.closed(box_v):
         box_c = "(" + str(box_c)
         shift += ")"
-    if not Brackets.closed(box_dash_v) or Brackets.dealing_with_exponentials(box_dash_v):
-        box_dash_v = "(" + box_dash_v + ")"
     return [[f"{ln_base}{box_dash_v}{bottom}^({power}{box_c}{box_v}{shift}) ", ""],
             constant_product]

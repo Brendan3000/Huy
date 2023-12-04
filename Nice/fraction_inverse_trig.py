@@ -44,8 +44,6 @@ def inverse_sin_cos_tan(box_code, box_dash):
 # inverse sin [has function_determiner value = 6]
 def arcsin(box_code, box_dash):
     constant_product, box_v, box_c, shift, index,box_dash_v, power, squared_term = inverse_sin_cos_tan(box_code, box_dash)
-    if not Brackets.closed(box_dash_v) or Brackets.dealing_with_exponentials(box_dash_v):
-        box_dash_v = "(" + box_dash_v + ")"
     if power == 1:
         return [[f"{box_dash_v}",f"√(1 + {squared_term}) "], constant_product]
     else:
@@ -59,8 +57,6 @@ def arcsin(box_code, box_dash):
 # inverse cosine [has function_determiner value = 7]
 def arccos(box_code, box_dash):
     constant_product, box_v, box_c, shift, index,box_dash_v, power, squared_term = inverse_sin_cos_tan(box_code, box_dash)
-    if not Brackets.closed(box_dash_v) or Brackets.dealing_with_exponentials(box_dash_v):
-        box_dash_v = "(" + box_dash_v + ")"
     if power == 1:
         return [[f"{box_dash_v}",f"√(1 + {squared_term}) "], -constant_product]
     else:
@@ -74,8 +70,6 @@ def arccos(box_code, box_dash):
 # inverse tangent [has function_determiner value = 8]
 def arcctan(box_code, box_dash):
     constant_product, box_v, box_c, shift, index,box_dash_v, power, squared_term = inverse_sin_cos_tan(box_code, box_dash)
-    if not Brackets.closed(box_dash_v) or Brackets.dealing_with_exponentials(box_dash_v):
-        box_dash_v = "(" + box_dash_v + ")"
     if power == 1:
         return [[f"{box_dash_v}",f"1 + {squared_term}"], constant_product]
     else:
