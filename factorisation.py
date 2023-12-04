@@ -1,4 +1,4 @@
-#ideally checks if result is an integer, ie. box_v ==0 and adds the values if result is an integer (PROB DOESNT WORK) 
+#WORK IN PROGRESS ideally checks if result is an integer, ie. box_v ==0 and adds the values if result is an integer (PROB DOESNT WORK) 
 def sums (box_v, box_c):
   result = box_v + box_c
   if isinstance(result, int):
@@ -36,4 +36,3 @@ def factorize([box_c]{box_v}):
             return expression.strip()  
     
     return str([box_c]{box_v})  
-WIP
