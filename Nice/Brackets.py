@@ -207,18 +207,46 @@ def dealing_with_exponentials(box_variable):
 # This function is used
 # serves to convert some (a^box)^b into a^bbox
 def exponentials_simplifier(box_variable, power):
-    # test if there is already some constant b
-    if box_variable[box_variable.find("^") + 1] == "(":
-        # this is the case where there isn't some b
-        return box_variable[:box_variable.find("^") + 1] + str(power) + box_variable[box_variable.find("^") +1:]
-    # already some number b
-    b_constant = box_variable[box_variable.find("^")+1: box_variable.find("^") + box_variable[box_variable.find("^"):].find("(")]
-    # for b an integer
-    if b_constant.isdigit():
-        return box_variable[:box_variable.find("^") + 1] + str(power*int(b_constant)) + box_variable[box_variable.find("^") +1+len(b_constant):]
-    # for b a float
+    # case of e^f(x)
+    if box_variable.find("e") == 0:
+        i = 0
+        for letter in box_variable[3:]:
+            if letter.isdigit() or letter == "-" or letter == ".":
+                i += 1
+            else:
+                break
+        if closed(box_variable[3+i:box_variable.rfind(")")]):
+            if i == 1 and box_variable[3] == "-":
+                modified = box_variable[:4] + power + box_variable[4:]
+                return modified
+            elif i >= 1:
+                try:
+                    modified = box_variable[:3] + str(power*int(box_variable[3:3+i])) + box_variable[3+i:]
+                    return modified
+                except:
+                    modified = box_variable[:3] + str(power*int(box_variable[3:3+i])) + box_variable[3+i:]
+                    return modified
+    # case of (a)^g(x)
+    if box_variable.find("(") == 0:
+        i = 0
+        for letter in box_variable[5:]:
+            if letter.isdigit() or letter == "-" or letter == ".":
+                i += 1
+            else:
+                break
+        if closed(box_variable[5+i:box_variable.rfind(")")]):
+            if i == 1 and box_variable[5] == "-":
+                modified = box_variable[:5] + power + box_variable[5:]
+                return modified
+            elif i >= 1:
+                try:
+                    modified = box_variable[:5] + str(power*int(box_variable[5:5+i])) + box_variable[5+i:]
+                    return modified
+                except:
+                    modified = box_variable[:5] + str(power*float(box_variable[5:5+i])) + box_variable[5+i:]
+                    return modified
     else:
-        return box_variable[:box_variable.find("^") + 1] + str(power*float(b_constant)) + box_variable[box_variable.find("^") +1+len(b_constant):]
+        return box_variable
 
 
 # This function is used
