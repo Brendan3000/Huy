@@ -41,7 +41,7 @@ def interpret(list):
         return [f"{base}^{power}({box_c}{box_v}{shift}) ", coefficient]
     # for logs
     if function_determiner == 5:
-        ln_or_logb = f"log{base}"
+        ln_or_logb = f"log_{base} "
         if base == 1:
             ln_or_logb = "ln"
         return [f"{ln_or_logb}({box_c}{box_v}{shift}){index}", coefficient]

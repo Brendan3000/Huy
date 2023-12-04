@@ -10,7 +10,10 @@ def power(box_code, box_dash):
     shift, need_to_tidy_up = Brackets.shift_assembler(box_code[0][0], box_code[0][1])
     # if our power is 1 we don't want box^1 we just want box
     if power != 2:
-        index = f"^{power-1}"
+        if power > 0:
+            index = f"^{power-1}"
+        if power < 0:
+            index = f"^{-power+1}"
     else:
         index = ""
     # if our constant is 1 we don't want 1box we just want box
@@ -24,6 +27,7 @@ def power(box_code, box_dash):
             box_c, constant_product = a[0], a[1]
         # for simplifying some (e^box)^3 into e^3box
         if Brackets.dealing_with_exponentials(box_v):
+            box_dash_v = box_dash_v[0:box_dash_v.find(box_v)]
             box_v = Brackets.exponentials_simplifier(box_v, power)
             if box_c == "-":
                 imaginary = f"(-1)^{power}"
@@ -52,11 +56,17 @@ def power(box_code, box_dash):
     if not need_to_tidy_up or not Brackets.closed(box_v):
         box_c = "(" + str(box_c)
         shift += ")"
+    if not Brackets.closed(box_dash_v) or Brackets.dealing_with_exponentials(box_dash_v):
+        box_dash_v = "(" + box_dash_v + ")"
     if power == 1:
         return [[f"{box_dash_v}",""],
                 constant_product]
     else:
-        return [[f"{box_dash_v}{box_c}{box_v}{shift}{index}", ""],
+        if power < 0:
+            return [[f"{box_dash_v}", f"{box_c}{box_v}{shift}{index}"],
+                constant_product]
+        if power > 0:
+            return [[f"{box_dash_v}{box_c}{box_v}{shift}{index}", ""],
                 constant_product]
 
 
@@ -71,12 +81,17 @@ def sin_cos_tan(box_code, box_dash):
         box_c = ""
     # if our power is 1 we don't want box^1 we just want  box
     if power != 2:
-        index = f"^{power-1}"
+        if power > 0:
+            index = f"^{power-1}"
+        if power < 0:
+            index = f"^{-power+1}"
     else:
         index = ""
     # This serves to avoid the possibility of some sin((f(x))) (i.e. avoid double brackets when not required)
     if need_to_tidy_up and box_c == "":
         Brackets.brackets_remover(box_v)
+    if not Brackets.closed(box_dash_v) or Brackets.dealing_with_exponentials(box_dash_v):
+        box_dash_v = "(" + box_dash_v + ")"
     return constant_product, box_v, box_c, shift, index, box_dash_v, power
 
 
@@ -90,7 +105,11 @@ def sin(box_code, box_dash):
         return [[f"{box_dash_v}sin(2{box_c}{box_v}{shift})",""],
                 constant_product*0.5]
     else:
-        return [[f"{box_dash_v}cos({box_c}{box_v}{shift})sin({box_c}{box_v}{shift}){index}",""],
+        if power < 0:
+             return [[f"{box_dash_v}cos({box_c}{box_v}{shift})",f"sin({box_c}{box_v}{shift}){index}"],
+                constant_product]
+        if power > 0:
+            return [[f"{box_dash_v}cos({box_c}{box_v}{shift})sin({box_c}{box_v}{shift}){index}",""],
                 constant_product]
 
 
@@ -104,7 +123,11 @@ def cos(box_code, box_dash):
         return [[f"{box_dash_v}sin(2{box_c}{box_v}{shift})",""],
                 -constant_product*0.5]
     else:
-        return [[f"{box_dash_v}sin({box_c}{box_v}{shift})cos({box_c}{box_v}{shift}){index}",""],
+        if power < 0:
+            return [[f"{box_dash_v}sin({box_c}{box_v}{shift})",f"cos({box_c}{box_v}{shift}){index}"],
+                -constant_product]
+        if power > 0:
+            return [[f"{box_dash_v}cos({box_c}{box_v}{shift})cos({box_c}{box_v}{shift}){index}",""],
                 -constant_product]
 
 
@@ -115,6 +138,10 @@ def tan(box_code, box_dash):
         return [[f"{box_dash_v}sec({box_c}{box_v}{shift})^2",""],
                 constant_product]
     else:
-        return [[f"{box_dash_v}sec({box_c}{box_v}{shift})^2 tan({box_c}{box_v}{shift}){index}",""],
+        if power < 0:
+            return [[f"{box_dash_v}sec({box_c}{box_v}{shift})^2",f"tan({box_c}{box_v}{shift}){index}"],
+                constant_product]
+        if power > 0:
+            return [[f"{box_dash_v}sec({box_c}{box_v}{shift})^2 tan({box_c}{box_v}{shift}){index}",""],
                 constant_product]
 

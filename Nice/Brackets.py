@@ -111,14 +111,11 @@ def closed_no_power(box_variable):
                 for letter in box_variable:
                     if letter == "(":
                         counter_a += 1
-                        print(counter_a)
                     if letter == ")":
                         counter_a -= 1
-                        print(counter_a)
                         if counter_a == 0:
                             counter_b += 1
                 # counter_b represents the number of times brackets were completely closed, we need one
-                print(counter_b)
                 if counter_b == 1:
                     return True
                 else:
@@ -195,7 +192,6 @@ def dealing_with_exponentials(box_variable):
         # need to make sure it isn't e^xf(x) by using closed()
         if box_variable.find("e") == 0 and closed(box_variable[box_variable.find("("):]):
             return True
-        print(box_variable[1:box_variable.find(")^")].isdigit())
         if box_variable[1:box_variable.find(")^")].isdigit() and closed(box_variable[1+box_variable[1:].find("("):]):
             return True
         try:
