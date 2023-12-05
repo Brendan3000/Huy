@@ -1,4 +1,6 @@
-from Nice import Brackets, Exponentials
+import quotients
+from Nice import Brackets
+from quotients import splitter
 
 
 # box to a power (straight power rule) [has function_determiner value = 0]
@@ -12,9 +14,9 @@ def power(box_code, box_dash):
     # if our power is 1 we don't want box^1 we just want box
     if power != 2:
         if power > 0:
-            index = f"^{power-1}"
+            index = f"^{power-1} "
         if power < 0:
-            index = f"^{-power+1}"
+            index = f"^{-power+1} "
     else:
         index = ""
     # if our constant is 1 we don't want 1box we just want box
@@ -30,13 +32,15 @@ def power(box_code, box_dash):
             box_c, constant_product = a[0], a[1]
         # for simplifying some (e^box)^3 into e^3box
         if Brackets.dealing_with_exponentials(box_v) and power != 1:
-            box_dash_v = box_dash_v[0:box_dash_v.find(box_v)]
+            box_dash_v = box_dash_v[:box_dash_v.rfind(box_v)]
             box_v = Brackets.exponentials_simplifier(box_v, power)
             if box_c == "-":
                 imaginary = f"(-1)^{power}"
             else:
                 imaginary = ""
-            return [[f"{imaginary}{box_dash_v}{box_v}",""],
+            # in the case that box_dash is a fraction
+            box_dash_v_numerator, box_dash_v_denominator = splitter(box_dash_v)
+            return [[f"{imaginary}{box_v}{box_dash_v_numerator}",f"{index}{box_dash_v_denominator}"],
                 constant_product]
         # adjustment for some case ((box)^n)^m just to tidy up
         if Brackets.closed(box_v):
@@ -56,18 +60,20 @@ def power(box_code, box_dash):
                     # removes f"{box_v}" form box_dash_v
                     box_dash_v = box_dash_v[ :box_dash_v.find(f"{box_v}")]
     # This serves to add brackets only when required
-    if not need_to_tidy_up or not Brackets.closed(box_v):
+    if not need_to_tidy_up or not Brackets.closed(box_v) or box_c == "-":
         box_c = "(" + str(box_c)
         shift += ")"
+    # in the case that box_dash is a fraction
+    box_dash_v_numerator, box_dash_v_denominator = splitter(box_dash_v)
     if power == 1:
-        return [[f"{box_dash_v}",""],
+        return [[f"{box_dash_v_numerator}",f"{box_dash_v_denominator}"],
                 box_dash_c_copy*coefficient_copy]
     else:
         if power < 0:
-            return [[f"{box_dash_v}", f"{box_c}{box_v}{shift}{index}"],
+            return [[f"{box_dash_v_numerator}", f"{box_dash_v_denominator}{box_c}{box_v}{shift}{index} "],
                 constant_product]
         if power > 0:
-            return [[f"{box_dash_v}{box_c}{box_v}{shift}{index}", ""],
+            return [[f"{box_dash_v_numerator}{box_c}{box_v}{shift}{index} ", f"{box_dash_v_denominator}"],
                 constant_product]
 
 
@@ -99,50 +105,56 @@ def sin_cos_tan(box_code, box_dash):
 # sin [has function_determiner value = 1]
 def sin(box_code, box_dash):
     constant_product, box_v, box_c, shift, index,box_dash_v,power = sin_cos_tan(box_code, box_dash)
+    # in the case that box_dash is a fraction
+    box_dash_v_numerator, box_dash_v_denominator = splitter(box_dash_v)
     if power == 1:
-        return [[f"{box_dash_v}cos({box_c}{box_v}{shift})",""],
+        return [[f"{box_dash_v_numerator}cos({box_c}{box_v}{shift})",f"{box_dash_v_denominator}"],
                 constant_product]
     if power == 2:
-        return [[f"{box_dash_v}sin(2{box_c}{box_v}{shift})",""],
+        return [[f"{box_dash_v_numerator}sin(2{box_c}{box_v}{shift})",f"{box_dash_v_denominator}"],
                 constant_product*0.5]
     else:
         if power < 0:
-             return [[f"{box_dash_v}cos({box_c}{box_v}{shift})",f"sin({box_c}{box_v}{shift}){index}"],
+             return [[f"{box_dash_v_numerator}cos({box_c}{box_v}{shift})",f"{box_dash_v_denominator}sin({box_c}{box_v}{shift}){index} "],
                 constant_product]
         if power > 0:
-            return [[f"{box_dash_v}cos({box_c}{box_v}{shift})sin({box_c}{box_v}{shift}){index}",""],
+            return [[f"{box_dash_v_numerator}cos({box_c}{box_v}{shift})sin({box_c}{box_v}{shift}){index} ",f"{box_dash_v_denominator}"],
                 constant_product]
 
 
 # cos [has function_determiner value = 2]
 def cos(box_code, box_dash):
     constant_product, box_v, box_c, shift, index, box_dash_v, power = sin_cos_tan(box_code, box_dash)
+    # in the case that box_dash is a fraction
+    box_dash_v_numerator, box_dash_v_denominator = splitter(box_dash_v)
     if power == 1:
-        return [[f"{box_dash_v}cos({box_c}{box_v}{shift})",""],
+        return [[f"{box_dash_v_numerator}cos({box_c}{box_v}{shift})",f"{box_dash_v_denominator}"],
                 -constant_product]
     if power ==2:
-        return [[f"{box_dash_v}sin(2{box_c}{box_v}{shift})",""],
+        return [[f"{box_dash_v_numerator}sin(2{box_c}{box_v}{shift})",f"{box_dash_v_denominator}"],
                 -constant_product*0.5]
     else:
         if power < 0:
-            return [[f"{box_dash_v}sin({box_c}{box_v}{shift})",f"cos({box_c}{box_v}{shift}){index}"],
+            return [[f"{box_dash_v_numerator}sin({box_c}{box_v}{shift})",f"{box_dash_v_denominator}cos({box_c}{box_v}{shift}){index}"],
                 -constant_product]
         if power > 0:
-            return [[f"{box_dash_v}sin({box_c}{box_v}{shift})cos({box_c}{box_v}{shift}){index}",""],
+            return [[f"{box_dash_v_numerator}sin({box_c}{box_v}{shift})cos({box_c}{box_v}{shift}){index}",f"{box_dash_v_denominator}"],
                 -constant_product]
 
 
 # tan [has function_determiner value = 3]
 def tan(box_code, box_dash):
     constant_product, box_v, box_c, shift, index, box_dash_v, power= sin_cos_tan(box_code, box_dash)
+    # in the case that box_dash is a fraction
+    box_dash_v_numerator, box_dash_v_denominator = splitter(box_dash_v)
     if power == 1:
-        return [[f"{box_dash_v} sec({box_c}{box_v}{shift})^2",""],
+        return [[f"{box_dash_v_numerator}sec({box_c}{box_v}{shift})^2",f"{box_dash_v_denominator}"],
                 constant_product]
     else:
         if power < 0:
-            return [[f"sec({box_c}{box_v}{shift})^2",f"tan({box_c}{box_v}{shift}){index} {box_dash_v} "],
+            return [[f"{box_dash_v_numerator}sec({box_c}{box_v}{shift})^2",f"{box_dash_v_denominator}tan({box_c}{box_v}{shift}){index}"],
                 constant_product]
         if power > 0:
-            return [[f"sec({box_c}{box_v}{shift})^2 tan({box_c}{box_v}{shift}){index} {box_dash_v} ",""],
+            return [[f"{box_dash_v_numerator}sec({box_c}{box_v}{shift})^2 tan({box_c}{box_v}{shift}){index}",f"{box_dash_v_denominator}"],
                 constant_product]
 

@@ -1,4 +1,5 @@
 from Nice import Brackets
+from quotients import splitter
 
 
 # e to the x or a to the x (a is a constant) [has function_determiner value = 4]
@@ -26,16 +27,15 @@ def exponential(box_code, box_dash):
         power = power*box_c
         box_c = ""
     # This serves to avoid the possibility of some ((f(x))) (i.e. avoid double brackets when not required)
-    if need_to_tidy_up:
-        if Brackets.closed(box_v):
-            pass
-        if Brackets.dealing_with_exponentials(box_v):
-            pass
-    if not need_to_tidy_up:
+    if box_c == "" and need_to_tidy_up:
         if Brackets.dealing_with_exponentials(box_v) or Brackets.closed(box_v):
-            pass
-        else:
+            Brackets.brackets_remover(box_v)
+    if not need_to_tidy_up:
             box_c = "(" + str(box_c)
             shift += ")"
-    return [[f"{ln_base}{box_dash_v}{bottom}^({power}{box_c}{box_v}{shift}) ", ""],
+    # in the case that box_dash is a fraction
+    box_dash_v_numerator, box_dash_v_denominator = splitter(box_dash_v)
+    # IMPLEMENT MULTIPLICATION
+
+    return [[f"{ln_base}{box_dash_v_numerator}{bottom}^({power}{box_c}{box_v}{shift}) ", f"{box_dash_v_denominator}"],
             constant_product]

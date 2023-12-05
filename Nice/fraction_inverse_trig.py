@@ -1,4 +1,5 @@
 from Nice import Brackets
+from quotients import splitter
 
 
 # code commmon to the inverse sin, cos and tan function
@@ -24,60 +25,66 @@ def inverse_sin_cos_tan(box_code, box_dash):
     # This acts to enhance the presentation of the (box)^2 term
     if need_to_tidy_up:
         # adjustment for some case (a*box)^2 just to tidy up into a^2(box)^2 where a is a constant (calculated)
-        if box_c != "" and box_c != "-":
-            box_c = box_c**2
         if box_c == "-":
             box_c == ""
+        if box_c != "":
+            box_c = box_c**2
         # adjustment for some case ((box)^n)^2 just to tidy up
         if Brackets.closed(box_v):
             box_v, adjustment = Brackets.power_converter(box_v)
             box_v = f"{box_v}^{adjustment*2}"
         # for simplifying some (e^box)^2 into e^2box
-        if Brackets.dealing_with_exponentials(box_v):
+        elif Brackets.dealing_with_exponentials(box_v):
             box_v = Brackets.exponentials_simplifier(box_v, 2)
         else:
             box_v = "(" + box_v + ")"
-        squared_term = f"{box_c}{box_v}"
+        squared_term = f"{box_c}({box_v})^2"
     else:
         squared_term = f"({box_c}{box_v}{shift})^2"
-    return constant_product, box_v_copy, box_c_copy, shift, index,box_dash_v, power, squared_term
+    return constant_product, box_v_copy, box_c_copy, shift, index, box_dash_v, power, squared_term
 
 
 # add only one
 # inverse sin [has function_determiner value = 6]
 def arcsin(box_code, box_dash):
     constant_product, box_v, box_c, shift, index,box_dash_v, power, squared_term = inverse_sin_cos_tan(box_code, box_dash)
+    # in the case that box_dash is a fraction
+    box_dash_v_numerator, box_dash_v_denominator = splitter(box_dash_v)
     if power == 1:
-        return [[f"{box_dash_v}",f"√(1 + {squared_term}) "], constant_product]
+        return [[f"{box_dash_v_numerator}",f"√(1 + {squared_term}) {box_dash_v_denominator}"], constant_product]
     else:
         if power > 0:
-            return [[f"{box_dash_v}arcsin({box_c}{box_v}{shift}){index}", f"√(1 + {squared_term}) "], constant_product]
+            return [[f"{box_dash_v_numerator}arcsin({box_c}{box_v}{shift}){index}", f"√(1 + {squared_term}) {box_dash_v_denominator}"], constant_product]
         if power < 0:
-            return [[f"{box_dash_v}", f"√(1 + {squared_term}) arcsin({box_c}{box_v}{shift}){index}"], constant_product]
+            return [[f"{box_dash_v_numerator}", f"√(1 + {squared_term}) {box_dash_v_denominator}arcsin({box_c}{box_v}{shift}){index}"], constant_product]
 
 
 
 # inverse cosine [has function_determiner value = 7]
 def arccos(box_code, box_dash):
     constant_product, box_v, box_c, shift, index,box_dash_v, power, squared_term = inverse_sin_cos_tan(box_code, box_dash)
+    # in the case that box_dash is a fraction
+    box_dash_v_numerator, box_dash_v_denominator = splitter(box_dash_v)
     if power == 1:
-        return [[f"{box_dash_v}",f"√(1 + {squared_term}) "], -constant_product]
+        return [[f"{box_dash_v_numerator}",f"√(1 + {squared_term}) {box_dash_v_denominator}"], -constant_product]
     else:
         if power > 0:
-            return [[f"{box_dash_v}arccos({box_c}{box_v}{shift}){index}", f"√(1 + {squared_term}) "], -constant_product]
+            return [[f"{box_dash_v_numerator}arccos({box_c}{box_v}{shift}){index}", f"√(1 + {squared_term}) {box_dash_v_denominator}"], -constant_product]
         if power < 0:
-            return [[f"{box_dash_v}", f"√(1 + {squared_term}) arccos({box_c}{box_v}{shift}){index}"], -constant_product]
+            return [[f"{box_dash_v_numerator}", f"√(1 + {squared_term}) {box_dash_v_denominator}arccos({box_c}{box_v}{shift}){index}"], -constant_product]
 
 
 
 # inverse tangent [has function_determiner value = 8]
 def arcctan(box_code, box_dash):
     constant_product, box_v, box_c, shift, index,box_dash_v, power, squared_term = inverse_sin_cos_tan(box_code, box_dash)
+    # in the case that box_dash is a fraction
+    box_dash_v_numerator, box_dash_v_denominator = splitter(box_dash_v)
     if power == 1:
-        return [[f"{box_dash_v}",f"1 + {squared_term}"], constant_product]
+        return [[f"{box_dash_v_numerator}",f"(1 + {squared_term}){box_dash_v_denominator}"], constant_product]
     else:
         if power > 0:
-            return [[f"{box_dash_v}arctan({box_c}{box_v}{shift}){index}", f"1 + {squared_term}"], constant_product]
+            return [[f"{box_dash_v_numerator}arctan({box_c}{box_v}{shift}){index}", f"(1 + {squared_term}){box_dash_v_denominator}"], constant_product]
         if power < 0:
-            return [[f"{box_dash_v}", f"(1 + {squared_term})arctan({box_c}{box_v}{shift}){index}"], constant_product]
+            return [[f"{box_dash_v_numerator}", f"(1 + {squared_term}){box_dash_v_denominator}arctan({box_c}{box_v}{shift}){index}"], constant_product]
 

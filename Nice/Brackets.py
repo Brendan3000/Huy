@@ -1,4 +1,4 @@
-# look at this file last (It's fucked)
+from products import is_closed_in
 
 
 # This function is not used
@@ -24,8 +24,8 @@ def basic_trig(box_variable):
 # This function is used
 # severs to convert (f(x)g(x)...) into f(x)g(x)... only if in the form (f(x)g(x)...) (closed no power)
 def brackets_remover(box_variable):
-    if box_variable.rfind(")") == (len(box_variable) - 1) and box_variable.rfind("(") == 0:
-        return box_variable[1,len(box_variable)-1]
+    if box_variable.rfind(")") == (len(box_variable) - 1) and box_variable.find("(") == 0:
+        return box_variable[1:len(box_variable)-1]
     else:
         return box_variable
 
