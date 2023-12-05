@@ -13,7 +13,7 @@ class Sum: #UNTESTED
 
         for term in self.terms:
             for char in term[0]:
-                if string.isspace(char):
+                if char.isspace():
                     continue
                 elif char == "-":
                     boxsignlist.append("-");
@@ -23,7 +23,7 @@ class Sum: #UNTESTED
 
             #parse string because we're storing the boxdash as a string, mashallah this works out
             for char in term[1]:
-                if string.isspace(char):
+                if char.isspace():
                     continue
                 elif char == "-":
                     boxdashsignlist.append("-");
@@ -39,8 +39,8 @@ class Sum: #UNTESTED
         returnboxdash = "";
 
         for i in range(len(self.terms)):
-            returnbox.append(f"{boxsignlist[i]}{self.terms[i][0]}")
-            returnboxdash.append(f"{boxdashsignlist[i]}{self.terms[i][1]}")
+            returnbox += (f"{boxsignlist[i]}{self.terms[i][0]}")
+            returnboxdash += (f"{boxdashsignlist[i]}{self.terms[i][1]}")
 
         return [returnbox, returnboxdash]
 
