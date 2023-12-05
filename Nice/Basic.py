@@ -25,8 +25,8 @@ def power(box_code, box_dash):
     # where there is no shift, presentation must be enhanced
     if need_to_tidy_up:
         # adjustment for some case (a*box)^n just to tidy up into a^n(box)^n where a is a constant (calculated)
-        if box_c != "" and box_c != "-":
-            a = Brackets.coefficient_power_direct(box_c,power, constant_product)
+        if box_c != "" and box_c != "-" and power != 1:
+            a = Brackets.coefficient_power_direct(box_c,power-1, constant_product)
             box_c, constant_product = a[0], a[1]
         # for simplifying some (e^box)^3 into e^3box
         if Brackets.dealing_with_exponentials(box_v) and power != 1:
@@ -140,9 +140,9 @@ def tan(box_code, box_dash):
                 constant_product]
     else:
         if power < 0:
-            return [[f"sec({box_c}{box_v}{shift})^2",f"tan({box_c}{box_v}{shift}){index}{box_dash_v} "],
+            return [[f"sec({box_c}{box_v}{shift})^2",f"tan({box_c}{box_v}{shift}){index} {box_dash_v} "],
                 constant_product]
         if power > 0:
-            return [[f"sec({box_c}{box_v}{shift})^2 tan({box_c}{box_v}{shift}){index}{box_dash_v} ",""],
+            return [[f"sec({box_c}{box_v}{shift})^2 tan({box_c}{box_v}{shift}){index} {box_dash_v} ",""],
                 constant_product]
 

@@ -26,10 +26,13 @@ def exponential(box_code, box_dash):
         power = power*box_c
         box_c = ""
     # This serves to avoid the possibility of some ((f(x))) (i.e. avoid double brackets when not required)
-    if not need_to_tidy_up:
+    if need_to_tidy_up:
         if Brackets.closed(box_v):
             pass
         if Brackets.dealing_with_exponentials(box_v):
+            pass
+    if not need_to_tidy_up:
+        if Brackets.dealing_with_exponentials(box_v) or Brackets.closed(box_v):
             pass
         else:
             box_c = "(" + str(box_c)
