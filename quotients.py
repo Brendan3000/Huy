@@ -43,3 +43,10 @@ def divide(numerator, denominator):
     exponential_component = products.add_for_index(exponential_numerator,exponential_denominator)
     numerator += exponential_component
     return numerator, denominator
+
+
+def assembler(numerator, denominator):
+    if denominator == "":
+        return numerator
+    else:
+        return f"{numerator}/({denominator})"
