@@ -31,7 +31,7 @@ def power(box_code, box_dash):
         powered_denominator = powers.power_distributor(powered_denominator, power-1)
     else:
         powered_denominator = ""
-        powered_numerator = powers.power_distributor(f"({box_c}{box_v}{shift})")
+        powered_numerator = powers.power_distributor(f"({box_c}{box_v}{shift})", power-1)
     # in the case that box_dash is a fraction
     box_dash_v_numerator, box_dash_v_denominator = splitter(box_dash_v)
     numerator = products.multiply_two_together(powered_numerator, box_dash_v_numerator)

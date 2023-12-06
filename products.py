@@ -3,6 +3,21 @@ import math
 from functools import reduce
 
 
+# also in powers (to avoid circle)
+def exponential_component(list, power):
+    exponent,coefficient = list[0], list[1]
+    if exponent == "":
+        return ""
+    else:
+        coefficient *= power
+        if coefficient == 1:
+            coefficient = ""
+            exponent = Brackets.brackets_remover(exponent)
+        if coefficient == -1:
+            coefficient = "-"
+        return f"e^({coefficient}{exponent}) "
+
+
 def return_number(string):
     string = str(string)
     if not "." in string:
@@ -34,7 +49,7 @@ def factor_seperator(box_v):
         else:
             return box_v[1:], return_number(box_v[:1])
     else:
-        return box_v[index_counter:], return_number(box_v[:index_counter])
+        return box_v[index_counter:], return_number(box_v[:index_counter+1])
 
 
 # Provides the index of the next time brackets were closed
@@ -55,7 +70,6 @@ def next_closed_bracket(box_v):
 # will return true if brackets are not closed
 def is_closed_in(box_v):
     counter_a = 0
-    i = 0
     for letter in box_v:
         if letter =="(":
             counter_a += 1
@@ -72,17 +86,25 @@ def exponetial_remover(box_v, numerator):
     letter_index = 0
     for letter in box_v:
         if letter == "e" and not is_closed_in(box_v[letter_index:]):
-            exponent = box_v[letter_index+3:box_v.rfind(")")]
+            exponential_stop = letter_index + next_closed_bracket(box_v[letter_index:])
+            exponent = box_v[letter_index+3:exponential_stop]
             exponent, factor = factor_seperator(exponent)
-            box_v = box_v[:letter_index]
+            if exponential_stop == len(box_v) - 2:
+                box_v = box_v[:letter_index]
+            else:
+                box_v = box_v[:letter_index] + box_v[exponential_stop+2:]
             if not numerator:
                 factor = -factor
             return box_v, [exponent, factor]
         elif letter == ")" and not is_closed_in(box_v[letter_index+1:]) and box_v[box_v[:letter_index].rfind("(")+1:letter_index].isdigit():
-            base = box_v[box_v[:letter_index].rfind("(")+1:letter_index]
-            exponent = box_v[letter_index+3:box_v.rfind(")")]
+            exponential_stop = letter_index + next_closed_bracket(box_v[letter_index+1:]) + 1
+            base = int(box_v[box_v[:letter_index].rfind("(")+1:letter_index])
+            exponent = box_v[letter_index+3:exponential_stop]
             exponent, factor = factor_seperator(exponent)
-            box_v = box_v[:box_v[:letter_index].rfind("(")]
+            if exponential_stop == len(box_v) - 2:
+                box_v = box_v[:box_v[:letter_index].rfind("(")]
+            else:
+                box_v = box_v[:box_v[:letter_index].rfind("(")] + box_v[exponential_stop+2:]
             if Brackets.closed(exponent) or Brackets.dealing_with_exponentials(exponent):
                 pass
             else:
@@ -96,33 +118,24 @@ def exponetial_remover(box_v, numerator):
 
 # modified for use in sums factorisation
 def exponetial_remover_for_sum(box_v):
-    letter_index = 0
-    for letter in box_v:
-        if letter == "e" and not is_closed_in(box_v[letter_index:]):
-            factor = box_v[letter_index:box_v.rfind(")")+2]
-            box_v = box_v[:letter_index]
-            return box_v,  factor
-        elif letter == ")" and not is_closed_in(box_v[letter_index+1:]) and box_v[box_v[:letter_index].rfind("(")+1:letter_index].isdigit():
-            factor = box_v[letter_index-2:box_v.rfind(")")+2]
-            box_v = box_v[:box_v[:letter_index].rfind("(")]
-            return box_v,factor
-        letter_index += 1
-    return box_v, ""
+    box_v, exponential_list = exponetial_remover(box_v, True)
+    exponential_term = exponential_component(exponential_list, 1)
+    return box_v, exponential_term
 
 
-# will return the power, revoved closed term from index of closed bracket
+# will return the power, closed term from index of closed bracket
 def power_and_remover(box_v, close_index):
     factor = ""
     is_base_power = False
     if len(box_v) == close_index+1:
         return "", 1, is_base_power, factor
-    if box_v[close_index + 1] != "^":
+    elif box_v[close_index + 1] != "^":
         power = 1
         box_v = box_v[close_index + 1:]
     else:
         try:
             index_counter = 0
-            for letter in  box_v[close_index + 2:]:
+            for letter in box_v[close_index + 2:]:
                 if letter == "-" or letter == "." or letter.isdigit():
                     index_counter += 1
                 else:
@@ -131,8 +144,8 @@ def power_and_remover(box_v, close_index):
             box_v = box_v[close_index + 3 + index_counter:]
         except:
             is_base_power = True
-            index_space = close_index + box_v[close_index:].find(" ") +1
-            factor = box_v[:index_space]
+            index_space = close_index + next_closed_bracket(box_v[close_index+1:]) + 2
+            factor = box_v[:index_space+1]
             power = 1
             box_v = box_v[index_space:]
     return box_v, power, is_base_power, factor
@@ -142,19 +155,16 @@ def power_and_remover(box_v, close_index):
 def factoriser_for_division(box_one, box_two):
     table = [[],[]]
     while len(box_one) != 0:
-        factor = "null"
-        if box_one[0]  == " ":
+        while box_one[0] == " ":
             box_one = box_one[1:]
         if box_one[0] == "x":
             factor = "x"
             box_one, power, is_base_power, possible_factor = power_and_remover(box_one, 0)
-            if is_base_power:
-                factor = possible_factor
         else:
             factor = box_one[:next_closed_bracket(box_one)+1]
             box_one, power, is_base_power, possible_factor = power_and_remover(box_one, next_closed_bracket(box_one))
-            if is_base_power:
-                factor = possible_factor
+        if is_base_power:
+            factor = possible_factor
         table[0].append(factor)
         table[1].append(power)
     while len(box_two) != 0:
@@ -164,13 +174,11 @@ def factoriser_for_division(box_one, box_two):
         if box_two[0] == "x":
             factor = "x"
             box_two, power, is_base_power, possible_factor = power_and_remover(box_two, 0)
-            if is_base_power:
-                factor = possible_factor
         else:
             factor = box_two[:next_closed_bracket(box_two)+1]
             box_two, power,is_base_power, possible_factor = power_and_remover(box_two, next_closed_bracket(box_two))
-            if is_base_power:
-                factor = possible_factor
+        if is_base_power:
+            factor = possible_factor
         power = -power
         if factor in table[0]:
             index = table[0].index(factor)
@@ -203,28 +211,24 @@ def factoriser_for_division(box_one, box_two):
 def factoriser_for_multiples(box_one, box_two):
     table = [[],[]]
     while len(box_one) != 0:
-        factor = "null"
-        if box_one[0]  == " ":
+        while box_one[0] == " ":
             box_one = box_one[1:]
         if box_one[0] == "x":
             factor = "x"
-            box_one, power, is_base_power, possible_factor= power_and_remover(box_one, 0)
-            if is_base_power:
-                factor = possible_factor
+            box_one, power, is_base_power, possible_factor = power_and_remover(box_one, 0)
         else:
             factor = box_one[:next_closed_bracket(box_one)+1]
-            box_one, power, is_base_power, possible_factor= power_and_remover(box_one, next_closed_bracket(box_one))
-            if is_base_power:
-                factor = possible_factor
+            box_one, power, is_base_power, possible_factor = power_and_remover(box_one, next_closed_bracket(box_one))
+        if is_base_power:
+            factor = possible_factor
         table[0].append(factor)
         table[1].append(power)
     while len(box_two) != 0:
-        factor = "null"
-        if box_two[0]  == " ":
+        while box_two[0] == " ":
             box_two = box_two[1:]
         if box_two[0] == "x":
             factor = "x"
-            box_two, power,is_base_power, possible_factor = power_and_remover(box_two, 0)
+            box_two, power, is_base_power, possible_factor = power_and_remover(box_two, 0)
         else:
             factor = box_two[:next_closed_bracket(box_two)+1]
             box_two, power, is_base_power, possible_factor = power_and_remover(box_two, next_closed_bracket(box_two))
@@ -249,7 +253,6 @@ def factoriser_for_multiples(box_one, box_two):
 
 # will find common multiples and remove from each term
 def factorisation_of_sums_integers(box_coefficients):
-    number_of_terms = len(box_coefficients)
     can_factoise = True
     list = []
     for box_c in box_coefficients:
@@ -273,7 +276,7 @@ def factorisation_of_sums_variables(box_variables):
         list_factors.append([])
         list_powers.append([])
         while len(box_v) != 0:
-            if box_v[0]  == " ":
+            while box_v[0] == " ":
                 box_v = box_v[1:]
             box_v, factor = exponetial_remover_for_sum(box_v)
             if len(factor) != 0:
@@ -284,23 +287,21 @@ def factorisation_of_sums_variables(box_variables):
             if box_v[0] == "x":
                 factor = "x"
                 box_v, power,is_base_power,possible_factor = power_and_remover(box_v, 0)
-                if is_base_power:
-                    factor = possible_factor
             else:
                 factor = box_v[:next_closed_bracket(box_v)+1]
                 box_v, power,is_base_power,possible_factor = power_and_remover(box_v, next_closed_bracket(box_v))
-                if is_base_power:
-                    factor = possible_factor
+            if is_base_power:
+                factor = possible_factor
             list_factors[term].append(factor)
             list_powers[term].append(power)
         term += 1
     common_factors = list(reduce(set.intersection, map(set, list_factors)))
     common_factor_v = ""
-    for factor in common_factors:
+    for shared in common_factors:
         # to find min
         min = 10000000000000
         for i in range(len(box_variables)):
-            index_of_factor = list_factors[i].index(factor)
+            index_of_factor = list_factors[i].index(shared)
             possible_min = list_powers[i][index_of_factor]
             if possible_min < min:
                 min = possible_min
@@ -308,13 +309,13 @@ def factorisation_of_sums_variables(box_variables):
             pass
         else:
             for i in range(len(box_variables)):
-                index_of_factor = list_factors[i].index(factor)
+                index_of_factor = list_factors[i].index(shared)
                 list_powers[i][index_of_factor] -= min
             if min == 1:
                 index = ""
             else:
                 index = f"^{min} "
-            common_factor_v += f"{factor}{index}"
+            common_factor_v += f"{shared}{index}"
     return_box_variables = []
     for i in range(len(box_variables)):
         term = ""
@@ -351,19 +352,16 @@ def add(box_variables, box_coefficients, common_factor_v, factor):
         if box_coefficients[i] == 1 and not box_variables[i] == "":
             box_coefficients[i] = ""
     if signs[0] == " - ":
-        for ve in signs:
-            if ve == " - ":
-                ve = " + "
+        for m in range(len(signs)):
+            if signs[m] == " - ":
+                signs[m] = " + "
             else:
-                ve == " - "
+                signs[m] == " - "
         factor = -factor
     sum = f"{box_coefficients[0]}{box_variables[0]}"
     for k in range(1, len(box_variables)):
         sum += f"{signs[k]}{box_coefficients[k]}{box_variables[k]}"
-    if len(common_factor_v) != 0:
-        sum = f"{common_factor_v}({sum})"
-    else:
-        sum = f"({sum})"
+    sum = f"{common_factor_v}({sum})"
     return sum, factor
 
 
@@ -397,7 +395,7 @@ def add_for_index(box_one, box_two):
 def multiply_two_together(box_v_one, box_v_two):
     sorted_box_v_one, exponential_list_one = exponetial_remover(box_v_one, True)
     sorted_box_v_two, exponential_list_two = exponetial_remover(box_v_two, True)
-    numerator= factoriser_for_multiples(sorted_box_v_one,sorted_box_v_two)
+    numerator = factoriser_for_multiples(sorted_box_v_one,sorted_box_v_two)
     exponential_component = add_for_index(exponential_list_one,exponential_list_two)
     numerator += exponential_component
     return numerator

@@ -5,9 +5,8 @@ import products
 # will return true if brackets are not closed
 def is_closed_in(box_v):
     counter_a = 0
-    i = 0
     for letter in box_v:
-        if letter =="(":
+        if letter == "(":
             counter_a += 1
         if letter == ")":
             counter_a -= 1
@@ -20,9 +19,8 @@ def is_closed_in(box_v):
 def splitter(box_v):
     index = 0
     for letter in box_v:
-        if letter == "/":
-            if not is_closed_in(box_v[index:]):
-                return box_v[:index], Brackets.brackets_remover( box_v[index+1:])
+        if letter == "/" and not is_closed_in(box_v[index:]):
+                return box_v[:index], Brackets.brackets_remover(box_v[index+1:])
         index += 1
     return box_v, ""
 
@@ -30,9 +28,8 @@ def splitter(box_v):
 def has_denomenator(box_v):
     index = 0
     for letter in box_v:
-        if letter == "/":
-            if not is_closed_in(box_v[index:]):
-                return True
+        if letter == "/" and not is_closed_in(box_v[index:]):
+            return True
     return False
 
 
