@@ -37,8 +37,7 @@ def inverse_sin_cos_tan(box_code, box_dash):
         elif Brackets.dealing_with_exponentials(box_v):
             box_v = Brackets.exponentials_simplifier(box_v, 2)
         else:
-            box_v = "(" + box_v + ")"
-        squared_term = f"{box_c}({box_v})^2"
+            squared_term = f"{box_c}({box_v})^2"
     else:
         squared_term = f"({box_c}{box_v}{shift})^2"
     return constant_product, box_v_copy, box_c_copy, shift, index, box_dash_v, power, squared_term

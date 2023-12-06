@@ -1,4 +1,16 @@
-from products import is_closed_in
+# will return true if brackets are not closed
+def is_closed_in(box_v):
+    counter_a = 0
+    i = 0
+    for letter in box_v:
+        if letter =="(":
+            counter_a += 1
+        if letter == ")":
+            counter_a -= 1
+    if counter_a == 0:
+        return False
+    else:
+        return True
 
 
 # This function is not used
