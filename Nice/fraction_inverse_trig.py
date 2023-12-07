@@ -25,16 +25,11 @@ def inverse_sin_cos_tan(box_code, box_dash):
         if box_c != "":
             box_c = box_c**2
         numerator, denominator = quotients.splitter(box_v)
-        numerator = str(box_c) + numerator
         squared_term_numerator = powers.power_distributor(numerator,2)
         squared_term_denominator = powers.power_distributor(denominator,2)
-        squared_term = quotients.assembler(squared_term_numerator,squared_term_denominator)
+        squared_term = quotients.assembler(f"{box_c}{squared_term_numerator}",squared_term_denominator)
     else:
-        if box_c == "-":
-            box_c == ""
-        if box_c != "":
-            box_c = box_c**2
-        squared_term = f"{box_c}({box_c}{box_v}{shift})^2"
+        squared_term = f"({box_c}{box_v}{shift})^2"
     if box_v_copy == "" and need_to_tidy_up and Brackets.closed(box_v_copy):
         box_v_copy = Brackets.brackets_remover(box_v_copy)
     return constant_product, box_v_copy, box_c_copy, shift, box_dash_v, power, squared_term
