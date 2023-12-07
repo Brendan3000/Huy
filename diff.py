@@ -12,7 +12,12 @@ def diff_nice(box_current,boxdash_current, restrict):
     if not restrict:
         boxCode = generate_boxcode(box_current)
     else:
-       boxCode = [[0,0],random.randint(1,8),1,random.randint(1,2),random.randint(0,8),box_current]
+        boxCode = [[0,0],random.randint(-9,8),1,random.randint(1,2),random.randint(0,8),box_current]
+        while boxCode[1] == 0:
+            boxCode[1] = random.randint(-9,8)
+        base_table = [1,2,4,5,8,10]
+        base = random.randint(0,5)
+        boxCode[1] = products.return_number(boxCode[1]/base_table[base])
     if boxCode[4] == 0:
         boxdash = Basic.power(boxCode, boxdash_current)
     elif boxCode[4] == 1:

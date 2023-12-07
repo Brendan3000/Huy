@@ -38,7 +38,7 @@ def logaraithm(box_code, box_dash):
                 wood = f"{ln_or_logb}({box_c}{box_v}{shift})"
                 box_denominator = f"({box_c}{box_v}{shift})"
                 box_numerator = ""
-        wooden_numerator = powers.power_distributor(wood, power-1)
+        wooden_numerator = powers.power_distributor(wood, products.return_number(power-1))
         numerator = products.multiply_two_together(wooden_numerator,box_dash_v_numerator)
         numerator = products.multiply_two_together(numerator, box_numerator)
         denominator = products.multiply_two_together(ln_base, box_denominator)

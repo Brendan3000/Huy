@@ -41,7 +41,7 @@ def arcsin(box_code, box_dash):
     constant_product, box_v, box_c, shift,box_dash_v, power, squared_term = inverse_sin_cos_tan(box_code, box_dash)
     # in the case that box_dash is a fraction
     box_dash_v_numerator, box_dash_v_denominator = splitter(box_dash_v)
-    sin_inverse = powers.power_distributor(f"arcsin({box_c}{box_v}{shift})",power-1)
+    sin_inverse = powers.power_distributor(f"arcsin({box_c}{box_v}{shift})",products.return_number(power-1))
     square_root = f"(1 - {squared_term})^0.5 "
     numerator = products.multiply_two_together(sin_inverse, box_dash_v_numerator)
     denominator = products.multiply_two_together(box_dash_v_denominator,square_root)
@@ -54,7 +54,7 @@ def arccos(box_code, box_dash):
     constant_product, box_v, box_c, shift, box_dash_v, power, squared_term = inverse_sin_cos_tan(box_code, box_dash)
     # in the case that box_dash is a fraction
     box_dash_v_numerator, box_dash_v_denominator = splitter(box_dash_v)
-    cosine_inverse = powers.power_distributor(f"arccos({box_c}{box_v}{shift})",power-1)
+    cosine_inverse = powers.power_distributor(f"arccos({box_c}{box_v}{shift})",products.return_number(power-1))
     square_root = f"(1 - {squared_term})^0.5 "
     numerator = products.multiply_two_together(cosine_inverse, box_dash_v_numerator)
     denominator = products.multiply_two_together(box_dash_v_denominator,square_root)
@@ -67,7 +67,7 @@ def arcctan(box_code, box_dash):
     constant_product, box_v, box_c, shift, box_dash_v, power, squared_term = inverse_sin_cos_tan(box_code, box_dash)
     # in the case that box_dash is a fraction
     box_dash_v_numerator, box_dash_v_denominator = splitter(box_dash_v)
-    tan_inverse = powers.power_distributor(f"arctan({box_c}{box_v}{shift})",power-1)
+    tan_inverse = powers.power_distributor(f"arctan({box_c}{box_v}{shift})",products.return_number(power-1))
     square_root = f"(1 + {squared_term})"
     numerator = products.multiply_two_together(tan_inverse, box_dash_v_numerator)
     denominator = products.multiply_two_together(box_dash_v_denominator,square_root)

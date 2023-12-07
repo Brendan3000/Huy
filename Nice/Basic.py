@@ -21,13 +21,13 @@ def power(box_code, box_dash):
     # where there is no shift, presentation must be enhanced
     if need_to_tidy_up:
         # adjustment for some case (a*box)^n just to tidy up into a^n(box)^n where a is a constant (calculated)
-        box_v, constant_product = Brackets.coefficient_power_direct(box_c_copy,box_v,power-1, constant_product)
+        box_v, constant_product = Brackets.coefficient_power_direct(box_c_copy,box_v,products.return_number(power-1), constant_product)
         powered_numerator, powered_denominator = splitter(box_v)
-        powered_numerator = powers.power_distributor(powered_numerator, power-1)
-        powered_denominator = powers.power_distributor(powered_denominator, power-1)
+        powered_numerator = powers.power_distributor(powered_numerator, products.return_number(power-1))
+        powered_denominator = powers.power_distributor(powered_denominator, products.return_number(power-1))
     else:
         powered_denominator = ""
-        powered_numerator = powers.power_distributor(f"({box_c}{box_v}{shift})", power-1)
+        powered_numerator = powers.power_distributor(f"({box_c}{box_v}{shift})", products.return_number(power-1))
     # in the case that box_dash is a fraction
     box_dash_v_numerator, box_dash_v_denominator = splitter(box_dash_v)
     numerator = products.multiply_two_together(powered_numerator, box_dash_v_numerator)
@@ -57,7 +57,7 @@ def sin(box_code, box_dash):
     constant_product, box_v, box_c, shift,box_dash_v,power = sin_cos_tan(box_code, box_dash)
     # in the case that box_dash is a fraction
     box_dash_v_numerator, box_dash_v_denominator = splitter(box_dash_v)
-    sin = powers.power_distributor(f"sin({box_c}{box_v}{shift})", power-1)
+    sin = powers.power_distributor(f"sin({box_c}{box_v}{shift})", products.return_number(power-1))
     cosine = f"cos({box_c}{box_v}{shift})"
     numerator = products.multiply_two_together(sin, cosine)
     numerator = products.multiply_two_together(numerator, box_dash_v_numerator)
@@ -70,7 +70,7 @@ def cos(box_code, box_dash):
     constant_product, box_v, box_c, shift, box_dash_v, power = sin_cos_tan(box_code, box_dash)
     # in the case that box_dash is a fraction
     box_dash_v_numerator, box_dash_v_denominator = splitter(box_dash_v)
-    cosine = powers.power_distributor(f"cos({box_c}{box_v}{shift})", power-1)
+    cosine = powers.power_distributor(f"cos({box_c}{box_v}{shift})", products.return_number(power-1))
     sin = f"sin({box_c}{box_v}{shift})"
     numerator = products.multiply_two_together(sin, cosine)
     numerator = products.multiply_two_together(numerator, box_dash_v_numerator)
@@ -83,7 +83,7 @@ def tan(box_code, box_dash):
     constant_product, box_v, box_c, shift, box_dash_v, power= sin_cos_tan(box_code, box_dash)
     # in the case that box_dash is a fraction
     box_dash_v_numerator, box_dash_v_denominator = splitter(box_dash_v)
-    tan = powers.power_distributor(f"tan({box_c}{box_v}{shift})", power-1)
+    tan = powers.power_distributor(f"tan({box_c}{box_v}{shift})", products.return_number(power-1))
     sec = f"cos({box_c}{box_v}{shift})^-2 "
     numerator = products.multiply_two_together(sec, tan)
     numerator = products.multiply_two_together(numerator, box_dash_v_numerator)

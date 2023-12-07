@@ -11,7 +11,7 @@ def exponential(box_code, box_dash):
     constant_product = coefficient*box_dash_c*power
     shift, need_to_tidy_up = Brackets.shift_assembler(box_code[0][0], box_code[0][1])
     if need_to_tidy_up:
-        power = power*box_c
+        power = products.return_number(power*box_c)
         box_c = ""
     # if our constant is 1 we don't want 1box we just want box
     if box_c == 1:
