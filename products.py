@@ -105,10 +105,6 @@ def exponetial_remover(box_v, numerator):
                 box_v = box_v[:box_v[:letter_index].rfind("(")]
             else:
                 box_v = box_v[:box_v[:letter_index].rfind("(")] + box_v[exponential_stop+2:]
-            if Brackets.closed(exponent) or Brackets.dealing_with_exponentials(exponent):
-                pass
-            else:
-                exponent = "(" + exponent + ")"
             if not numerator:
                 factor = -factor
             return box_v,[f"ln({base}){exponent}", factor]
@@ -359,24 +355,47 @@ def converter(boxes):
         box_coefficients.append(boxes[i][1])
     return box_variables, box_coefficients
 
+# will convert some -(g(x)+f(x)) into g(x) - f(x)
+def negative_expander(box_v):
+    box_v = Brackets.brackets_remover(box_v)
+    index = 0
+    for letter in box_v:
+        if letter == "-" and not is_closed_in(box_v[letter:]):
+            box_v[index] = "+"
+    for letter in box_v:
+        if letter == "+" and not is_closed_in(box_v[letter:]):
+            box_v[index] = "-"
+    return box_v
+
 
 def add(box_variables, box_coefficients, common_factor_v, factor):
     signs = []
-    for i in range(len(box_variables)):
+    if box_coefficients[0] < 0:
+        signs.append(" - ")
+        have_to_change_signs = True
+    else:
+        signs.append(" + ")
+        have_to_change_signs = False
+    for i in range(1,len(box_variables)):
         if box_coefficients[i] < 0:
-            signs.append(" - ")
-        else:
-            signs.append(" + ")
-        box_coefficients[i] = abs(box_coefficients[i])
-        if box_coefficients[i] == 1 and not box_variables[i] == "":
-            box_coefficients[i] = ""
-    if signs[0] == " - ":
-        for m in range(len(signs)):
-            if signs[m] == " - ":
-                signs[m] = " + "
+            if box_coefficients[i] == -1 and not box_variables[i] == "":
+                box_coefficients[i] = ""
+                box_variables[i] = negative_expander(box_variables[i])
+                have_to_change_signs = not have_to_change_signs
+            if have_to_change_signs:
+                signs.append(" + ")
             else:
-                signs[m] == " - "
-        factor = -factor
+                signs.append(" - ")
+        else:
+            if not have_to_change_signs:
+                signs.append(" + ")
+            else:
+                signs.append(" - ")
+            if box_coefficients[i] == 1 and not box_variables[i] == "":
+                box_coefficients[i] = ""
+                box_variables[i] = Brackets.brackets_remover(box_variables[i])
+        box_coefficients[i] = abs(box_coefficients[i])
+
     sum = f"{box_coefficients[0]}{box_variables[0]}"
     for k in range(1, len(box_variables)):
         sum += f"{signs[k]}{box_coefficients[k]}{box_variables[k]}"

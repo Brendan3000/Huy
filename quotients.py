@@ -73,3 +73,7 @@ def double_brackets_remover(box_v):
             pass
         index += 1
     return assembler(numerator,denominator)
+
+
+def float_to_fraction(box):
+    box_v, Box_v = box[0]

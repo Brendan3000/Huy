@@ -40,6 +40,8 @@ def interpret(list):
     if function_determiner == 4:
         if power == 1:
             power = ""
+        if power == -1:
+            power = "-"
         if base == 1:
             base = "e"
         else:
