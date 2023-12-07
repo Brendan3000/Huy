@@ -15,9 +15,6 @@ def diff_nice(box_current,boxdash_current, restrict):
         boxCode = [[0,0],random.randint(-9,8),1,random.randint(1,2),random.randint(0,8),box_current]
         while boxCode[1] == 0:
             boxCode[1] = random.randint(-9,8)
-        base_table = [1,2,4,5,8,10]
-        base = random.randint(0,5)
-        boxCode[1] = products.return_number(boxCode[1]/base_table[base])
     if boxCode[4] == 0:
         boxdash = Basic.power(boxCode, boxdash_current)
     elif boxCode[4] == 1:
@@ -85,19 +82,38 @@ def sum(boxs, dashs):
 
 def generate_boxcode(box):
     boxCode = [["",""],"","","","",""]
-    dividor = random.randint(1,2)
     boxCode[0][0] = random.randint(0, 1)
-    boxCode[0][1] = random.randint(0, 1)
+
+    coin_flip = random.randint(0,1)
+    if coin_flip == 0:
+        magnitude_shift = 0
+    else:
+        magnitude_shift = random.randint(1,9)
+    boxCode[0][1] = magnitude_shift
+
     power = random.randint(-8,9)
     while power == 0:
         power = random.randint(-8,9)
     boxCode[1] = power
+
     coefficient = random.randint(-8,9)
     while coefficient == 0:
         coefficient = random.randint(-8,9)
     boxCode[2] = coefficient
-    base = random.randint(1, 3)
+
+    fifty_fifty = random.randint(0,1)
+    if fifty_fifty == 0:
+        base = 1
+    else:
+        base = random.randint(2,8)
     boxCode[3] = base
+
     boxCode[4] = random.randint(0,8)
+
+    if boxCode[4] != 4:
+        divisor_table = [1,1,1,2,4,8]
+        divide = random.randint(0,5)
+        boxCode[1] = products.return_number(boxCode[1]/divisor_table[divide])
+
     boxCode[5] = box
     return boxCode
