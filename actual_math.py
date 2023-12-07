@@ -1,6 +1,5 @@
 import math
 import random
-
 def next_closed_bracket(box_v):
     counter_a = 0
     i = 0

@@ -2,7 +2,8 @@ from Nice import Basic, Exponentials, fraction_logs, fraction_inverse_trig
 from interperter import interpret
 import quotients
 import random
-import Number
+import number_theory
+
 random.seed(None, 2)
 
 table = [[],[]]
