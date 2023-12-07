@@ -76,4 +76,5 @@ def double_brackets_remover(box_v):
 
 
 def float_to_fraction(box):
-    box_v, Box_v = box[0]
+    box_v, Box_v = box[0], box[1]
+    numerator, denominator = splitter(box_v)
