@@ -51,7 +51,7 @@ def assembler(numerator, denominator):
 
 def double_brackets_remover(box_v,can_we_release_the_numerator):
     numerator, denominator = splitter(box_v)
-    if denominator.find("(") == 0 and denominator.rfind(")") == len(denominator) - 1:
+    if denominator.find("(") == 0 and denominator.rfind(")") == len(denominator) - 1 and products.next_closed_bracket(box_v) == len(denominator) - 1:
         denominator = Brackets.brackets_remover(denominator)
     if numerator.find("(") == 0 and numerator.rfind(")") == len(numerator) - 1 and can_we_release_the_numerator:
         numerator = Brackets.brackets_remover(numerator)

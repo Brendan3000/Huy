@@ -42,7 +42,7 @@ def arcsin(box_code, box_dash):
     # in the case that box_dash is a fraction
     box_dash_v_numerator, box_dash_v_denominator = splitter(box_dash_v)
     sin_inverse = powers.power_distributor(f"arcsin({box_c}{box_v}{shift})",power-1)
-    square_root = f"√(1 + {squared_term}) "
+    square_root = f"(1 - {squared_term})^0.5 "
     numerator = products.multiply_two_together(sin_inverse, box_dash_v_numerator)
     denominator = products.multiply_two_together(box_dash_v_denominator,square_root)
     numerator, denominator = quotients.divide(numerator,denominator)
@@ -55,7 +55,7 @@ def arccos(box_code, box_dash):
     # in the case that box_dash is a fraction
     box_dash_v_numerator, box_dash_v_denominator = splitter(box_dash_v)
     cosine_inverse = powers.power_distributor(f"arccos({box_c}{box_v}{shift})",power-1)
-    square_root = f"√(1 + {squared_term}) "
+    square_root = f"(1 - {squared_term})^0.5 "
     numerator = products.multiply_two_together(cosine_inverse, box_dash_v_numerator)
     denominator = products.multiply_two_together(box_dash_v_denominator,square_root)
     numerator, denominator = quotients.divide(numerator,denominator)

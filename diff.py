@@ -43,7 +43,8 @@ def convoluted(box_current_one,boxdash_current_one, box_current_two, boxdash_cur
         box_current_two_numerator,box_current_two_denominator = quotients.splitter(box_current_two[0])
         numerator = products.multiply_two_together(box_current_two_numerator,box_current_one_numerator)
         denominator = products.multiply_two_together(box_current_two_denominator,box_current_one_denominator)
-        box = [quotients.divide(numerator,denominator), products.return_number(box_current_two[1]*box_current_one[1])]
+        numerator, denominator = quotients.divide(numerator,denominator)
+        box = [quotients.assembler(numerator,denominator), products.return_number(box_current_two[1]*box_current_one[1])]
     if one_tow_three == 2:
         boxdash = convoluted_fractions.function_power(box_current_one,boxdash_current_one, box_current_two, boxdash_current_two)
         if box_current_one[1] == 1:
@@ -58,20 +59,23 @@ def convoluted(box_current_one,boxdash_current_one, box_current_two, boxdash_cur
             bottom = f"{box_current_one[0]}"
         else:
             bottom  = f"({box_current_one[1]}{box_current_one[0]})"
-        box = f"{bottom}^({box_current_two[1]}{box_current_two[0]})"
+        box = [f"{bottom}^({box_current_two[1]}{box_current_two[0]})",1]
     if one_tow_three == 3:
         boxdash = convoluted_fractions.quotient(box_current_one,boxdash_current_one, box_current_two, boxdash_current_two)
         box_current_one_numerator,box_current_one_denominator = quotients.splitter(box_current_one[0])
         box_current_two_numerator,box_current_two_denominator = quotients.splitter(box_current_two[0])
         numerator = products.multiply_two_together(box_current_two_denominator,box_current_one_numerator)
         denominator = products.multiply_two_together(box_current_two_numerator,box_current_one_denominator)
-        box = [quotients.divide(numerator,denominator), products.return_number(box_current_two[1]/box_current_one[1])]
+        numerator, denominator = quotients.divide(numerator,denominator)
+        box = [quotients.assembler(numerator,denominator), products.return_number(box_current_two[1]/box_current_one[1])]
     nice_box, nice_boxdash = sorting.for_presentation_table(box, boxdash)
     return box, boxdash, nice_box, nice_boxdash
 
 
-def sum():
-    return
+def sum(boxs, dashs):
+    box_v, box_c = products.a_sum(boxs)
+    boxdash_v, boxdash_c = products.a_sum(dashs)
+    return [box_v, box_c], [boxdash_v, boxdash_c], "" , ""
 
 
 def generate_boxcode(box):

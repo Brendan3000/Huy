@@ -24,7 +24,7 @@ def function_power(base, base_dx, power, power_dx):
     numerator, factor = products.a_sum([[numerator_a, constant_product_a],[numerator_b, contant_product_b]])
     numerator = f"{numerator}{to_the_power} "
     numerator, denomenator = quotients.divide(numerator, denomenator)
-    return [quotients.divide(numerator,denomenator),
+    return [quotients.assembler(numerator,denomenator),
             products.return_number(factor/base_c)]
 
 
@@ -39,7 +39,8 @@ def quotient(numerator, numerator_dx, denominator, denominator_dx):
     numerator, factor = products.a_sum([[numerator_a, constant_product_a],[numerator_b, contant_product_b]])
     numerator = products.multiply_two_together(numerator,squared_numerator)
     denomenator = products.multiply_two_together(denomenator,squared_denomenator)
-    return [quotients.divide(numerator,denomenator),
+    numerator, denominator = quotients.divide(numerator,denomenator)
+    return [quotients.assembler(numerator,denomenator),
             products.return_number(factor/(d_c**2))]
 
 

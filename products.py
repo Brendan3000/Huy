@@ -494,12 +494,3 @@ def a_sum(boxes):
     box_coefficients, factor = factorisation_of_sums_integers(box_coefficients)
     sum, factor = add(box_variables, box_coefficients, common_factor_v, factor)
     return sum, factor
-
-
-def a_diffrence(boxes):
-    box_variables, box_coefficients = converter(boxes)
-    box_coefficients[1] = -box_coefficients[1]
-    box_variables, common_factor_v = factorisation_of_sums_variables(box_variables)
-    box_coefficients, factor = factorisation_of_sums_integers(box_coefficients)
-    sum, factor = add(box_variables, box_coefficients, common_factor_v, factor)
-    return sum, factor
