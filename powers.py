@@ -7,13 +7,16 @@ def exponential_component(list, power):
     if exponent == "":
         return ""
     else:
-        coefficient *= power
-        if coefficient == 1:
-            coefficient = ""
-            exponent = Brackets.brackets_remover(exponent)
-        if coefficient == -1:
-            coefficient = "-"
-        return f"e^({coefficient}{exponent}) "
+        try:
+            coefficient *= power
+            if coefficient == 1:
+                coefficient = ""
+                exponent = Brackets.brackets_remover(exponent)
+            if coefficient == -1:
+                coefficient = "-"
+            return f"e^({coefficient}{exponent}) "
+        except:
+            return f"e^({coefficient}{power}{exponent}) "
 
 
 # converts some f(x)^(ag(x)), power into f(x)^(power*ag(x))
@@ -34,7 +37,10 @@ def special_assembler(box_v, power):
     else:
         constant = products.return_number(top[:index_counter])
     top = top[index_counter:]
-    power = constant*power
+    try:
+        power *= constant
+    except:
+        power = constant + power
     if power == 1:
         power = ""
     if power == -1:
@@ -76,11 +82,17 @@ def power_distributor(box_v, change_power_factor):
     for i in range(len(powers)):
         if special[i]:
             if change_power_factor == 0:
-                powers[i] *= change_power_factor
+                try:
+                    powers[i] *= change_power_factor
+                except:
+                    powers[i] = powers[i] + change_power_factor
             else:
-                factors[i] = special(factors[i], change_power_factor)
+                factors[i] = special_assembler(factors[i], change_power_factor)
         else:
-            powers[i] *= change_power_factor
+            try:
+                powers[i] *= change_power_factor
+            except:
+                powers[i] = powers[i] + change_power_factor
     for k in range(len(factors)):
         if powers[k] == 0:
             pass

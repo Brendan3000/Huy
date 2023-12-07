@@ -128,7 +128,7 @@ def exponetial_remover(box_v, numerator):
             if not contains_sum(exponent):
                 exponent = Brackets.brackets_remover(exponent)
             return box_v,[f"ln({base}){exponent}", factor]
-        letter_index +=1
+        letter_index += 1
     return box_v, ["", ""]
 
 
@@ -401,10 +401,10 @@ def add(box_variables, box_coefficients, common_factor_v, factor):
                 box_variables[0], changed = negative_expander(box_variables[0])
         if changed:
             signs.append(" + ")
-            have_to_change_signs = False
+            have_to_change_signs = True
         else:
             signs.append(" - ")
-            have_to_change_signs = True
+            have_to_change_signs = False
     else:
         if box_coefficients[0] == 1 and not box_variables[0] == "":
                 box_coefficients[0] = ""
@@ -473,7 +473,10 @@ def add_for_index(box_one, box_two):
             Brackets.brackets_remover(exponent)
         if factor == -1:
             factor = "-"
-        return f"e^({factor}{exponent}) "
+        if factor == 0:
+            return ""
+        else:
+            return f"e^({factor}{exponent}) "
 
 
 def multiply_two_together(box_v_one, box_v_two):

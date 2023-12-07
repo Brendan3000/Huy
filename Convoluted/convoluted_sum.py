@@ -18,16 +18,7 @@ def product(first, first_dx, second, second_dx):
             products.return_number(factor)]
 
 
-def product_short_cut(a_v, a_dx_v, b_v, b_dx_v):
-    a_n, a_d, a_dx_n, a_dx_d, b_n, b_d, b_dx_n, b_dx_d = quotients.splitter(a_v)[0], quotients.splitter(a_v)[1], quotients.splitter(a_dx_v)[0], quotients.splitter(a_dx_v)[1], quotients.splitter(b_v)[0],quotients.splitter(b_v)[1], quotients.splitter(b_dx_v)[0], quotients.splitter(b_dx_v)[1]
-    term_one_numerator = products.multiply_two_together(a_n,b_dx_n)
-    term_two_numerator = products.multiply_two_together(b_n,a_dx_n)
-    term_one_denomenator = products.multiply_two_together(a_d,b_dx_d)
-    term_two_denomenator = products.multiply_two_together(b_d,a_dx_d)
-    denomenator = products.multiply_two_together(term_one_denomenator, term_two_denomenator)
-    numerator_a = products.multiply_two_together(term_one_numerator, term_two_denomenator)
-    numerator_b = products.multiply_two_together(term_one_denomenator, term_two_numerator)
-    return numerator_a, numerator_b, denomenator
+
 
 
 

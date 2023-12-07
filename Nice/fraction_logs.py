@@ -10,6 +10,7 @@ def logaraithm(box_code, box_dash):
         power, coefficient, base, box_v, box_c = box_code[1],box_code[2],box_code[3], box_code[5][0], box_code[5][1]
         box_dash_v, box_dash_c = box_dash[0], box_dash[1]
         constant_product = coefficient*power*box_dash_c
+        box_c_copy = box_c
         shift, need_to_tidy_up = Brackets.shift_assembler(box_code[0][0], box_code[0][1])
         # if our constant is 1 we don't want 1box we just want box
         if box_c == 1:
@@ -32,7 +33,7 @@ def logaraithm(box_code, box_dash):
                         box_v = Brackets.brackets_remover(box_v)
                 wood = f"{ln_or_logb}({box_c}{box_v})"
                 box_denominator, box_numerator = quotients.splitter(box_v)
-                constant_product *= 1/(box_c)
+                constant_product *= 1/(box_c_copy)
         else:
                 wood = f"{ln_or_logb}({box_c}{box_v}{shift})"
                 box_denominator = f"({box_c}{box_v}{shift})"
@@ -42,7 +43,7 @@ def logaraithm(box_code, box_dash):
         numerator = products.multiply_two_together(numerator, box_numerator)
         denominator = products.multiply_two_together(ln_base, box_denominator)
         denominator = products.multiply_two_together(denominator, box_dash_v_denominator)
-        numerator, denominator = quotients.divide(numerator,box_dash_v_denominator)
+        numerator, denominator = quotients.divide(numerator,denominator)
         return [quotients.assembler(numerator,denominator), products.return_number(constant_product)]
 
 

@@ -1,3 +1,7 @@
+import number_theory
+import fractions
+
+
 # will return true if brackets are not closed
 def is_closed_in(box_v):
     counter_a = 0
@@ -44,17 +48,21 @@ def brackets_remover(box_variable):
 
 # This function is used
 # This serves the purpose to convert (af(x))^n into a^nf(x)^n to allow for simplification in differentiating (a is a constant)
-def coefficient_power_direct(box_c, power, constant_product):
+def coefficient_power_direct(box_c, box_v, power, constant_product):
     # say if our a is -1 and power is 0.5, we don't want that
     if not isinstance(box_c**power, complex):
-        constant_product *= box_c**power
-        box_c = ""
-        return [box_c, constant_product]
+        if number_theory.is_power_rational(box_c, power):
+            constant_product *= box_c**power
+        else:
+            box_v = f"({fractions.Fraction(box_c)})^{power}" + box_v
     # To remedy it occuring we simply take the magnitude of the constant and switch the sign
-    if isinstance(box_c**power, complex):
-        constant_product *= -(-box_c)**power
-        box_c = "-"
-        return [box_c, constant_product]
+    else:
+        if number_theory.is_power_rational(-box_c, power):
+            constant_product *= (-box_c)**power
+            box_v = f"(-1)^{power}" + box_v
+        else:
+            box_v = f"({fractions.Fraction(box_c)})^{power}" + box_v
+    return box_v, constant_product
 
 
 # This function is not used

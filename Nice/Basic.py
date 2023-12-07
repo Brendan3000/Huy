@@ -12,7 +12,7 @@ def power(box_code, box_dash):
     box_dash_v, box_dash_c = box_dash[0], box_dash[1]
     constant_product = coefficient*power*box_dash_c
     shift, need_to_tidy_up = Brackets.shift_assembler(box_code[0][0], box_code[0][1])
-    box_dash_c_copy, coefficient_copy = box_dash_c, coefficient
+    box_c_copy = box_c
     # if our constant is 1 we don't want 1box we just want box
     if box_c == 1:
         box_c = ""
@@ -21,11 +21,7 @@ def power(box_code, box_dash):
     # where there is no shift, presentation must be enhanced
     if need_to_tidy_up:
         # adjustment for some case (a*box)^n just to tidy up into a^n(box)^n where a is a constant (calculated)
-        if box_c != "" and box_c != "-" and power != 1:
-            a = Brackets.coefficient_power_direct(box_c,power-1, constant_product)
-            box_c, constant_product = a[0], a[1]
-        if box_c == "-":
-            box_v = f"(-1){power - 1}" + box_v
+        box_v, constant_product = Brackets.coefficient_power_direct(box_c_copy,box_v,power-1, constant_product)
         powered_numerator, powered_denominator = splitter(box_v)
         powered_numerator = powers.power_distributor(powered_numerator, power-1)
         powered_denominator = powers.power_distributor(powered_denominator, power-1)
