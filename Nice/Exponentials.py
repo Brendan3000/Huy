@@ -21,6 +21,8 @@ def exponential(box_code, box_dash):
     # if our power is 1 we don't want 1box we just want box
     if power == 1:
         power = ""
+    if power == -1:
+        power = "-"
     # This will determine if we are using e
     if base == 1:
         bottom = "e"
@@ -29,11 +31,14 @@ def exponential(box_code, box_dash):
         bottom = f"({base})"
         ln_base = f"ln({base})"
     # This serves to avoid the possibility of some ((f(x))) (i.e. avoid double brackets when not required)
-    if box_c == "" and need_to_tidy_up and Brackets.closed(box_v):
+    if power == "" and need_to_tidy_up and Brackets.closed(box_v):
             box_v = Brackets.brackets_remover(box_v)
+    else:
+        box_c = "(" + str(box_c)
+        shift += ")"
     # in the case that box_dash is a fraction
     box_dash_v_numerator, box_dash_v_denominator = splitter(box_dash_v)
     numerator = products.multiply_two_together(box_dash_v_numerator,f"{bottom}^({power}{box_c}{box_v}{shift})")
     numerator = products.multiply_two_together(numerator,ln_base)
     numerator, denominator = quotients.divide(numerator,box_dash_v_denominator)
-    return [quotients.assembler(numerator,denominator), constant_product]
+    return [quotients.assembler(numerator,denominator), products.return_number(constant_product)]

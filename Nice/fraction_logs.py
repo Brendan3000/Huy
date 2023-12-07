@@ -35,12 +35,14 @@ def logaraithm(box_code, box_dash):
                 constant_product *= 1/(box_c)
         else:
                 wood = f"{ln_or_logb}({box_c}{box_v}{shift})"
-                box_denominator = f"{box_c}{box_v}{shift}"
+                box_denominator = f"({box_c}{box_v}{shift})"
                 box_numerator = ""
         wooden_numerator = powers.power_distributor(wood, power-1)
         numerator = products.multiply_two_together(wooden_numerator,box_dash_v_numerator)
         numerator = products.multiply_two_together(numerator, box_numerator)
         denominator = products.multiply_two_together(ln_base, box_denominator)
-        return [quotients.assembler(numerator,denominator), constant_product]
+        denominator = products.multiply_two_together(denominator, box_dash_v_denominator)
+        numerator, denominator = quotients.divide(numerator,box_dash_v_denominator)
+        return [quotients.assembler(numerator,denominator), products.return_number(constant_product)]
 
 

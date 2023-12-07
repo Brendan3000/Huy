@@ -46,7 +46,7 @@ def arcsin(box_code, box_dash):
     numerator = products.multiply_two_together(sin_inverse, box_dash_v_numerator)
     denominator = products.multiply_two_together(box_dash_v_denominator,square_root)
     numerator, denominator = quotients.divide(numerator,denominator)
-    return [quotients.assembler(numerator,denominator), constant_product]
+    return [quotients.assembler(numerator,denominator), products.return_number(constant_product)]
 
 
 # inverse cosine [has function_determiner value = 7]
@@ -59,7 +59,7 @@ def arccos(box_code, box_dash):
     numerator = products.multiply_two_together(cosine_inverse, box_dash_v_numerator)
     denominator = products.multiply_two_together(box_dash_v_denominator,square_root)
     numerator, denominator = quotients.divide(numerator,denominator)
-    return [quotients.assembler(numerator,denominator), -constant_product]
+    return [quotients.assembler(numerator,denominator), products.return_number(-constant_product)]
 
 
 # inverse tangent [has function_determiner value = 8]
@@ -72,4 +72,4 @@ def arcctan(box_code, box_dash):
     numerator = products.multiply_two_together(tan_inverse, box_dash_v_numerator)
     denominator = products.multiply_two_together(box_dash_v_denominator,square_root)
     numerator, denominator = quotients.divide(numerator,denominator)
-    return [quotients.assembler(numerator,denominator), constant_product]
+    return [quotients.assembler(numerator,denominator), products.return_number(constant_product)]

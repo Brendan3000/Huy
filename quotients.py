@@ -47,3 +47,29 @@ def assembler(numerator, denominator):
         return numerator
     else:
         return f"{numerator}/({denominator})"
+
+
+def double_brackets_remover(box_v):
+    numerator, denominator = splitter(box_v)
+    if denominator.find("(") == 0 and denominator.rfind(")") == len(denominator) - 1:
+        denominator = Brackets.brackets_remover(denominator)
+    if numerator.find("(") == 0 and numerator.rfind(")") == len(numerator) - 1:
+        numerator = Brackets.brackets_remover(numerator)
+    index = 0
+    for letter in denominator:
+        index_close_bracket = products.next_closed_bracket(denominator[index:]) + index
+        try:
+            if letter == "(" and denominator[index+1] == "(" and denominator[index_close_bracket-1] == ")":
+                denominator = denominator[:index] + denominator[index+1:index_close_bracket] + denominator[index_close_bracket+1:]
+        except:
+            pass
+        index += 1
+    for letter in numerator:
+        try:
+            index_close_bracket = products.next_closed_bracket(numerator[index:]) + index
+            if letter == "(" and numerator[index+1] == "(" and numerator[index_close_bracket-1] == ")":
+                numerator = numerator[:index] + numerator[index+1:index_close_bracket] + numerator[index_close_bracket+1:]
+        except:
+            pass
+        index += 1
+    return assembler(numerator,denominator)

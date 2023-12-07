@@ -44,8 +44,6 @@ def special_assembler(box_v, power):
 
 # used to distribute power across. e.g. (cos(x)sin(x))^power = coss(x)^power sin(x)^power
 def power_distributor(box_v, change_power_factor):
-    print(box_v)
-    print(change_power_factor)
     if len(box_v) == 0:
         return box_v
     if change_power_factor == 1:
@@ -58,6 +56,10 @@ def power_distributor(box_v, change_power_factor):
     while len(box_v) != 0:
         while box_v[0] == " ":
             box_v = box_v[1:]
+            if len(box_v) == 0:
+                break
+        if len(box_v) == 0:
+            break
         if box_v[0] == "x":
             factor = "x"
             box_v, power, is_base_power, possible_factor = products.power_and_remover(box_v, 0)
@@ -71,13 +73,12 @@ def power_distributor(box_v, change_power_factor):
             special.append(False)
         factors.append(factor)
         powers.append(power)
-    print(factors, powers, special)
     for i in range(len(powers)):
         if special[i]:
             if change_power_factor == 0:
                 powers[i] *= change_power_factor
             else:
-                factors[i] = special(factors[i],change_power_factor)
+                factors[i] = special(factors[i], change_power_factor)
         else:
             powers[i] *= change_power_factor
     for k in range(len(factors)):
@@ -88,7 +89,7 @@ def power_distributor(box_v, change_power_factor):
                 index = ""
             else:
                 index = f"^{powers[k]} "
-            box_v += f"{factor[k]}{index}"
+            box_v += f"{factors[k]}{index}"
     box_v += exponential
     return box_v
 

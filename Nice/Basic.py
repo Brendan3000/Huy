@@ -37,7 +37,7 @@ def power(box_code, box_dash):
     numerator = products.multiply_two_together(powered_numerator, box_dash_v_numerator)
     denominator = products.multiply_two_together(powered_denominator, box_dash_v_denominator)
     numerator, denominator = quotients.divide(numerator, denominator)
-    return [quotients.assembler(numerator,denominator), constant_product]
+    return [quotients.assembler(numerator,denominator), products.return_number(constant_product)]
 
 # code commmon to the sin, cos and tan function
 def sin_cos_tan(box_code, box_dash):
@@ -66,7 +66,7 @@ def sin(box_code, box_dash):
     numerator = products.multiply_two_together(sin, cosine)
     numerator = products.multiply_two_together(numerator, box_dash_v_numerator)
     numerator, denominator = quotients.divide(numerator, box_dash_v_denominator)
-    return [quotients.assembler(numerator,denominator), constant_product]
+    return [quotients.assembler(numerator,denominator), products.return_number(constant_product)]
 
 
 # cos [has function_determiner value = 2]
@@ -79,7 +79,7 @@ def cos(box_code, box_dash):
     numerator = products.multiply_two_together(sin, cosine)
     numerator = products.multiply_two_together(numerator, box_dash_v_numerator)
     numerator, denominator = quotients.divide(numerator, box_dash_v_denominator)
-    return [quotients.assembler(numerator,denominator), constant_product]
+    return [quotients.assembler(numerator,denominator), products.return_number(-constant_product)]
 
 
 # tan [has function_determiner value = 3]
@@ -88,10 +88,10 @@ def tan(box_code, box_dash):
     # in the case that box_dash is a fraction
     box_dash_v_numerator, box_dash_v_denominator = splitter(box_dash_v)
     tan = powers.power_distributor(f"tan({box_c}{box_v}{shift})", power-1)
-    sec = f"sec({box_c}{box_v}{shift})^2 "
+    sec = f"cos({box_c}{box_v}{shift})^-2 "
     numerator = products.multiply_two_together(sec, tan)
     numerator = products.multiply_two_together(numerator, box_dash_v_numerator)
     numerator, denominator = quotients.divide(numerator, box_dash_v_denominator)
-    return [quotients.assembler(numerator,denominator), constant_product]
+    return [quotients.assembler(numerator,denominator), products.return_number(constant_product)]
 
 
