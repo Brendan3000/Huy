@@ -1,3 +1,4 @@
+import products
 from Nice import Brackets
 
 
@@ -22,20 +23,20 @@ def interpret(list):
     if function_determiner == 0:
         if power == 1:
             if need_to_tidy_up:
-                return [f"{box_v}", coefficient*box_c_copy]
+                return [f"{box_v}", products.return_number(coefficient*box_c_copy)]
             else:
-                return [f"({box_c}{box_v}{shift})", coefficient]
+                return [f"({box_c}{box_v}{shift})", products.return_number(coefficient)]
         # To avoid unnecessary brackets
         if Brackets.closed_no_power(box_v) and box_c == "" and need_to_tidy_up:
            pass
         else:
             box_c = "(" + str(box_c)
             shift += ")"
-        return [f"{box_c}{box_v}{shift}{index}", coefficient]
+        return [f"{box_c}{box_v}{shift}{index}", products.return_number(coefficient)]
     # for trig
     if 1 <= function_determiner <= 3 or 6 <= function_determiner <= 8:
         master_key = [0,"sin", "cos", "tan", 0, 0, "arcsin", "arccos", "arctan"]
-        return [f"{master_key[function_determiner]}({box_c}{box_v}{shift}){index}", coefficient]
+        return [f"{master_key[function_determiner]}({box_c}{box_v}{shift}){index}", products.return_number(coefficient)]
     # for exponentials
     if function_determiner == 4:
         if power == 1:
@@ -46,11 +47,11 @@ def interpret(list):
             base = "e"
         else:
             base = f"({base})"
-        return [f"{base}^({power}({box_c}{box_v}{shift})) ", coefficient]
+        return [f"{base}^({power}({box_c}{box_v}{shift})) ", products.return_number(coefficient)]
     # for logs
     if function_determiner == 5:
         ln_or_logb = f"log_{base} "
         if base == 1:
             ln_or_logb = "ln"
-        return [f"{ln_or_logb}({box_c}{box_v}{shift}){index}", coefficient]
+        return [f"{ln_or_logb}({box_c}{box_v}{shift}){index}", products.return_number(coefficient)]
 

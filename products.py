@@ -111,8 +111,7 @@ def exponetial_remover(box_v, numerator):
                 box_v = box_v[:letter_index] + box_v[exponential_stop+2:]
             if not numerator:
                 factor = -factor
-            if not contains_sum(exponent):
-                exponent = Brackets.brackets_remover(exponent)
+            exponent = Brackets.brackets_remover(exponent)
             return box_v, [exponent, factor]
         elif letter == ")" and not is_closed_in(box_v[letter_index+1:]) and box_v[box_v[:letter_index].rfind("(")+1:letter_index].isdigit() and not box_v[:letter_index].rfind("(") == 2 + box_v[:letter_index].rfind("ln"):
             exponential_stop = letter_index + next_closed_bracket(box_v[letter_index+1:]) + 1
@@ -125,8 +124,7 @@ def exponetial_remover(box_v, numerator):
                 box_v = box_v[:box_v[:letter_index].rfind("(")] + box_v[exponential_stop+2:]
             if not numerator:
                 factor = -factor
-            if not contains_sum(exponent):
-                exponent = Brackets.brackets_remover(exponent)
+            exponent = Brackets.brackets_remover(exponent)
             return box_v,[f"ln({base}){exponent}", factor]
         letter_index += 1
     return box_v, ["", ""]
@@ -290,7 +288,12 @@ def factorisation_of_sums_integers(box_coefficients):
         if not isinstance(box_c, int):
             can_factoise = False
     if can_factoise:
-        factor = math.gcd(*box_coefficients)
+        factor = box_coefficients[0]
+        for number in box_coefficients:
+            for other_number in box_coefficients:
+                possible_factor = math.gcd(other_number,number)
+                if possible_factor < factor:
+                    factor = possible_factor
         for box_c in box_coefficients:
             list.append(box_c//factor)
         return list, factor

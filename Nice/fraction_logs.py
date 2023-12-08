@@ -29,10 +29,10 @@ def logaraithm(box_code, box_dash):
         # This serves to avoid the possibility of some ((f(x))) (i.e. avoid double brackets when not required)
         # implementing fractions
         if need_to_tidy_up:
-                if box_c == "" and Brackets.closed(box_v):
+                box_denominator, box_numerator = quotients.splitter(box_v)
+                if box_c == "":
                         box_v = Brackets.brackets_remover(box_v)
                 wood = f"{ln_or_logb}({box_c}{box_v})"
-                box_denominator, box_numerator = quotients.splitter(box_v)
                 constant_product *= 1/(box_c_copy)
         else:
                 wood = f"{ln_or_logb}({box_c}{box_v}{shift})"

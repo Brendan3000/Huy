@@ -24,6 +24,8 @@ def power_returner(box_v):
 
 
 def power_adjuster(box_v):
+    if len(box_v) == 0:
+        return box_v
     while True:
         i = 0
         for i in range(len(box_v)):
@@ -53,6 +55,11 @@ def power_adjuster(box_v):
                 for open in functions:
                     if open == box_v[i:index_nearest_open_bracket] and good:
                         can_work_out = True
+                try:
+                    if "log" == box_v[i:i+3]:
+                        can_work_out = True
+                except:
+                    pass
             if box_v[i] == "x" and len(box_v) > 1:
                 can_work_out = True
                 index_next_closed_bracket = i

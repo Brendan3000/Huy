@@ -2,6 +2,20 @@ import number_theory
 import fractions
 
 
+def next_closed_bracket(box_v):
+    counter_a = 0
+    i = 0
+    for letter in box_v:
+        if letter == "(":
+            counter_a += 1
+        if letter == ")":
+            counter_a -= 1
+            if counter_a == 0:
+                break
+        i += 1
+    return i
+
+
 # will return true if brackets are not closed
 def is_closed_in(box_v):
     counter_a = 0
@@ -40,7 +54,7 @@ def basic_trig(box_variable):
 # This function is used
 # severs to convert (f(x)g(x)...) into f(x)g(x)... only if in the form (f(x)g(x)...) (closed no power)
 def brackets_remover(box_variable):
-    if box_variable.rfind(")") == (len(box_variable) - 1) and box_variable.find("(") == 0:
+    if box_variable.rfind(")") == next_closed_bracket(box_variable) and box_variable.find("(") == 0:
         return box_variable[1:len(box_variable)-1]
     else:
         return box_variable

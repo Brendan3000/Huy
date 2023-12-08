@@ -47,7 +47,7 @@ def sin_cos_tan(box_code, box_dash):
     if box_c == -1:
         box_c = "-"
     # This serves to avoid the possibility of some sin((f(x))) (i.e. avoid double brackets when not required)
-    if need_to_tidy_up and box_c == "" and Brackets.closed(box_v):
+    if need_to_tidy_up and box_c == "":
         Brackets.brackets_remover(box_v)
     return constant_product, box_v, box_c, shift, box_dash_v, power
 

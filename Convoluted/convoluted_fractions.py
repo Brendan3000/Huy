@@ -36,7 +36,7 @@ def quotient(numerator, numerator_dx, denominator, denominator_dx):
     non_squared_denomenator, non_squared_numerator = quotients.splitter(d_v)
     squared_denomenator, squared_numerator = powers.power_distributor(non_squared_denomenator, 2),powers.power_distributor(non_squared_numerator, 2)
     numerator_a, numerator_b, denomenator = product_short_cut(n_v, n_dx_v, d_v, d_dx_v)
-    numerator, factor = products.a_sum([[numerator_a, constant_product_a],[numerator_b, contant_product_b]])
+    numerator, factor = products.a_sum([[numerator_a, products.return_number(constant_product_a)],[numerator_b, products.return_number(contant_product_b)]])
     numerator = products.multiply_two_together(numerator,squared_numerator)
     denomenator = products.multiply_two_together(denomenator,squared_denomenator)
     numerator, denominator = quotients.divide(numerator,denomenator)

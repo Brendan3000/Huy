@@ -30,7 +30,7 @@ def inverse_sin_cos_tan(box_code, box_dash):
         squared_term = quotients.assembler(f"{box_c}{squared_term_numerator}",squared_term_denominator)
     else:
         squared_term = f"({box_c}{box_v}{shift})^2"
-    if box_v_copy == "" and need_to_tidy_up and Brackets.closed(box_v_copy):
+    if box_v_copy == "" and need_to_tidy_up:
         box_v_copy = Brackets.brackets_remover(box_v_copy)
     return constant_product, box_v_copy, box_c_copy, shift, box_dash_v, power, squared_term
 

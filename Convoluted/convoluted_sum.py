@@ -19,8 +19,6 @@ def product(first, first_dx, second, second_dx):
             products.return_number(factor)]
 
 
-print(product(["arctan(x)^4 ",1],["arctan(x)^3 /(1 + x^2 ) ", 4],["x", 1],["",1]))
-
 
 
 
