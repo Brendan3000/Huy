@@ -57,11 +57,11 @@ def convoluted(box_current_one,boxdash_current_one, box_current_two, boxdash_cur
             box_current_two = ""
         if box_current_two[1] == -1:
             box_current_two = "-"
-        if not box_current_one[1] == "" or not Brackets.closed_no_power(box_current_one[0]):
+        if box_current_one[1] == "" and Brackets.closed_no_power(box_current_one[0]):
             bottom = f"{box_current_one[0]}"
         else:
             bottom  = f"({box_current_one[1]}{box_current_one[0]})"
-        box = [f"{bottom}^({box_current_two[1]}{box_current_two[0]})",1]
+        box = [f"{bottom}^({box_current_two[1]}{box_current_two[0]}) ",1]
     if one_tow_three == 3:
         boxdash = convoluted_fractions.quotient(box_current_one,boxdash_current_one, box_current_two, boxdash_current_two)
         box_current_one_numerator,box_current_one_denominator = quotients.splitter(box_current_one[0])

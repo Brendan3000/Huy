@@ -73,8 +73,6 @@ def power_adjuster(box_v):
                     break
         if i == len(box_v) - 1:
             break
-        else:
-            i = 0
     return box_v
 
 
