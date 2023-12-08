@@ -38,7 +38,7 @@ def exponential(box_code, box_dash):
         shift += ")"
     # in the case that box_dash is a fraction
     box_dash_v_numerator, box_dash_v_denominator = splitter(box_dash_v)
-    numerator = products.multiply_two_together(box_dash_v_numerator,f"{bottom}^({power}{box_c}{box_v}{shift})")
-    numerator = products.multiply_two_together(numerator,ln_base)
-    numerator, denominator = quotients.divide(numerator,box_dash_v_denominator)
+    numerator = products.multiply_two_together(box_dash_v_numerator,f"{bottom}^({power}{box_c}{box_v}{shift})", False)
+    numerator = products.multiply_two_together(numerator,ln_base, False)
+    numerator, denominator = quotients.divide(numerator,box_dash_v_denominator, False)
     return [quotients.assembler(numerator,denominator), products.return_number(constant_product)]

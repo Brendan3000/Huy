@@ -43,43 +43,88 @@ def convoluted(box_current_one,boxdash_current_one, box_current_two, boxdash_cur
         boxdash = convoluted_sum.product(box_current_one,boxdash_current_one, box_current_two, boxdash_current_two)
         box_current_one_numerator,box_current_one_denominator = quotients.splitter(box_current_one[0])
         box_current_two_numerator,box_current_two_denominator = quotients.splitter(box_current_two[0])
-        numerator = products.multiply_two_together(box_current_two_numerator,box_current_one_numerator)
-        denominator = products.multiply_two_together(box_current_two_denominator,box_current_one_denominator)
-        numerator, denominator = quotients.divide(numerator,denominator)
+        numerator = products.multiply_two_together(box_current_two_numerator,box_current_one_numerator, True)
+        denominator = products.multiply_two_together(box_current_two_denominator,box_current_one_denominator, True)
+        numerator, denominator = quotients.divide(numerator,denominator, False)
         box = [quotients.assembler(numerator,denominator), products.return_number(box_current_two[1]*box_current_one[1])]
     if one_tow_three == 2:
         boxdash = convoluted_fractions.function_power(box_current_one,boxdash_current_one, box_current_two, boxdash_current_two)
-        if box_current_one[1] == 1:
-            box_current_one[1] = ""
-        if box_current_one[1] == -1:
-            box_current_one[1] = "-"
-        if box_current_two[1] == 1:
-            box_current_two[1] = ""
-        if box_current_two[1] == -1:
-            box_current_two[1] = "-"
-        if box_current_one[1] == "" and Brackets.closed_no_power(box_current_one[0]):
+        box_current_one_c, box_current_two_c = box_current_one[1], box_current_two[1]
+        if box_current_one_c == 1:
+            box_current_one_c = ""
+        if box_current_one_c == -1:
+            box_current_one_c = "-"
+        if box_current_two_c == 1:
+            box_current_two_c = ""
+        if box_current_two_c == -1:
+            box_current_two_c = "-"
+        if box_current_one_c == "" and Brackets.closed_no_power(box_current_one[0]):
             bottom = f"{box_current_one[0]}"
         else:
-            bottom  = f"({box_current_one[1]}{box_current_one[0]})"
-        box = [f"{bottom}^({box_current_two[1]}{box_current_two[0]}) ", 1]
+            bottom  = f"({box_current_one_c}{box_current_one[0]})"
+        box = [f"{bottom}^({box_current_two_c}{box_current_two[0]}) ", 1]
     if one_tow_three == 3:
         if box_current_one == box_current_two:
             return "","","","", False
         boxdash = convoluted_fractions.quotient(box_current_one,boxdash_current_one, box_current_two, boxdash_current_two)
         box_current_one_numerator,box_current_one_denominator = quotients.splitter(box_current_one[0])
         box_current_two_numerator,box_current_two_denominator = quotients.splitter(box_current_two[0])
-        numerator = products.multiply_two_together(box_current_two_denominator,box_current_one_numerator)
-        denominator = products.multiply_two_together(box_current_two_numerator,box_current_one_denominator)
-        numerator, denominator = quotients.divide(numerator,denominator)
+        numerator = products.multiply_two_together(box_current_two_denominator,box_current_one_numerator, True)
+        denominator = products.multiply_two_together(box_current_two_numerator,box_current_one_denominator, True)
+        numerator, denominator = quotients.divide(numerator,denominator, False)
         box = [quotients.assembler(numerator,denominator), products.return_number(box_current_two[1]/box_current_one[1])]
     nice_box, nice_boxdash = sorting.for_presentation_table(box, boxdash)
     return box, boxdash, nice_box, nice_boxdash, True
 
 
 def sum(boxs, dashs):
-    box_v, box_c = products.a_sum(boxs)
-    boxdash_v, boxdash_c = products.a_sum(dashs)
-    return [box_v, box_c], [boxdash_v, boxdash_c]
+    big_box  = [boxs, dashs]
+    first_time = True
+    for function in big_box:
+        denominator = ""
+        numerators = []
+        denominators = []
+        coefficients = []
+        sum_terms = []
+        for term in function:
+            coefficients.append(term[1])
+            term_numerators, term_denominators = quotients.splitter(term[0])
+            numerators.append(term_numerators)
+            denominators.append(term_denominators)
+        for f_of_x in denominators:
+            denominator = products.multiply_two_together(denominator,f_of_x, False)
+        for k in range(len(numerators)):
+            current_concern = numerators[k]
+            for j in range(len(denominators)):
+                if j == k:
+                    continue
+                else:
+                    current_concern = products.multiply_two_together(denominators[j], current_concern, False)
+            sum_terms.append(current_concern)
+        simplified_sum = []
+        simplified_coefficients = []
+        index = 0
+        for term in sum_terms:
+            if not term in simplified_sum:
+                simplified_sum.append(term)
+                simplified_coefficients.append(coefficients[index])
+            else:
+                simplified_coefficients[simplified_sum.index(term)] += coefficients[index]
+            index += 1
+        if len(simplified_sum) > 1:
+            sum, factor = products.a_sum([[simplified_sum[0], simplified_coefficients[0]],[simplified_sum[1], simplified_coefficients[1]]])
+            for i in range(2,len(simplified_sum)):
+                sum, factor = products.a_sum([[sum, factor], [simplified_sum[i], simplified_coefficients[i]]])
+        else:
+            sum = simplified_sum[0]
+            factor = simplified_coefficients[0]
+        numerator, denominator = quotients.divide(sum, denominator, False)
+        if first_time:
+            box = [quotients.assembler(numerator,denominator), factor]
+            first_time = False
+        else:
+            boxdash = [quotients.assembler(numerator,denominator), factor]
+    return box, boxdash
 
 
 def generate_boxcode(box):

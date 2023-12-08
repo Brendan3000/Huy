@@ -39,11 +39,11 @@ def logaraithm(box_code, box_dash):
                 box_denominator = f"({box_c}{box_v}{shift})"
                 box_numerator = ""
         wooden_numerator = powers.power_distributor(wood, products.return_number(power-1))
-        numerator = products.multiply_two_together(wooden_numerator,box_dash_v_numerator)
-        numerator = products.multiply_two_together(numerator, box_numerator)
-        denominator = products.multiply_two_together(ln_base, box_denominator)
-        denominator = products.multiply_two_together(denominator, box_dash_v_denominator)
-        numerator, denominator = quotients.divide(numerator,denominator)
+        numerator = products.multiply_two_together(wooden_numerator,box_dash_v_numerator, False)
+        numerator = products.multiply_two_together(numerator, box_numerator, False)
+        denominator = products.multiply_two_together(ln_base, box_denominator, False)
+        denominator = products.multiply_two_together(denominator, box_dash_v_denominator, False)
+        numerator, denominator = quotients.divide(numerator,denominator, False)
         return [quotients.assembler(numerator,denominator), products.return_number(constant_product)]
 
 

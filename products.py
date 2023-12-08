@@ -287,11 +287,11 @@ def factorisation_of_sums_integers(box_coefficients):
     for box_c in box_coefficients:
         if not isinstance(box_c, int):
             can_factoise = False
+    factor = abs(box_coefficients[0])
     if can_factoise:
-        factor = box_coefficients[0]
         for number in box_coefficients:
             for other_number in box_coefficients:
-                possible_factor = math.gcd(other_number,number)
+                possible_factor = math.gcd(abs(other_number),abs(number))
                 if possible_factor < factor:
                     factor = possible_factor
         for box_c in box_coefficients:
@@ -399,15 +399,16 @@ def add(box_variables, box_coefficients, common_factor_v, factor):
     signs = []
     if box_coefficients[0] < 0:
         changed = False
-        if box_coefficients[0] == -1 and not box_variables[0] == "":
-                box_coefficients[0] = ""
+        if box_coefficients[0] == -1:
+                if not box_variables[0] == "":
+                    box_coefficients[0] = ""
                 box_variables[0], changed = negative_expander(box_variables[0])
         if changed:
             signs.append(" + ")
-            have_to_change_signs = True
+            have_to_change_signs = False
         else:
             signs.append(" - ")
-            have_to_change_signs = False
+            have_to_change_signs = True
     else:
         if box_coefficients[0] == 1 and not box_variables[0] == "":
                 box_coefficients[0] = ""
@@ -415,7 +416,7 @@ def add(box_variables, box_coefficients, common_factor_v, factor):
         signs.append(" + ")
         have_to_change_signs = False
     try:
-        box_variables[0] = abs(box_variables[0])
+        box_coefficients[0] = abs(box_coefficients[0])
     except:
         pass
     for i in range(1,len(box_variables)):
@@ -431,9 +432,9 @@ def add(box_variables, box_coefficients, common_factor_v, factor):
                 signs.append(" - ")
         else:
             if not have_to_change_signs:
-                signs.append(" + ")
-            else:
                 signs.append(" - ")
+            else:
+                signs.append(" + ")
             if box_coefficients[i] == 1 and not box_variables[i] == "":
                 box_coefficients[i] = ""
                 box_variables[i] = Brackets.brackets_remover(box_variables[i])
@@ -452,7 +453,7 @@ def add(box_variables, box_coefficients, common_factor_v, factor):
     return sum, factor
 
 
-def add_for_index(box_one, box_two):
+def add_for_index(box_one, box_two, do_we_want_to_return_base_power):
     if box_one[0] == "" and box_one[1] == "" and box_two[0] == "" and box_two[1] == "":
         return ""
     elif box_one[0] == "" and box_one[1] == "":
@@ -482,11 +483,11 @@ def add_for_index(box_one, box_two):
             return f"e^({factor}{exponent}) "
 
 
-def multiply_two_together(box_v_one, box_v_two):
+def multiply_two_together(box_v_one, box_v_two, do_we_want_to_return_base_power):
     sorted_box_v_one, exponential_list_one = exponetial_remover(box_v_one, True)
     sorted_box_v_two, exponential_list_two = exponetial_remover(box_v_two, True)
     numerator = factoriser_for_multiples(sorted_box_v_one,sorted_box_v_two)
-    exponential_component = add_for_index(exponential_list_one,exponential_list_two)
+    exponential_component = add_for_index(exponential_list_one,exponential_list_two, do_we_want_to_return_base_power)
     numerator += exponential_component
     return numerator
 

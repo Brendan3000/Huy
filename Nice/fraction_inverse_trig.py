@@ -43,9 +43,9 @@ def arcsin(box_code, box_dash):
     box_dash_v_numerator, box_dash_v_denominator = splitter(box_dash_v)
     sin_inverse = powers.power_distributor(f"arcsin({box_c}{box_v}{shift})",products.return_number(power-1))
     square_root = f"(1 - {squared_term})^0.5 "
-    numerator = products.multiply_two_together(sin_inverse, box_dash_v_numerator)
-    denominator = products.multiply_two_together(box_dash_v_denominator,square_root)
-    numerator, denominator = quotients.divide(numerator,denominator)
+    numerator = products.multiply_two_together(sin_inverse, box_dash_v_numerator, False)
+    denominator = products.multiply_two_together(box_dash_v_denominator,square_root, False)
+    numerator, denominator = quotients.divide(numerator,denominator, False)
     return [quotients.assembler(numerator,denominator), products.return_number(constant_product)]
 
 
@@ -56,9 +56,9 @@ def arccos(box_code, box_dash):
     box_dash_v_numerator, box_dash_v_denominator = splitter(box_dash_v)
     cosine_inverse = powers.power_distributor(f"arccos({box_c}{box_v}{shift})",products.return_number(power-1))
     square_root = f"(1 - {squared_term})^0.5 "
-    numerator = products.multiply_two_together(cosine_inverse, box_dash_v_numerator)
-    denominator = products.multiply_two_together(box_dash_v_denominator,square_root)
-    numerator, denominator = quotients.divide(numerator,denominator)
+    numerator = products.multiply_two_together(cosine_inverse, box_dash_v_numerator, False)
+    denominator = products.multiply_two_together(box_dash_v_denominator,square_root, False)
+    numerator, denominator = quotients.divide(numerator,denominator, False)
     return [quotients.assembler(numerator,denominator), products.return_number(-constant_product)]
 
 
@@ -69,7 +69,7 @@ def arcctan(box_code, box_dash):
     box_dash_v_numerator, box_dash_v_denominator = splitter(box_dash_v)
     tan_inverse = powers.power_distributor(f"arctan({box_c}{box_v}{shift})",products.return_number(power-1))
     square_root = f"(1 + {squared_term})"
-    numerator = products.multiply_two_together(tan_inverse, box_dash_v_numerator)
-    denominator = products.multiply_two_together(box_dash_v_denominator,square_root)
-    numerator, denominator = quotients.divide(numerator,denominator)
+    numerator = products.multiply_two_together(tan_inverse, box_dash_v_numerator, False)
+    denominator = products.multiply_two_together(box_dash_v_denominator,square_root, False)
+    numerator, denominator = quotients.divide(numerator,denominator, False)
     return [quotients.assembler(numerator,denominator), products.return_number(constant_product)]

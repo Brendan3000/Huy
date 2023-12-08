@@ -38,9 +38,15 @@ def special_assembler(box_v, power):
         constant = products.return_number(top[:index_counter])
     top = top[index_counter:]
     try:
+        power = products.return_number(power)
         power *= constant
     except:
-        power = constant + power
+        power = Brackets.brackets_remover(power)
+        if constant == 1:
+            constant = ""
+        if constant == -1:
+            constant = "-"
+        power = f"{constant}{power}"
     if power == 1:
         power = ""
     if power == -1:
@@ -83,16 +89,29 @@ def power_distributor(box_v, change_power_factor):
         if special[i]:
             if change_power_factor == 0:
                 try:
+                    change_power_factor = products.return_number(change_power_factor)
                     powers[i] *= change_power_factor
                 except:
-                    powers[i] = powers[i] + change_power_factor
+                    change_power_factor = Brackets.brackets_remover(change_power_factor)
+                    if powers[i] == 1:
+                        powers[i] = ""
+                        change_power_factor = Brackets.brackets_remover(change_power_factor)
+                    if powers[i] == -1:
+                        powers[i] = "-"
+                    powers[i] = f"({powers[i]}{change_power_factor})"
             else:
                 factors[i] = special_assembler(factors[i], change_power_factor)
         else:
             try:
+                change_power_factor = products.return_number(change_power_factor)
                 powers[i] *= change_power_factor
             except:
-                powers[i] = powers[i] + change_power_factor
+                change_power_factor = Brackets.brackets_remover(change_power_factor)
+                if powers[i] == 1:
+                    powers[i] = ""
+                if powers[i] == -1:
+                    powers[i] = "-"
+                powers[i] = f"({powers[i]}{change_power_factor})"
     for k in range(len(factors)):
         if powers[k] == 0:
             pass

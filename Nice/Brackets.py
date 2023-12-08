@@ -54,7 +54,7 @@ def basic_trig(box_variable):
 # This function is used
 # severs to convert (f(x)g(x)...) into f(x)g(x)... only if in the form (f(x)g(x)...) (closed no power)
 def brackets_remover(box_variable):
-    if box_variable.rfind(")") == next_closed_bracket(box_variable) and box_variable.find("(") == 0:
+    if len(box_variable) - 1 == next_closed_bracket(box_variable) and box_variable.find("(") == 0:
         return box_variable[1:len(box_variable)-1]
     else:
         return box_variable

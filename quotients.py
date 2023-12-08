@@ -33,11 +33,11 @@ def has_denomenator(box_v):
     return False
 
 
-def divide(numerator, denominator):
+def divide(numerator, denominator, do_we_want_to_return_base_power):
     sorted_numerator, exponential_numerator = products.exponetial_remover(numerator, True)
     sorted_denominator, exponential_denominator = products.exponetial_remover(denominator, False)
     numerator, denominator = products.factoriser_for_division(sorted_numerator,sorted_denominator)
-    exponential_component = products.add_for_index(exponential_numerator,exponential_denominator)
+    exponential_component = products.add_for_index(exponential_numerator,exponential_denominator, do_we_want_to_return_base_power)
     numerator += exponential_component
     return numerator, denominator
 
@@ -53,7 +53,7 @@ def double_brackets_remover(box_v,can_we_release_the_numerator):
     numerator, denominator = splitter(box_v)
     if denominator.find("(") == 0 and denominator.rfind(")") == len(denominator) - 1 and products.next_closed_bracket(box_v) == len(denominator) - 1:
         denominator = Brackets.brackets_remover(denominator)
-    if numerator.find("(") == 0 and numerator.rfind(")") == len(numerator) - 1 and can_we_release_the_numerator:
+    if numerator.find("(") == 0 and numerator.rfind(")") == len(numerator) - 1 and can_we_release_the_numerator and not products.contains_sum(numerator):
         numerator = Brackets.brackets_remover(numerator)
     index = 0
     for letter in denominator:

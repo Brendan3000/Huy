@@ -3,6 +3,7 @@ import powers
 import products
 import quotients
 import fractions
+from Nice import Brackets
 
 
 def power_returner(box_v):
@@ -100,8 +101,8 @@ def for_presentation_table(box, boxdash):
         boxdash[1] = "-"
     box[0] = quotients.double_brackets_remover(box[0],can_we_release_the_numerator_box)
     boxdash[0] = quotients.double_brackets_remover(boxdash[0], can_we_release_the_numerator_boxdash)
-    box[0] = power_adjuster(box[0])
-    boxdash[0] = power_adjuster(boxdash[0])
+    box[0] = Brackets.brackets_remover(power_adjuster(box[0]))
+    boxdash[0] = Brackets.brackets_remover(power_adjuster(boxdash[0]))
     return box, boxdash
 
 
