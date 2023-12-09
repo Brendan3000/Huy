@@ -8,7 +8,7 @@ def exponential_component(list, power):
         return ""
     else:
         try:
-            coefficient *= power
+            coefficient *= products.return_number(power)
             if coefficient == 1:
                 coefficient = ""
             if coefficient == -1:
@@ -24,7 +24,7 @@ def special_assembler(box_v, power):
         if box_v[index] == "^" and not products.is_closed_in(box_v[index:]):
             break
     bottom = box_v[:index]
-    top = box_v[index+2:len(box_v)-2]
+    top = box_v[index+2:len(box_v)-1]
     index_counter = 0
     for letter in top:
         if letter == "-" or letter == "." or letter.isdigit():
@@ -58,6 +58,8 @@ def power_distributor(box_v, change_power_factor):
         return box_v
     if change_power_factor == 1:
         return box_v
+    if change_power_factor == 0:
+        return ""
     box_v, exponential_list = products.exponetial_remover(box_v, True)
     exponential = exponential_component(exponential_list,change_power_factor)
     factors = []
@@ -85,17 +87,7 @@ def power_distributor(box_v, change_power_factor):
         powers.append(power)
     for i in range(len(powers)):
         if special[i]:
-            if change_power_factor == 0:
-                try:
-                    powers[i] *= change_power_factor
-                except:
-                    if powers[i] == 1:
-                        powers[i] = ""
-                    if powers[i] == -1:
-                        powers[i] = "-"
-                    powers[i] = f"({powers[i]}{change_power_factor})"
-            else:
-                factors[i] = special_assembler(factors[i], change_power_factor)
+            factors[i] = special_assembler(factors[i], change_power_factor)
         else:
             try:
                 change_power_factor = products.return_number(change_power_factor)

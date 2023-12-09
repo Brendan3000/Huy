@@ -13,6 +13,14 @@ def float_to_fraction(box):
     else:
         box_c_numerator = products.return_number(box_c)
         box_c_denominator = ""
+    if box_c_numerator == 1 and numerator != "":
+        box_c_numerator = ""
+    if box_c_numerator == -1 and numerator != "":
+        box_c_numerator = "-"
+    if box_c_denominator == 1:
+        box_c_denominator = ""
+    if box_c_denominator == -1:
+        box_c_denominator = "-"
     return [quotients.assembler(numerator,f"{box_c_denominator}{denominator}"), box_c_numerator]
 
 

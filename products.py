@@ -122,6 +122,8 @@ def exponetial_remover(box_v, numerator):
                 box_v = box_v[:letter_index] + box_v[exponential_stop+2:]
             if not numerator:
                 factor = -factor
+            if not contains_sum(exponent):
+                exponent = brackets_remover(exponent)
             return box_v, [exponent, return_number(factor)]
         elif letter == ")" and not is_closed_in(box_v[letter_index+1:]) and box_v[box_v[:letter_index].rfind("(")+1:letter_index].isdigit() and not box_v[:letter_index].rfind("(") == 2 + box_v[:letter_index].rfind("ln"):
             exponential_stop = letter_index + next_closed_bracket(box_v[letter_index+1:]) + 1
@@ -134,6 +136,8 @@ def exponetial_remover(box_v, numerator):
                 box_v = box_v[:box_v[:letter_index].rfind("(")] + box_v[exponential_stop+2:]
             if not numerator:
                 factor = -factor
+            if not contains_sum(exponent):
+                exponent = brackets_remover(exponent)
             return box_v,[f"ln({base}){exponent}", return_number(factor)]
         letter_index += 1
     return box_v, ["", 0]

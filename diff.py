@@ -34,7 +34,8 @@ def diff_nice(box_current,boxdash_current, restrict):
     else: #tan^-1
         boxdash = fraction_inverse_trig.arcctan(boxCode, boxdash_current)
     box = interperter.interpret(boxCode)
-    nice_box, nice_boxdash = sorting.for_presentation_table(box, boxdash)
+    nice_box = sorting.for_presentation_table(box)
+    nice_boxdash = sorting.for_presentation_table(boxdash)
     return box, boxdash, nice_box, nice_boxdash
 
 
@@ -73,7 +74,8 @@ def convoluted(box_current_one,boxdash_current_one, box_current_two, boxdash_cur
         denominator = products.multiply_two_together(box_current_two_numerator,box_current_one_denominator, True)
         numerator, denominator = quotients.divide(numerator,denominator, False)
         box = [quotients.assembler(numerator,denominator), products.return_number(box_current_two[1]/box_current_one[1])]
-    nice_box, nice_boxdash = sorting.for_presentation_table(box, boxdash)
+    nice_box = sorting.for_presentation_table(box)
+    nice_boxdash = sorting.for_presentation_table(boxdash)
     return box, boxdash, nice_box, nice_boxdash, True
 
 

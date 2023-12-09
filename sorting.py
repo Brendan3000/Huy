@@ -17,7 +17,7 @@ def power_returner(box_v):
         return 1
     if index_counter == 1:
         if box_v[0] == "-":
-            return  -1
+            return -1
         else:
             return products.return_number(box_v[:1])
     else:
@@ -73,37 +73,28 @@ def power_adjuster(box_v):
                     under = box_v[i:index_next_closed_bracket+1]
                     under = powers.power_distributor(under,power_numerator)
                     if power_denominator == 2:
-                        box_v = box_v.replace(box_v[i:index_next_closed_bracket+3+length_number], f"√{under} ")
+                        box_v = box_v[:i] + f"√{under} " + box_v[index_next_closed_bracket+3+length_number:]
                     else:
                         if under[0] == "(" and products.next_closed_bracket(under) == len(under) - 1:
                             under = under[1:len(under) - 1]
-                        box_v = box_v.replace(box_v[i:index_next_closed_bracket+3+length_number], f"√({power_denominator}&{under})")
+                        box_v = box_v[:i] + f"√({power_denominator}&{under})" + box_v[index_next_closed_bracket+3+length_number:]
                     break
         if i == len(box_v) - 1:
             break
     return box_v
 
 
-def for_presentation_table(box, boxdash):
+def for_presentation_table(box):
     box = number_theory.float_to_fraction(box)
-    boxdash = number_theory.float_to_fraction(boxdash)
     can_we_release_the_numerator_box = False
-    can_we_release_the_numerator_boxdash = False
     if box[1] == 1 and not null_numerator(box[0]):
         box[1] = ""
         can_we_release_the_numerator_box = True
     if box[1] == -1 and not null_numerator(box[0]):
         box[1] = "-"
-    if boxdash[1] == 1 and not null_numerator(boxdash[0]):
-        boxdash[1] = ""
-        can_we_release_the_numerator_boxdash = True
-    if boxdash[1] == -1 and not null_numerator(boxdash[0]):
-        boxdash[1] = "-"
     box[0] = quotients.double_brackets_remover(box[0],can_we_release_the_numerator_box)
-    boxdash[0] = quotients.double_brackets_remover(boxdash[0], can_we_release_the_numerator_boxdash)
     box[0] = Brackets.brackets_remover(power_adjuster(box[0]))
-    boxdash[0] = Brackets.brackets_remover(power_adjuster(boxdash[0]))
-    return box, boxdash
+    return box
 
 
 def null_numerator(box):
@@ -112,6 +103,8 @@ def null_numerator(box):
         return True
     else:
         return False
+
+
 
 
 

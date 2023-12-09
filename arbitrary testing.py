@@ -71,18 +71,6 @@ for i in range(800):
         table_nice[1].append(f"{nice_boxdash[1]}{nice_boxdash[0]}")
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 for i in range(len(table_nice[0])):
     print(table_nice[0][i])
 print(''' 
