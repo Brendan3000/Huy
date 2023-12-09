@@ -3,6 +3,7 @@ import products
 import quotients
 from Nice import Brackets
 from quotients import splitter
+import sorting
 
 
 # ln() or logb() [has function_determiner value = 5]
@@ -10,6 +11,7 @@ def logaraithm(box_code, box_dash):
         power, coefficient, base, box_v, box_c = box_code[1],box_code[2],box_code[3], box_code[5][0], box_code[5][1]
         box_dash_v, box_dash_c = box_dash[0], box_dash[1]
         constant_product = coefficient*power*box_dash_c
+        nice_box = sorting.for_presentation_table([box_v, box_c])
         box_c_copy = box_c
         shift, need_to_tidy_up = Brackets.shift_assembler(box_code[0][0], box_code[0][1])
         # if our constant is 1 we don't want 1box we just want box
@@ -32,11 +34,11 @@ def logaraithm(box_code, box_dash):
                 box_denominator, box_numerator = quotients.splitter(box_v)
                 if box_c == "":
                         box_v = Brackets.brackets_remover(box_v)
-                wood = f"{ln_or_logb}({box_c}{box_v})"
+                wood = f"{ln_or_logb}({nice_box})"
                 constant_product *= 1/(box_c_copy)
         else:
-                wood = f"{ln_or_logb}({box_c}{box_v}{shift})"
-                box_denominator = f"({box_c}{box_v}{shift})"
+                wood = f"{ln_or_logb}({nice_box}{shift})"
+                box_denominator = f"({nice_box}{shift})"
                 box_numerator = ""
         wooden_numerator = powers.power_distributor(wood, products.return_number(power-1))
         numerator = products.multiply_two_together(wooden_numerator,box_dash_v_numerator, False)

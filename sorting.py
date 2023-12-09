@@ -94,7 +94,11 @@ def for_presentation_table(box):
         box[1] = "-"
     box[0] = quotients.double_brackets_remover(box[0],can_we_release_the_numerator_box)
     box[0] = Brackets.brackets_remover(power_adjuster(box[0]))
-    return box
+    if box[1] == 1 and not null_numerator(box[0]):
+        box[1] = ""
+    if box[1] == -1 and not null_numerator(box[0]):
+        box[1] = "-"
+    return f"{box[1]}{box[0]}"
 
 
 def null_numerator(box):

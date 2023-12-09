@@ -508,7 +508,7 @@ def add_for_index(box_one, box_two, do_we_want_to_return_base_power):
                 except:
                     return f"e^({factor}{exponent}) "
                 if ncb == len(exponent) - 1:
-                    exponent = exponent[:i] + exponent[ncb+1]
+                    exponent = exponent[:i]
                     return f"({integer_base})^({factor}{exponent}) "
                 elif ncb != i + exponent[i:].find(")^"):
                     exponent = exponent[:i] + exponent[ncb+1:]

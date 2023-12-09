@@ -1,10 +1,12 @@
 import products
 from Nice import Brackets
+import sorting
 
 
 def interpret(list):
     shift, need_to_tidy_up = Brackets.shift_assembler(list[0][0], list[0][1])
     power, coefficient, base, function_determiner, box_v, box_c = list[1],list[2], list[3], list[4], list[5][0], list[5][1]
+    nice_box = sorting.for_presentation_table([box_v, box_c])
     box_c_copy = box_c
     # if our constant is 1 we don't want 1box we just want box
     if box_c == 1:
@@ -19,21 +21,19 @@ def interpret(list):
     # for box^n
     if function_determiner == 0:
         if power == 1:
-            if need_to_tidy_up:
-                return [f"{box_v}", products.return_number(coefficient*box_c_copy)]
+            if need_to_tidy_up and not products.contains_sum(nice_box):
+                return [f"{nice_box}", products.return_number(coefficient*box_c_copy)]
             else:
-                return [f"({box_c}{box_v}{shift})", products.return_number(coefficient)]
-        # To avoid unnecessary brackets
-        if Brackets.closed_no_power(box_v) and box_c == "" and need_to_tidy_up:
-           pass
+                return [f"({nice_box}{shift})", products.return_number(coefficient)]
         else:
-            box_c = "(" + str(box_c)
-            shift += ")"
-        return [f"{box_c}{box_v}{shift}{index}", products.return_number(coefficient)]
+            if Brackets.closed_no_power(box_v) and box_c == "" and need_to_tidy_up:
+                return [f"{box_v}{index}", products.return_number(coefficient)]
+            else:
+                return [f"({nice_box}{shift}){index}", products.return_number(coefficient)]
     # for trig
     if 1 <= function_determiner <= 3 or 6 <= function_determiner <= 8:
         master_key = [0,"sin", "cos", "tan", 0, 0, "arcsin", "arccos", "arctan"]
-        return [f"{master_key[function_determiner]}({box_c}{box_v}{shift}){index}", products.return_number(coefficient)]
+        return [f"{master_key[function_determiner]}({nice_box}{shift}){index}", products.return_number(coefficient)]
     # for exponentials
     if function_determiner == 4:
         if power == 1:
@@ -44,11 +44,11 @@ def interpret(list):
             base = "e"
         else:
             base = f"({base})"
-        return [f"{base}^({power}({box_c}{box_v}{shift})) ", products.return_number(coefficient)]
+        return [f"{base}^({power}({nice_box}{shift})) ", products.return_number(coefficient)]
     # for logs
     if function_determiner == 5:
         ln_or_logb = f"log_{base} "
         if base == 1:
             ln_or_logb = "ln"
-        return [f"{ln_or_logb}({box_c}{box_v}{shift}){index}", products.return_number(coefficient)]
+        return [f"{ln_or_logb}({nice_box}{shift}){index}", products.return_number(coefficient)]
 

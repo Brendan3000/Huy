@@ -12,9 +12,7 @@ def diff_nice(box_current,boxdash_current, restrict):
     if not restrict:
         boxCode = generate_boxcode(box_current)
     else:
-        boxCode = [[0,0],random.randint(-9,8),1,random.randint(1,2),random.randint(0,8),box_current]
-        while boxCode[1] == 0:
-            boxCode[1] = random.randint(-9,8)
+        boxCode = [[0,0],random.randint(1,8),1,random.randint(1,2),random.randint(0,8),box_current]
     if boxCode[4] == 0:
         boxdash = Basic.power(boxCode, boxdash_current)
     elif boxCode[4] == 1:
@@ -140,9 +138,7 @@ def generate_boxcode(box):
         magnitude_shift = random.randint(1,9)
     boxCode[0][1] = magnitude_shift
 
-    power = random.randint(-8,9)
-    while power == 0:
-        power = random.randint(-8,9)
+    power = random.randint(1,9)
     boxCode[1] = power
 
     coefficient = random.randint(-8,9)
