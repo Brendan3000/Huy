@@ -8,35 +8,22 @@ import sorting
 # a function in the form of g(x)^f(x)
 def function_power(base, base_dx, power, power_dx):
     base_v, base_c, base_dx_v, base_dx_c, power_v, power_c, power_dx_v, power_dx_c = base[0], base[1], base_dx[0], base_dx[1], power[0], power[1], power_dx[0], power_dx[1]
-    nice_box = sorting.for_presentation_table([base_v, base_c])
+    nice_base = sorting.for_presentation_table([base_v, base_c])
     constant_product_a = base_dx_c*power_c
     constant_product_b = power_dx_c*base_c
-
-
-
-    base_v_copy = base_v
-    base_c_copy = base_c
-    if base_c_copy == 1:
-        base_c_copy = ""
-    if base_c_copy == -1:
-        base_c_copy = 1
+    nice_top = sorting.for_presentation_table([power_v, power_c])
+    top = f"({nice_top})"
+    base_v_numerator, base_v_denominator = quotients.splitter(base_v)
     if base_c == 1:
-        bottom = f"{base_v}"
+        bottom_numerator = f"{base_v_numerator}"
     else:
-        bottom = f"({base_c}){base_v}"
-    if power_c == 1:
-        power_c = ""
-    if power_c == -1:
-        power_c = "-"
-    if base_c == "":
-        base_v = Brackets.brackets_remover(base_v)
-    top = f"({power_c}{power_v})"
-    to_the_power = powers.power_distributor(bottom, top)
-
-
+        bottom_numerator = f"({base_c}){base_v_numerator}"
+    bottom_denominator = base_v_denominator
+    to_the_power_numerator = powers.power_distributor(bottom_numerator, top)
+    to_the_power_denominator = powers.power_distributor(bottom_denominator, top)
     numerator_a, numerator_b, denominator = product_short_cut(base_v, base_dx_v, power_v, power_dx_v)
-    numerator_b = products.multiply_two_together(numerator_b,f"ln({nice_box})", False)
-    denominator = products.multiply_two_together(denominator, base_v_copy, False)
+    numerator_b = products.multiply_two_together(numerator_b,f"ln({nice_base})", False)
+    denominator = products.multiply_two_together(denominator, base_v, False)
     denominator = products.multiply_two_together(denominator, to_the_power_denominator, False)
     numerator, factor = products.a_sum([[numerator_a, constant_product_a],[numerator_b, constant_product_b]])
     numerator = f"{to_the_power_numerator}{numerator}"

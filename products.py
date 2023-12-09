@@ -1,6 +1,8 @@
 import math
 from functools import reduce
 
+import quotients
+
 
 def brackets_remover(box_variable):
     if len(box_variable) - 1 == next_closed_bracket(box_variable) and box_variable.find("(") == 0:
@@ -487,9 +489,14 @@ def add_for_index(box_one, box_two, do_we_want_to_return_base_power):
     elif box_two[0] == "" and box_two[1] == 0:
         exponent, factor = box_one[0], box_one[1]
     else:
-        variables, common_factor_v = factorisation_of_sums_variables([box_one[0], box_two[0]])
+        numerator_one, denominator_one = quotients.splitter(box_one[0])
+        numerator_two, denominator_two = quotients.splitter(box_two[0])
+        variables, common_factor_v = factorisation_of_sums_variables([numerator_one,numerator_two])
         coefficients, factor = factorisation_of_sums_integers([box_one[1], box_two[1]])
-        exponent, factor = add(variables, coefficients, common_factor_v, factor)
+        numerator, factor = add(variables, coefficients, common_factor_v, factor)
+        denominator = multiply_two_together(denominator_one,denominator_two, False)
+        numerator,denominator = quotients.divide(numerator,denominator, False)
+        exponent = quotients.assembler(numerator,denominator)
     if factor == 1:
         factor = ""
     if factor == -1:
