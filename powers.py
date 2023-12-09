@@ -11,7 +11,6 @@ def exponential_component(list, power):
             coefficient *= power
             if coefficient == 1:
                 coefficient = ""
-                exponent = Brackets.brackets_remover(exponent)
             if coefficient == -1:
                 coefficient = "-"
             return f"e^({coefficient}{exponent}) "
@@ -41,7 +40,6 @@ def special_assembler(box_v, power):
         power = products.return_number(power)
         power *= constant
     except:
-        power = Brackets.brackets_remover(power)
         if constant == 1:
             constant = ""
         if constant == -1:
@@ -89,13 +87,10 @@ def power_distributor(box_v, change_power_factor):
         if special[i]:
             if change_power_factor == 0:
                 try:
-                    change_power_factor = products.return_number(change_power_factor)
                     powers[i] *= change_power_factor
                 except:
-                    change_power_factor = Brackets.brackets_remover(change_power_factor)
                     if powers[i] == 1:
                         powers[i] = ""
-                        change_power_factor = Brackets.brackets_remover(change_power_factor)
                     if powers[i] == -1:
                         powers[i] = "-"
                     powers[i] = f"({powers[i]}{change_power_factor})"
@@ -106,7 +101,6 @@ def power_distributor(box_v, change_power_factor):
                 change_power_factor = products.return_number(change_power_factor)
                 powers[i] *= change_power_factor
             except:
-                change_power_factor = Brackets.brackets_remover(change_power_factor)
                 if powers[i] == 1:
                     powers[i] = ""
                 if powers[i] == -1:

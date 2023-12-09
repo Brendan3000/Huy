@@ -32,7 +32,7 @@ def exponential(box_code, box_dash):
         ln_base = f"ln({base})"
     # This serves to avoid the possibility of some ((f(x))) (i.e. avoid double brackets when not required)
     if power == "" and need_to_tidy_up:
-            box_v = Brackets.brackets_remover(box_v)
+        pass
     else:
         box_c = "(" + str(box_c)
         shift += ")"

@@ -16,9 +16,6 @@ def interpret(list):
         index = f"^{power}"
     else:
         index = ""
-    # To avoid the possibitly of double brackets ((f(x)))
-    if need_to_tidy_up and box_c == "":
-        box_v = Brackets.brackets_remover(box_v)
     # for box^n
     if function_determiner == 0:
         if power == 1:

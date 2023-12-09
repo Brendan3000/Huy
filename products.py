@@ -1,6 +1,12 @@
-from Nice import Brackets
 import math
 from functools import reduce
+
+
+def brackets_remover(box_variable):
+    if len(box_variable) - 1 == next_closed_bracket(box_variable) and box_variable.find("(") == 0:
+        return box_variable[1:len(box_variable)-1]
+    else:
+        return box_variable
 
 
 def contains_sum(box_v):
@@ -25,16 +31,21 @@ def exponential_component(list, power):
     if exponent == "":
         return ""
     else:
-        coefficient *= power
+        try:
+            power = return_number(power)
+            coefficient *= power
+        except:
+            exponent = f"{power}{exponent}"
         if coefficient == 1:
             coefficient = ""
-            exponent = Brackets.brackets_remover(exponent)
         if coefficient == -1:
             coefficient = "-"
         return f"e^({coefficient}{exponent}) "
 
 
 def return_number(string):
+    if string == "-":
+        return -1
     string = str(string)
     if not "." in string:
         return int(string)
@@ -111,8 +122,7 @@ def exponetial_remover(box_v, numerator):
                 box_v = box_v[:letter_index] + box_v[exponential_stop+2:]
             if not numerator:
                 factor = -factor
-            exponent = Brackets.brackets_remover(exponent)
-            return box_v, [exponent, factor]
+            return box_v, [exponent, return_number(factor)]
         elif letter == ")" and not is_closed_in(box_v[letter_index+1:]) and box_v[box_v[:letter_index].rfind("(")+1:letter_index].isdigit() and not box_v[:letter_index].rfind("(") == 2 + box_v[:letter_index].rfind("ln"):
             exponential_stop = letter_index + next_closed_bracket(box_v[letter_index+1:]) + 1
             base = int(box_v[box_v[:letter_index].rfind("(")+1:letter_index])
@@ -124,10 +134,9 @@ def exponetial_remover(box_v, numerator):
                 box_v = box_v[:box_v[:letter_index].rfind("(")] + box_v[exponential_stop+2:]
             if not numerator:
                 factor = -factor
-            exponent = Brackets.brackets_remover(exponent)
-            return box_v,[f"ln({base}){exponent}", factor]
+            return box_v,[f"ln({base}){exponent}", return_number(factor)]
         letter_index += 1
-    return box_v, ["", ""]
+    return box_v, ["", 0]
 
 
 # modified for use in sums factorisation
@@ -147,21 +156,21 @@ def power_and_remover(box_v, close_index):
         power = 1
         box_v = box_v[close_index + 1:]
     else:
-        try:
-            index_counter = 0
-            for letter in box_v[close_index + 2:]:
-                if letter == "-" or letter == "." or letter.isdigit():
-                    index_counter += 1
-                else:
-                    break
-            power = return_number(box_v[close_index + 2:close_index + 3 + index_counter])
-            box_v = box_v[close_index + 3 + index_counter:]
-        except:
+        index_counter = 0
+        for letter in box_v[close_index + 2:]:
+            if letter == "-" or letter == "." or letter.isdigit():
+                index_counter += 1
+            else:
+                break
+        if index_counter == 0:
             is_base_power = True
             index_space = close_index + next_closed_bracket(box_v[close_index+1:]) + 2
             factor = box_v[:index_space+1]
             power = 1
-            box_v = box_v[index_space:]
+            box_v = box_v[index_space+1:]
+        else:
+            power = return_number(box_v[close_index + 2:close_index + 2 + index_counter])
+            box_v = box_v[close_index + 3 + index_counter:]
     return box_v, power, is_base_power, factor
 
 
@@ -186,7 +195,7 @@ def factoriser_for_division(box_one, box_two):
         table[0].append(factor)
         table[1].append(power)
     while len(box_two) != 0:
-        while box_two[0]  == " ":
+        while box_two[0] == " ":
             box_two = box_two[1:]
             if len(box_two) == 0:
                 break
@@ -296,7 +305,7 @@ def factorisation_of_sums_integers(box_coefficients):
                     factor = possible_factor
         for box_c in box_coefficients:
             list.append(box_c//factor)
-        return list, factor
+        return list, return_number(factor)
     else:
         return box_coefficients, 1
 
@@ -343,7 +352,7 @@ def factorisation_of_sums_variables(box_variables):
             possible_min = list_powers[i][index_of_factor]
             if possible_min < min:
                 min = possible_min
-        if min < 0:
+        if min <= 0:
             pass
         else:
             for i in range(len(box_variables)):
@@ -381,7 +390,7 @@ def converter(boxes):
 
 # will convert some -(g(x)+f(x)) into g(x) - f(x)
 def negative_expander(box_v):
-    box_v = Brackets.brackets_remover(box_v)
+    box_v = brackets_remover(box_v)
     index = 0
     changed = False
     for letter in box_v:
@@ -409,10 +418,11 @@ def add(box_variables, box_coefficients, common_factor_v, factor):
         else:
             signs.append(" - ")
             have_to_change_signs = True
+            factor = -factor
     else:
         if box_coefficients[0] == 1 and not box_variables[0] == "":
                 box_coefficients[0] = ""
-                box_variables[0] = Brackets.brackets_remover(box_variables[0])
+                box_variables[0] = brackets_remover(box_variables[0])
         signs.append(" + ")
         have_to_change_signs = False
     try:
@@ -431,56 +441,85 @@ def add(box_variables, box_coefficients, common_factor_v, factor):
             else:
                 signs.append(" - ")
         else:
-            if not have_to_change_signs:
+            if have_to_change_signs:
                 signs.append(" - ")
             else:
                 signs.append(" + ")
             if box_coefficients[i] == 1 and not box_variables[i] == "":
                 box_coefficients[i] = ""
-                box_variables[i] = Brackets.brackets_remover(box_variables[i])
+                box_variables[i] = brackets_remover(box_variables[i])
         try:
             box_coefficients[i] = abs(box_coefficients[i])
         except:
             pass
-    sum = f"{box_coefficients[0]}{box_variables[0]}"
+    if box_coefficients[0] == 0:
+        do_not_put_sign_in_yet = True
+    else:
+        sum = f"{box_coefficients[0]}{box_variables[0]}"
+        do_not_put_sign_in_yet = False
     for k in range(1, len(box_variables)):
-        sum += f"{signs[k]}{box_coefficients[k]}{box_variables[k]}"
+        if box_coefficients[k] !=0:
+            if do_not_put_sign_in_yet:
+                sum += f"{box_coefficients[k]}{box_variables[k]}"
+                do_not_put_sign_in_yet = False
+            else:
+                sum += f"{signs[k]}{box_coefficients[k]}{box_variables[k]}"
+                do_not_put_sign_in_yet = False
     try:
         factor = factor*eval(sum)
+        if factor == 0:
+            sum = ""
         sum = common_factor_v
     except:
         sum = f"{common_factor_v}({sum})"
-    return sum, factor
+    return sum, return_number(factor)
 
 
 def add_for_index(box_one, box_two, do_we_want_to_return_base_power):
-    if box_one[0] == "" and box_one[1] == "" and box_two[0] == "" and box_two[1] == "":
+    if box_one[0] == "" and box_one[1] == 0 and box_two[0] == "" and box_two[1] == 0:
         return ""
-    elif box_one[0] == "" and box_one[1] == "":
-        if box_two[1] == 1:
-            box_two[1] = ""
-        if box_two[1] == -1:
-            box_two[1] = "-"
-        return f"e^({box_two[1]}{box_two[0]}) "
-    elif box_two[0] == "" and box_two[1] == "":
-        if box_one[1] == 1:
-            box_one[1] = ""
-        if box_one[1] == -1:
-            box_one[1] = "-"
-        return f"e^({box_one[1]}{box_one[0]}) "
+    elif box_one[0] == "" and box_one[1] == 0:
+        exponent, factor = box_two[0], box_two[1]
+    elif box_two[0] == "" and box_two[1] == 0:
+        exponent, factor = box_one[0], box_one[1]
     else:
         variables, common_factor_v = factorisation_of_sums_variables([box_one[0], box_two[0]])
         coefficients, factor = factorisation_of_sums_integers([box_one[1], box_two[1]])
         exponent, factor = add(variables, coefficients, common_factor_v, factor)
-        if factor == 1:
-            factor = ""
-            Brackets.brackets_remover(exponent)
-        if factor == -1:
-            factor = "-"
-        if factor == 0:
-            return ""
-        else:
-            return f"e^({factor}{exponent}) "
+    if factor == 1:
+        factor = ""
+    if factor == -1:
+        factor = "-"
+    if factor == 0:
+        return ""
+    if not do_we_want_to_return_base_power:
+        return f"e^({factor}{exponent}) "
+    else:
+        i = 0
+        for letter in exponent:
+            if letter == "l" and exponent[i:].find("(") == 2 and not is_closed_in(exponent[i:]):
+                ncb = i + next_closed_bracket(exponent[i:])
+                try:
+                    integer_base = return_number(exponent[i + 3:ncb])
+                except:
+                    return f"e^({factor}{exponent}) "
+                if ncb == len(exponent) - 1:
+                    exponent = exponent[:i] + exponent[ncb+1]
+                    return f"({integer_base})^({factor}{exponent}) "
+                elif ncb != i + exponent[i:].find(")^"):
+                    exponent = exponent[:i] + exponent[ncb+1:]
+                else:
+                    power = return_number(exponent[ncb+2:exponent[i:].find(" ")])
+                    length_power = len(str(power))
+                    new_power = return_number(power-1)
+                    if new_power == 1:
+                        index = ""
+                    else:
+                        index = f"^{new_power} "
+                    exponent = exponent = exponent[:i] + f"{exponent[i:ncb+1]}{index}" + exponent[ncb+3+length_power:]
+                return f"({integer_base})^({factor}{exponent}) "
+            i += 1
+    return f"e^({factor}{exponent}) "
 
 
 def multiply_two_together(box_v_one, box_v_two, do_we_want_to_return_base_power):
