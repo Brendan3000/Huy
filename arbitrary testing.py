@@ -28,9 +28,8 @@ for i in range(30):
 
 
 for i in range(800):
-    weight_table = [0,0,0,0,1,1,1,2,2,3,3,3]
+    weight_table = [0,0,0,0,1,1,1,2,2,3,3,3,4]
     path = weight_table[random.randint(0,11)]
-    # path = 3
     try:
         add_to_nice = True
         if path == 0:

@@ -2,6 +2,7 @@ import quotients
 from Nice import Brackets
 from quotients import splitter
 import products
+import sorting
 
 
 # e to the x or a to the x (a is a constant) [has function_determiner value = 4]
@@ -10,6 +11,15 @@ def exponential(box_code, box_dash):
     box_dash_v, box_dash_c = box_dash[0], box_dash[1]
     constant_product = coefficient*box_dash_c*power
     shift, need_to_tidy_up = Brackets.shift_assembler(box_code[0][0], box_code[0][1])
+    # This will determine if we are using e
+    if base == 1:
+        bottom = "e"
+        ln_base = ""
+    else:
+        bottom = f"({base})"
+        ln_base = f"ln({base})"
+
+
     if need_to_tidy_up:
         power = products.return_number(power*box_c)
         box_c = ""
@@ -23,13 +33,6 @@ def exponential(box_code, box_dash):
         power = ""
     if power == -1:
         power = "-"
-    # This will determine if we are using e
-    if base == 1:
-        bottom = "e"
-        ln_base = ""
-    else:
-        bottom = f"({base})"
-        ln_base = f"ln({base})"
     # This serves to avoid the possibility of some ((f(x))) (i.e. avoid double brackets when not required)
     if power == "" and need_to_tidy_up:
         pass

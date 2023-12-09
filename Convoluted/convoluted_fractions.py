@@ -11,6 +11,9 @@ def function_power(base, base_dx, power, power_dx):
     nice_box = sorting.for_presentation_table([base_v, base_c])
     constant_product_a = base_dx_c*power_c
     constant_product_b = power_dx_c*base_c
+
+
+
     base_v_copy = base_v
     base_c_copy = base_c
     if base_c_copy == 1:
@@ -29,11 +32,14 @@ def function_power(base, base_dx, power, power_dx):
         base_v = Brackets.brackets_remover(base_v)
     top = f"({power_c}{power_v})"
     to_the_power = powers.power_distributor(bottom, top)
+
+
     numerator_a, numerator_b, denominator = product_short_cut(base_v, base_dx_v, power_v, power_dx_v)
     numerator_b = products.multiply_two_together(numerator_b,f"ln({nice_box})", False)
     denominator = products.multiply_two_together(denominator, base_v_copy, False)
+    denominator = products.multiply_two_together(denominator, to_the_power_denominator, False)
     numerator, factor = products.a_sum([[numerator_a, constant_product_a],[numerator_b, constant_product_b]])
-    numerator = f"{to_the_power}{numerator}"
+    numerator = f"{to_the_power_numerator}{numerator}"
     numerator, denominator = quotients.divide(numerator, denominator, False)
     return [quotients.assembler(numerator,denominator),
             products.return_number(factor/base_c)]
