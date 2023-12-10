@@ -29,7 +29,7 @@ def diff_nice(box_current,boxdash_current, restrict):
         boxdash = fraction_inverse_trig.arcsin(boxCode, boxdash_current)
     elif boxCode[4] == 7:
         boxdash = fraction_inverse_trig.arccos(boxCode, boxdash_current)
-    else: #tan^-1
+    else: # arctan(box)
         boxdash = fraction_inverse_trig.arcctan(boxCode, boxdash_current)
     box = interperter.interpret(boxCode)
     nice_box = sorting.for_presentation_table(box)
@@ -44,7 +44,7 @@ def convoluted(box_current_one,boxdash_current_one, box_current_two, boxdash_cur
         box_current_two_numerator,box_current_two_denominator = quotients.splitter(box_current_two[0])
         numerator = products.multiply_two_together(box_current_two_numerator,box_current_one_numerator, True)
         denominator = products.multiply_two_together(box_current_two_denominator,box_current_one_denominator, True)
-        numerator, denominator = quotients.divide(numerator,denominator, False)
+        numerator, denominator = quotients.divide(numerator,denominator, True)
         box = [quotients.assembler(numerator,denominator), products.return_number(box_current_two[1]*box_current_one[1])]
     if one_tow_three == 2:
         boxdash = convoluted_fractions.function_power(box_current_one,boxdash_current_one, box_current_two, boxdash_current_two)
@@ -64,13 +64,13 @@ def convoluted(box_current_one,boxdash_current_one, box_current_two, boxdash_cur
         box = [f"{bottom}^({box_current_two_c}{box_current_two[0]}) ", 1]
     if one_tow_three == 3:
         if box_current_one == box_current_two:
-            return "","","","", False
+            return ["",0],["",0],"","", False
         boxdash = convoluted_fractions.quotient(box_current_one,boxdash_current_one, box_current_two, boxdash_current_two)
         box_current_one_numerator,box_current_one_denominator = quotients.splitter(box_current_one[0])
         box_current_two_numerator,box_current_two_denominator = quotients.splitter(box_current_two[0])
         numerator = products.multiply_two_together(box_current_two_denominator,box_current_one_numerator, True)
         denominator = products.multiply_two_together(box_current_two_numerator,box_current_one_denominator, True)
-        numerator, denominator = quotients.divide(numerator,denominator, False)
+        numerator, denominator = quotients.divide(numerator,denominator, True)
         box = [quotients.assembler(numerator,denominator), products.return_number(box_current_two[1]/box_current_one[1])]
     nice_box = sorting.for_presentation_table(box)
     nice_boxdash = sorting.for_presentation_table(boxdash)
@@ -141,9 +141,9 @@ def generate_boxcode(box):
     power = random.randint(1,9)
     boxCode[1] = power
 
-    coefficient = random.randint(-8,9)
-    while coefficient == 0:
-        coefficient = random.randint(-8,9)
+    coefficient_table = [1,1,1,2,4,8]
+    choice = random.randint(0,5)
+    coefficient = coefficient_table[choice]
     boxCode[2] = coefficient
 
     fifty_fifty = random.randint(0,1)

@@ -15,7 +15,7 @@ def interpret(list):
         box_c = ""
     # if our power is 1 we don't want box^1 we just want  box
     if power != 1:
-        index = f"^{power}"
+        index = f"^{power} "
     else:
         index = ""
     # for box^n
@@ -44,7 +44,10 @@ def interpret(list):
             base = "e"
         else:
             base = f"({base})"
-        return [f"{base}^({power}({nice_box}{shift})) ", products.return_number(coefficient)]
+        if need_to_tidy_up and Brackets.closed(box_v):
+            return [f"{base}^({power*box_c_copy}{box_v}) ", products.return_number(coefficient)]
+        else:
+            return [f"{base}^({power}({nice_box}{shift})) ", products.return_number(coefficient)]
     # for logs
     if function_determiner == 5:
         ln_or_logb = f"log_{base} "

@@ -33,7 +33,7 @@ def inverse_sin_cos_tan(box_code, box_dash):
         squared_term_denominator = powers.power_distributor(denominator,2)
         squared_term = quotients.assembler(f"{box_c}{squared_term_numerator}",squared_term_denominator)
     else:
-        squared_term = f"({box_c}{box_v}{shift})^2"
+        squared_term = f"({nice_box}{shift})^2"
     if box_v_copy == "" and need_to_tidy_up:
         box_v_copy = Brackets.brackets_remover(box_v_copy)
     return constant_product, box_v_copy, box_c_copy, shift, box_dash_v, power, squared_term,nice_box
@@ -47,8 +47,8 @@ def arcsin(box_code, box_dash):
     box_dash_v_numerator, box_dash_v_denominator = splitter(box_dash_v)
     sin_inverse = powers.power_distributor(f"arcsin({nice_box}{shift})",products.return_number(power-1))
     square_root = f"(1 - {squared_term})^0.5 "
-    numerator = products.multiply_two_together(sin_inverse, box_dash_v_numerator, False)
     denominator = products.multiply_two_together(box_dash_v_denominator,square_root, False)
+    numerator = products.multiply_two_together(sin_inverse, box_dash_v_numerator, False)
     numerator, denominator = quotients.divide(numerator,denominator, False)
     return [quotients.assembler(numerator,denominator), products.return_number(constant_product)]
 

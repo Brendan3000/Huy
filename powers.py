@@ -15,7 +15,7 @@ def exponential_component(list, power):
                 coefficient = "-"
             return f"e^({coefficient}{exponent}) "
         except:
-            return f"e^({coefficient}{power}{exponent}) "
+            return f"e^({coefficient}{products.multiply_two_together(power, exponent, False)}) "
 
 
 # converts some f(x)^(ag(x)), power into f(x)^(power*ag(x))
@@ -24,7 +24,7 @@ def special_assembler(box_v, power):
         if box_v[index] == "^" and not products.is_closed_in(box_v[index:]):
             break
     bottom = box_v[:index]
-    top = box_v[index+2:len(box_v)-1]
+    top = box_v[index+2:box_v.rfind(")")]
     index_counter = 0
     for letter in top:
         if letter == "-" or letter == "." or letter.isdigit():
@@ -38,18 +38,14 @@ def special_assembler(box_v, power):
     top = top[index_counter:]
     try:
         power = products.return_number(power)
-        power *= constant
+        constant *= power
     except:
-        if constant == 1:
-            constant = ""
-        if constant == -1:
-            constant = "-"
-        power = f"{constant}{power}"
-    if power == 1:
-        power = ""
-    if power == -1:
-        power = "-"
-    return f"{bottom}^({power}{top})"
+        top = products.multiply_two_together(power, top, False)
+    if constant == 1:
+        constant = ""
+    if constant == -1:
+        constant = "-"
+    return f"{bottom}^({constant}{top})"
 
 
 # used to distribute power across. e.g. (cos(x)sin(x))^power = coss(x)^power sin(x)^power
@@ -77,7 +73,7 @@ def power_distributor(box_v, change_power_factor):
             box_v, power, is_base_power, possible_factor = products.power_and_remover(box_v, 0)
         else:
             factor = box_v[:products.next_closed_bracket(box_v)+1]
-            box_v, power, is_base_power, possible_factor= products.power_and_remover(box_v, products.next_closed_bracket(box_v))
+            box_v, power, is_base_power, possible_factor = products.power_and_remover(box_v, products.next_closed_bracket(box_v))
         if is_base_power:
             factor = possible_factor
             special.append(True)

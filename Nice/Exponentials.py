@@ -34,8 +34,8 @@ def exponential(box_code, box_dash):
     if power == -1:
         power = "-"
     # This serves to avoid the possibility of some ((f(x))) (i.e. avoid double brackets when not required)
-    if power == "" and need_to_tidy_up:
-        pass
+    if power == "" and need_to_tidy_up and not products.contains_sum(box_v):
+        box_v = Brackets.brackets_remover(box_v)
     else:
         box_c = "(" + str(box_c)
         shift += ")"
