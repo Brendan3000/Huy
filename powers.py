@@ -1,6 +1,7 @@
 import products
 from Nice import Brackets
 
+
 # used to convert a list containing exponent and coefficient into e^(coefficient(exponent))
 def exponential_component(list, power):
     exponent,coefficient = list[0], list[1]

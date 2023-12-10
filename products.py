@@ -1,6 +1,5 @@
 import math
 from functools import reduce
-
 import quotients
 
 # severs to convert some (f(x)) into f(x) if only in that form
@@ -463,11 +462,12 @@ def converter(boxes):
     return box_variables, box_coefficients
 
 
-# will convert some -(g(x)+f(x)) into g(x) - f(x)
+# will convert some -(g(x)+f(x)) into g(x) - f(x) along with a boolean value to indicate if the box was changed. e.g. if box is x, output is x and False
 def negative_expander(box_v):
     box_v = brackets_remover(box_v)
     index = 0
     changed = False
+    # for +/- on the indside, the switch sign
     for letter in box_v:
         if letter == "-" and not is_closed_in(box_v[index:]):
             box_v= box_v[:index] + "+" + box_v[index+1:]
@@ -479,44 +479,45 @@ def negative_expander(box_v):
     return box_v, changed
 
 
+# Input is a list of box_v, a list of box_c along with a common factor for variable (common_factor_v) and integer (factor). Output is the sum of these terms.
 def add(box_variables, box_coefficients, common_factor_v, factor):
     signs = []
+    signs.append("dummy")
     if box_coefficients[0] < 0:
         changed = False
         if box_coefficients[0] == -1:
                 if not box_variables[0] == "":
                     box_coefficients[0] = ""
-                box_variables[0], changed = negative_expander(box_variables[0])
-        if changed:
-            signs.append(" + ")
-            have_to_change_signs = False
-        else:
-            signs.append(" - ")
-            have_to_change_signs = True
-            factor = -factor
+                box_variables[0] = brackets_remover(box_variables[0])
+        # To ensure the first term is positive (will make it look nicer)
+        have_to_change_signs = True
+        factor = -factor
     else:
         if box_coefficients[0] == 1 and not box_variables[0] == "":
                 box_coefficients[0] = ""
                 box_variables[0] = brackets_remover(box_variables[0])
-        signs.append(" + ")
         have_to_change_signs = False
     try:
+        # To avoid double signs
         box_coefficients[0] = abs(box_coefficients[0])
     except:
+        # if box_c = "" or "-"
         pass
     for i in range(1,len(box_variables)):
+        have_to_change_signs_individual = have_to_change_signs
         if box_coefficients[i] < 0:
             if box_coefficients[i] == -1 and not box_variables[i] == "":
                 box_coefficients[i] = ""
+                # To remove brackets whist accounting for signs inside
                 box_variables[i], changed = negative_expander(box_variables[i])
                 if changed:
-                    have_to_change_signs = not have_to_change_signs
-            if have_to_change_signs:
+                    have_to_change_signs_individual = not have_to_change_signs_individual
+            if have_to_change_signs_individual:
                 signs.append(" + ")
             else:
                 signs.append(" - ")
         else:
-            if have_to_change_signs:
+            if have_to_change_signs_individual:
                 signs.append(" - ")
             else:
                 signs.append(" + ")
@@ -524,23 +525,29 @@ def add(box_variables, box_coefficients, common_factor_v, factor):
                 box_coefficients[i] = ""
                 box_variables[i] = brackets_remover(box_variables[i])
         try:
+            # To avoid double signs
             box_coefficients[i] = abs(box_coefficients[i])
         except:
+            # if box_c = "" or "-"
             pass
+    # To avoid 0 + f(x)
     if box_coefficients[0] == 0:
         do_not_put_sign_in_yet = True
     else:
         sum = f"{box_coefficients[0]}{box_variables[0]}"
         do_not_put_sign_in_yet = False
+    # Adding terms
     for k in range(1, len(box_variables)):
         if box_coefficients[k] !=0:
             if do_not_put_sign_in_yet:
+                # To avoid 0 + f(x)
                 sum += f"{box_coefficients[k]}{box_variables[k]}"
                 do_not_put_sign_in_yet = False
             else:
                 sum += f"{signs[k]}{box_coefficients[k]}{box_variables[k]}"
                 do_not_put_sign_in_yet = False
     try:
+        # To avoid some (2 + 1) that should be 3
         factor = factor*eval(sum)
         if factor == 0:
             sum = ""
@@ -550,14 +557,18 @@ def add(box_variables, box_coefficients, common_factor_v, factor):
     return sum, return_number(factor)
 
 
+# Input is two boxs. Output is the e raised to the  sum of the two boxes (string). do_we_want_to_return_base_power is a boolean; if true will convert some e^(ln(a)^n f(x)) into (a)^(ln(a)^(n-1) f(x))
 def add_for_index(box_one, box_two, do_we_want_to_return_base_power):
+    # case of e^0 = 1
     if box_one[0] == "" and box_one[1] == 0 and box_two[0] == "" and box_two[1] == 0:
         return ""
+    # cases where one part of the sum are zero
     elif box_one[0] == "" and box_one[1] == 0:
         exponent, factor = box_two[0], box_two[1]
     elif box_two[0] == "" and box_two[1] == 0:
         exponent, factor = box_one[0], box_one[1]
     else:
+        # adding the two boxs together
         numerator_one, denominator_one = quotients.splitter(box_one[0])
         numerator_two, denominator_two = quotients.splitter(box_two[0])
         variables, common_factor_v = factorisation_of_sums_variables([numerator_one,numerator_two])
@@ -566,14 +577,18 @@ def add_for_index(box_one, box_two, do_we_want_to_return_base_power):
         denominator = multiply_two_together(denominator_one,denominator_two, False)
         numerator,denominator = quotients.divide(numerator,denominator, False)
         exponent = quotients.assembler(numerator,denominator)
-    if factor == 1:
-        factor = ""
-    if factor == -1:
-        factor = "-"
+    # Since e^0 = 1
     if factor == 0:
         return ""
+    # To avoid 1box or -1box
+    if factor == 1:
+            factor = ""
+    if factor == -1:
+        factor = "-"
+    # if we want e^box returned
     if not do_we_want_to_return_base_power:
         return f"e^({factor}{exponent}) "
+    # if we want (a)^box retunred
     else:
         i = 0
         for letter in exponent:
@@ -582,16 +597,25 @@ def add_for_index(box_one, box_two, do_we_want_to_return_base_power):
                 try:
                     integer_base = return_number(exponent[i + 3:ncb])
                 except:
-                    return f"e^({factor}{exponent}) "
+                    pass
+                # if ln(a) is at the end and has power 1
                 if ncb == len(exponent) - 1:
                     exponent = exponent[:i]
                     return f"({integer_base})^({factor}{exponent}) "
+                # if power is 1 (of ln(a))
                 elif ncb != i + exponent[i:].find(")^"):
                     exponent = exponent[:i] + exponent[ncb+1:]
+                # If deaking with ln(a)^n
                 else:
-                    power = return_number(exponent[ncb+2:exponent[i:].find(" ")])
-                    length_power = len(str(power))
-                    new_power = return_number(power-1)
+                    try:
+                        # If power is a number
+                        power = return_number(exponent[ncb+2:i+exponent[i:].find(" ")])
+                        length_power = len(str(power))
+                        new_power = return_number(power-1)
+                    except:
+                        power = exponent[ncb+2:i+exponent[i:].find(" ")]
+                        length_power = len(str(power))
+                        new_power = f"({power} - 1)"
                     if new_power == 1:
                         index = ""
                     else:
@@ -599,9 +623,11 @@ def add_for_index(box_one, box_two, do_we_want_to_return_base_power):
                     exponent = exponent[:i] + f"{exponent[i:ncb+1]}{index}" + exponent[ncb+3+length_power:]
                 return f"({integer_base})^({factor}{exponent}) "
             i += 1
+    # If there is no ln(a) in the exponent then e must be the base
     return f"e^({factor}{exponent}) "
 
 
+# Input is two boxs in the form [box_v, box_c]. Output is them multiplied together (string) .do_we_want_to_return_base_power is a boolean value; if true, if will keep the base of any exponetial
 def multiply_two_together(box_v_one, box_v_two, do_we_want_to_return_base_power):
     sorted_box_v_one, exponential_list_one = exponetial_remover(box_v_one, True)
     sorted_box_v_two, exponential_list_two = exponetial_remover(box_v_two, True)
@@ -611,6 +637,7 @@ def multiply_two_together(box_v_one, box_v_two, do_we_want_to_return_base_power)
     return numerator
 
 
+# Input is a list of boxs in the form [box_v, box_c]. Output is their sum
 def a_sum(boxes):
     box_variables, box_coefficients = converter(boxes)
     box_variables, common_factor_v = factorisation_of_sums_variables(box_variables)
