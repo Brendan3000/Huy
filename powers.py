@@ -1,4 +1,5 @@
 import products
+import quotients
 from Nice import Brackets
 
 
@@ -11,11 +12,11 @@ def exponential_component(list, power):
     else:
         try:
             # where power is a integer/float
-            power = return_number(power)
+            power = products.return_number(power)
             coefficient *= power
         except:
             # where power is a string
-            exponent = multiply_two_together(power,exponent, False)
+            exponent = products.multiply_two_together(power,exponent, False)
         # to avoid 1box or -1box
         if coefficient == 1:
             coefficient = ""
@@ -32,7 +33,7 @@ def special_assembler(box_v, power):
     for index in range(len(box_v)):
         if box_v[index] == "^" and not products.is_closed_in(box_v[index:]):
             break
-    # index is the position os ^ that seperates box_base (bottom) for box_power (top)
+    # index is the position of ^ that seperates box_base (bottom) for box_power (top)
     bottom = box_v[:index]
     top = box_v[index+2:box_v.rfind(")")]
     index_counter = 0
@@ -53,17 +54,24 @@ def special_assembler(box_v, power):
         power = products.return_number(power)
         constant *= power
     except:
-        # if power is a box_c
-        top = products.multiply_two_together(power, top, False)
+        # if power is a box_v
+        power_numerator, power_denominator = quotients.splitter(power)
+        top_numerator,top_denominator = quotients.splitter(top)
+        numerator = products.multiply_two_together(power_numerator, top_numerator, False)
+        denominator = products.multiply_two_together(power_denominator, top_denominator, False)
+        numerator, denominator = quotients.divide(numerator,denominator, False)
+        top = quotients.assembler(numerator,denominator)
     if constant == 1:
         constant = ""
     if constant == -1:
         constant = "-"
-    return f"{bottom}^({constant}{top})"
+    return f"{bottom}^({constant}{top}) "
 
 
 # used to distribute power across. e.g. (cos(x)sin(x))^power = cos(x)^power sin(x)^power
 def power_distributor(box_v, change_power_factor):
+    if change_power_factor == 0:
+        return ""
     # since 1^n = 1
     if len(box_v) == 0:
         return box_v
@@ -118,6 +126,7 @@ def power_distributor(box_v, change_power_factor):
                 if powers[i] == -1:
                     powers[i] = "-"
                 powers[i] = f"({powers[i]}{change_power_factor})"
+    patch_up = False
     for k in range(len(factors)):
         # since box^0 = 1
         if powers[k] == 0:
@@ -128,7 +137,7 @@ def power_distributor(box_v, change_power_factor):
             else:
                 index = f"^{powers[k]} "
             box_v += f"{factors[k]}{index}"
-    box_v += exponential
+    box_v = f"{box_v}{exponential}"
     return box_v
 
 

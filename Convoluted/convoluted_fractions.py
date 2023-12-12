@@ -11,21 +11,26 @@ def function_power(base, base_dx, power, power_dx):
     nice_base = sorting.for_presentation_table([base_v, base_c])
     constant_product_a = base_dx_c*power_c
     constant_product_b = power_dx_c*base_c
-    nice_top = sorting.for_presentation_table([power_v, power_c])
-    top = f"({nice_top})"
     base_v_numerator, base_v_denominator = quotients.splitter(base_v)
     if base_c == 1:
         bottom_numerator = f"{base_v_numerator}"
     else:
-        bottom_numerator = f"({base_c}){base_v_numerator}"
+        bottom_numerator = f"({base_c}tag){base_v_numerator}"
     bottom_denominator = base_v_denominator
-    to_the_power_numerator = powers.power_distributor(bottom_numerator, top)
-    to_the_power_denominator = powers.power_distributor(bottom_denominator, top)
+    to_the_power_numerator = powers.power_distributor(bottom_numerator, power_v)
+    to_the_power_denominator = powers.power_distributor(bottom_denominator, power_v)
+    to_the_power_numerator = powers.power_distributor(to_the_power_numerator, power_c)
+    to_the_power_denominator = powers.power_distributor(to_the_power_denominator, power_c)
     numerator_a, numerator_b, denominator = product_short_cut(base_v, base_dx_v, power_v, power_dx_v)
     numerator_b = products.multiply_two_together(numerator_b,f"ln({nice_base})", False)
     denominator = products.multiply_two_together(denominator, base_v, False)
     denominator = products.multiply_two_together(denominator, to_the_power_denominator, False)
     numerator, factor = products.a_sum([[numerator_a, constant_product_a],[numerator_b, constant_product_b]])
+    try:
+        if to_the_power_numerator[len(to_the_power_numerator)-1] != " ":
+            to_the_power_numerator += " "
+    except:
+        pass
     numerator = f"{to_the_power_numerator}{numerator}"
     numerator, denominator = quotients.divide(numerator, denominator, False)
     return [quotients.assembler(numerator,denominator),

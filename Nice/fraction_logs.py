@@ -24,7 +24,7 @@ def logaraithm(box_code, box_dash):
                 ln_or_logb = "ln"
                 ln_base = ""
         else:
-                ln_or_logb = f"log_{base} "
+                ln_or_logb = f"log_{base}z"
                 ln_base = f"ln({base})"
         # in the case that box_dash is a fraction
         box_dash_v_numerator, box_dash_v_denominator = splitter(box_dash_v)

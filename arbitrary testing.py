@@ -11,6 +11,12 @@ for i in range(30):
     table_of_boxes[1].append(boxdash)
     table_nice[0].append(nice_box)
     table_nice[1].append(nice_boxdash)
+for i in range(20):
+    box, boxdash, nice_box, nice_boxdash = diff.diff_nice(table_of_boxes[0][0], table_of_boxes[1][0], False)
+    table_of_boxes[0].append(box)
+    table_of_boxes[1].append(boxdash)
+    table_nice[0].append(nice_box)
+    table_nice[1].append(nice_boxdash)
 max = len(table_of_boxes[0])
 for k in range(max):
     for j in range(max):
@@ -39,7 +45,6 @@ for i in range(2000):
     weight_table = [0,0,0,0,1,1,1,2,2,3,3,3,4]
     path = weight_table[random.randint(0,12)]
     add_to_nice = True
-
     if path == 0:
         choice = random.randint(0, (len(table_of_boxes[0])-1)//10)
         box_current, box_dash_current = table_of_boxes[0][choice], table_of_boxes[1][choice]
@@ -81,8 +86,6 @@ for i in range(2000):
     if add_to_nice and work:
         table_nice[0].append(nice_box)
         table_nice[1].append(nice_boxdash)
-
-
 
 
 

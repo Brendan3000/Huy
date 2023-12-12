@@ -2,6 +2,7 @@ import math
 from functools import reduce
 import quotients
 
+
 # severs to convert some (f(x)) into f(x) if only in that form
 def brackets_remover(box_variable):
     if len(box_variable) - 1 == next_closed_bracket(box_variable) and box_variable.find("(") == 0:
@@ -200,7 +201,7 @@ def power_and_remover(box_v, close_index):
         if index_counter == 0:
             is_base_power = True
             index_space = close_index + next_closed_bracket(box_v[close_index+1:]) + 2
-            factor = box_v[:index_space+1]
+            factor = box_v[:index_space] + " "
             power = 1
             box_v = box_v[index_space+1:]
         else:
@@ -596,32 +597,32 @@ def add_for_index(box_one, box_two, do_we_want_to_return_base_power):
                 ncb = i + next_closed_bracket(exponent[i:])
                 try:
                     integer_base = return_number(exponent[i + 3:ncb])
+                    # if ln(a) is at the end and has power 1
+                    if ncb == len(exponent) - 1:
+                        exponent = exponent[:i]
+                        return f"({integer_base})^({factor}{exponent}) "
+                    # if power is 1 (of ln(a))
+                    elif ncb != i + exponent[i:].find(")^"):
+                        exponent = exponent[:i] + exponent[ncb+1:]
+                    # If deaking with ln(a)^n
+                    else:
+                        try:
+                            # If power is a number
+                            power = return_number(exponent[ncb+2:i+exponent[i:].find(" ")])
+                            length_power = len(str(power))
+                            new_power = return_number(power-1)
+                        except:
+                            power = exponent[ncb+2:i+exponent[i:].find(" ")]
+                            length_power = len(str(power))
+                            new_power = f"({power} - 1)"
+                        if new_power == 1:
+                            index = ""
+                        else:
+                            index = f"^{new_power} "
+                        exponent = exponent[:i] + f"{exponent[i:ncb+1]}{index}" + exponent[ncb+3+length_power:]
+                    return f"({integer_base})^({factor}{exponent}) "
                 except:
                     pass
-                # if ln(a) is at the end and has power 1
-                if ncb == len(exponent) - 1:
-                    exponent = exponent[:i]
-                    return f"({integer_base})^({factor}{exponent}) "
-                # if power is 1 (of ln(a))
-                elif ncb != i + exponent[i:].find(")^"):
-                    exponent = exponent[:i] + exponent[ncb+1:]
-                # If deaking with ln(a)^n
-                else:
-                    try:
-                        # If power is a number
-                        power = return_number(exponent[ncb+2:i+exponent[i:].find(" ")])
-                        length_power = len(str(power))
-                        new_power = return_number(power-1)
-                    except:
-                        power = exponent[ncb+2:i+exponent[i:].find(" ")]
-                        length_power = len(str(power))
-                        new_power = f"({power} - 1)"
-                    if new_power == 1:
-                        index = ""
-                    else:
-                        index = f"^{new_power} "
-                    exponent = exponent[:i] + f"{exponent[i:ncb+1]}{index}" + exponent[ncb+3+length_power:]
-                return f"({integer_base})^({factor}{exponent}) "
             i += 1
     # If there is no ln(a) in the exponent then e must be the base
     return f"e^({factor}{exponent}) "

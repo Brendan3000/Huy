@@ -3,7 +3,9 @@ from Nice import Brackets
 import sorting
 
 
+# Input is list in the form [[sign of shift, magnitude of shit], power, coefficient, base, function_determiner, box]. box is in tbe form [box_v, box_c].
 def interpret(list):
+    # need_to_tidy_up indicates there is not shift (boolean)
     shift, need_to_tidy_up = Brackets.shift_assembler(list[0][0], list[0][1])
     power, coefficient, base, function_determiner, box_v, box_c = list[1],list[2], list[3], list[4], list[5][0], list[5][1]
     nice_box = sorting.for_presentation_table([box_v, box_c])
@@ -21,7 +23,7 @@ def interpret(list):
     # for box^n
     if function_determiner == 0:
         if power == 1:
-            if need_to_tidy_up and not products.contains_sum(nice_box):
+            if need_to_tidy_up:
                 return [f"{nice_box}", products.return_number(coefficient*box_c_copy)]
             else:
                 return [f"({nice_box}{shift})", products.return_number(coefficient)]
@@ -36,21 +38,24 @@ def interpret(list):
         return [f"{master_key[function_determiner]}({nice_box}{shift}){index}", products.return_number(coefficient)]
     # for exponentials
     if function_determiner == 4:
+        # powers for exponents play differently due to index laws
         if power == 1:
             power = ""
         if power == -1:
             power = "-"
+        # This will determine if we have base e
         if base == 1:
             base = "e"
         else:
             base = f"({base})"
-        if need_to_tidy_up and Brackets.closed(box_v):
+        if need_to_tidy_up:
             return [f"{base}^({power*box_c_copy}{box_v}) ", products.return_number(coefficient)]
         else:
             return [f"{base}^({power}({nice_box}{shift})) ", products.return_number(coefficient)]
     # for logs
     if function_determiner == 5:
-        ln_or_logb = f"log_{base} "
+        ln_or_logb = f"log_{base}z"
+        # This will determine if we have natural log
         if base == 1:
             ln_or_logb = "ln"
         return [f"{ln_or_logb}({nice_box}{shift}){index}", products.return_number(coefficient)]

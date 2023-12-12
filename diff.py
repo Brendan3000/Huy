@@ -5,6 +5,7 @@ from Nice import Basic,Exponentials, fraction_logs,fraction_inverse_trig, Bracke
 import sorting
 from Convoluted import convoluted_fractions,convoluted_sum
 import random
+import powers
 random.seed(None, 2)
 
 
@@ -47,21 +48,21 @@ def convoluted(box_current_one,boxdash_current_one, box_current_two, boxdash_cur
         numerator, denominator = quotients.divide(numerator,denominator, True)
         box = [quotients.assembler(numerator,denominator), products.return_number(box_current_two[1]*box_current_one[1])]
     if one_tow_three == 2:
-        boxdash = convoluted_fractions.function_power(box_current_one,boxdash_current_one, box_current_two, boxdash_current_two)
         box_current_one_c, box_current_two_c = box_current_one[1], box_current_two[1]
+        box_current_one_v, box_current_two_v = box_current_one[0], box_current_two[0]
+        base_v_numerator, base_v_denominator = quotients.splitter(box_current_one_v)
         if box_current_one_c == 1:
-            box_current_one_c = ""
-        if box_current_one_c == -1:
-            box_current_one_c = "-"
-        if box_current_two_c == 1:
-            box_current_two_c = ""
-        if box_current_two_c == -1:
-            box_current_two_c = "-"
-        if box_current_one_c == "" and Brackets.closed_no_power(box_current_one[0]):
-            bottom = f"{box_current_one[0]}"
+            bottom_numerator = f"{base_v_numerator}"
         else:
-            bottom  = f"({box_current_one_c}{box_current_one[0]})"
-        box = [f"{bottom}^({box_current_two_c}{box_current_two[0]}) ", 1]
+            bottom_numerator = f"({box_current_one_c}tag){base_v_numerator}"
+        bottom_denominator = base_v_denominator
+        to_the_power_numerator = powers.power_distributor(bottom_numerator, box_current_two_v)
+        to_the_power_denominator = powers.power_distributor(bottom_denominator, box_current_two_v)
+        to_the_power_numerator = powers.power_distributor(to_the_power_numerator, box_current_two_c)
+        to_the_power_denominator = powers.power_distributor(to_the_power_denominator, box_current_two_c)
+        numerator,denominator = quotients.divide(to_the_power_numerator,to_the_power_denominator, False)
+        box = [quotients.assembler(numerator,denominator), 1]
+        boxdash = convoluted_fractions.function_power(box_current_one,boxdash_current_one, box_current_two, boxdash_current_two)
     if one_tow_three == 3:
         if box_current_one == box_current_two:
             return ["",0],["",0],"","", False

@@ -89,7 +89,8 @@ def for_presentation_table(box):
     can_we_release_the_numerator_box = False
     if box[1] == 1 and not null_numerator(box[0]):
         box[1] = ""
-        can_we_release_the_numerator_box = True
+        if not products.contains_sum(box[0]):
+            can_we_release_the_numerator_box = True
     if box[1] == -1 and not null_numerator(box[0]):
         box[1] = "-"
     box[0] = quotients.double_brackets_remover(box[0],can_we_release_the_numerator_box)
@@ -98,6 +99,12 @@ def for_presentation_table(box):
         box[1] = ""
     if box[1] == -1 and not null_numerator(box[0]):
         box[1] = "-"
+    while "z" in box[0]:
+        box[0] = box[0].replace("z", " ")
+    while "(/" in box[0]:
+        box[0] = box[0].replace("(/","(1/" )
+    while "tag" in box[0]:
+        box[0] = box[0].replace("tag","" )
     return f"{box[1]}{box[0]}"
 
 
