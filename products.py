@@ -354,7 +354,7 @@ def factorisation_of_sums_integers(box_coefficients):
     list = []
     # Only want to factorise integers
     for box_c in box_coefficients:
-        if not isinstance(box_c, int):
+        if not isinstance(box_c, int) or box_c == 0:
             can_factoise = False
     # Some dummy initial factor
     factor = abs(box_coefficients[0])
@@ -534,6 +534,7 @@ def add(box_variables, box_coefficients, common_factor_v, factor):
     # To avoid 0 + f(x)
     if box_coefficients[0] == 0:
         do_not_put_sign_in_yet = True
+        sum = ""
     else:
         sum = f"{box_coefficients[0]}{box_variables[0]}"
         do_not_put_sign_in_yet = False
@@ -645,3 +646,15 @@ def a_sum(boxes):
     box_coefficients, factor = factorisation_of_sums_integers(box_coefficients)
     sum, factor = add(box_variables, box_coefficients, common_factor_v, factor)
     return sum, factor
+
+
+def product_short_cut(a_v, a_dx_v, b_v, b_dx_v):
+    a_n, a_d, a_dx_n, a_dx_d, b_n, b_d, b_dx_n, b_dx_d = quotients.splitter(a_v)[0], quotients.splitter(a_v)[1], quotients.splitter(a_dx_v)[0], quotients.splitter(a_dx_v)[1], quotients.splitter(b_v)[0],quotients.splitter(b_v)[1], quotients.splitter(b_dx_v)[0], quotients.splitter(b_dx_v)[1]
+    term_one_numerator = multiply_two_together(a_n,b_dx_n, False)
+    term_two_numerator = multiply_two_together(b_n,a_dx_n, False)
+    term_one_denomenator = multiply_two_together(a_d,b_dx_d, False)
+    term_two_denomenator = multiply_two_together(b_d,a_dx_d, False)
+    denomenator = multiply_two_together(term_one_denomenator, term_two_denomenator, False)
+    numerator_a = multiply_two_together(term_one_numerator, term_two_denomenator, False)
+    numerator_b = multiply_two_together(term_one_denomenator, term_two_numerator, False)
+    return numerator_a, numerator_b, denomenator

@@ -8,6 +8,8 @@ import sorting
 
 # code commmon to the inverse sin, cos and tan function
 def inverse_sin_cos_tan(box_code, box_dash):
+    print(box_code)
+    print(box_dash)
     power, coefficient, box_v, box_c = box_code[1],box_code[2], box_code[5][0], box_code[5][1]
     box_dash_v, box_dash_c = box_dash[0], box_dash[1]
     constant_product = coefficient*power*box_dash_c
@@ -36,10 +38,10 @@ def inverse_sin_cos_tan(box_code, box_dash):
         squared_term = f"({nice_box}{shift})^2"
     if box_v_copy == "" and need_to_tidy_up:
         box_v_copy = Brackets.brackets_remover(box_v_copy)
+    print(' ')
     return constant_product, box_v_copy, box_c_copy, shift, box_dash_v, power, squared_term,nice_box
 
 
-# add only one
 # inverse sin [has function_determiner value = 6]
 def arcsin(box_code, box_dash):
     constant_product, box_v, box_c, shift,box_dash_v, power, squared_term,nice_box = inverse_sin_cos_tan(box_code, box_dash)

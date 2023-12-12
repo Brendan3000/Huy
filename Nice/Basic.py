@@ -9,8 +9,6 @@ import sorting
 # box to a power (straight power rule) [has function_determiner value = 0]
 # I realised too late that it was not in fact "basic" so I guess it doesn't belong here :)
 def power(box_code, box_dash):
-    print(box_code)
-    print(box_dash)
     power, coefficient, base, function_determiner, box_v, box_c = box_code[1],box_code[2], box_code[3], box_code[4], box_code[5][0], box_code[5][1]
     box_dash_v, box_dash_c = box_dash[0], box_dash[1]
     constant_product = coefficient*power*box_dash_c
@@ -27,7 +25,6 @@ def power(box_code, box_dash):
         # adjustment for some case (a*box)^n just to tidy up into a^n(box)^n where a is a constant (calculated)
         box_v, constant_product = Brackets.coefficient_power_direct(box_c_copy,box_v,products.return_number(power-1), constant_product)
         powered_numerator, powered_denominator = splitter(box_v)
-        print(powered_numerator)
         powered_numerator = powers.power_distributor(powered_numerator, products.return_number(power-1))
         powered_denominator = powers.power_distributor(powered_denominator, products.return_number(power-1))
     else:
@@ -38,8 +35,6 @@ def power(box_code, box_dash):
     numerator = products.multiply_two_together(powered_numerator, box_dash_v_numerator, False)
     denominator = products.multiply_two_together(powered_denominator, box_dash_v_denominator, False)
     numerator, denominator = quotients.divide(numerator, denominator, False)
-    print("Clear")
-    print(" ")
     return [quotients.assembler(numerator,denominator), products.return_number(constant_product)]
 
 # code commmon to the sin, cos and tan function

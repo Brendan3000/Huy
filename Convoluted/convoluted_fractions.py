@@ -12,6 +12,7 @@ def function_power(base, base_dx, power, power_dx):
     constant_product_a = base_dx_c*power_c
     constant_product_b = power_dx_c*base_c
     base_v_numerator, base_v_denominator = quotients.splitter(base_v)
+    base_v_n, base_v_d = quotients.splitter(base_v)
     if base_c == 1:
         bottom_numerator = f"{base_v_numerator}"
     else:
@@ -21,17 +22,19 @@ def function_power(base, base_dx, power, power_dx):
     to_the_power_denominator = powers.power_distributor(bottom_denominator, power_v)
     to_the_power_numerator = powers.power_distributor(to_the_power_numerator, power_c)
     to_the_power_denominator = powers.power_distributor(to_the_power_denominator, power_c)
-    numerator_a, numerator_b, denominator = product_short_cut(base_v, base_dx_v, power_v, power_dx_v)
+    numerator_a, numerator_b, denominator = products.product_short_cut(power_v, power_dx_v, base_v, base_dx_v)
     numerator_b = products.multiply_two_together(numerator_b,f"ln({nice_base})", False)
-    denominator = products.multiply_two_together(denominator, base_v, False)
-    denominator = products.multiply_two_together(denominator, to_the_power_denominator, False)
+    denominator = products.multiply_two_together(denominator, base_v_n, False)
     numerator, factor = products.a_sum([[numerator_a, constant_product_a],[numerator_b, constant_product_b]])
+    numerator = products.multiply_two_together(numerator,base_v_d, False)
     try:
         if to_the_power_numerator[len(to_the_power_numerator)-1] != " ":
             to_the_power_numerator += " "
     except:
         pass
-    numerator = f"{to_the_power_numerator}{numerator}"
+    numerator, denominator = quotients.divide(numerator, denominator, False)
+    numerator = products.multiply_two_together(numerator,to_the_power_numerator, False)
+    denominator = products.multiply_two_together(denominator,to_the_power_denominator, False)
     numerator, denominator = quotients.divide(numerator, denominator, False)
     return [quotients.assembler(numerator,denominator),
             products.return_number(factor/base_c)]
@@ -44,22 +47,10 @@ def quotient(numerator, numerator_dx, denominator, denominator_dx):
     constant_product_b = -d_dx_c*n_c
     non_squared_denominator, non_squared_numerator = quotients.splitter(d_v)
     squared_denominator, squared_numerator = powers.power_distributor(non_squared_denominator, 2),powers.power_distributor(non_squared_numerator, 2)
-    numerator_a, numerator_b, denominator = product_short_cut(n_v, n_dx_v, d_v, d_dx_v)
+    numerator_a, numerator_b, denominator = products.product_short_cut(n_v, n_dx_v, d_v, d_dx_v)
     numerator, factor = products.a_sum([[numerator_a, products.return_number(constant_product_a)],[numerator_b, products.return_number(constant_product_b)]])
     numerator = products.multiply_two_together(numerator,squared_numerator, False)
     denominator = products.multiply_two_together(denominator,squared_denominator, False)
     numerator, denominator = quotients.divide(numerator,denominator, False)
     return [quotients.assembler(numerator,denominator),
             products.return_number(factor/(d_c**2))]
-
-
-def product_short_cut(a_v, a_dx_v, b_v, b_dx_v):
-    a_n, a_d, a_dx_n, a_dx_d, b_n, b_d, b_dx_n, b_dx_d = quotients.splitter(a_v)[0], quotients.splitter(a_v)[1], quotients.splitter(a_dx_v)[0], quotients.splitter(a_dx_v)[1], quotients.splitter(b_v)[0],quotients.splitter(b_v)[1], quotients.splitter(b_dx_v)[0], quotients.splitter(b_dx_v)[1]
-    term_one_numerator = products.multiply_two_together(a_n,b_dx_n, False)
-    term_two_numerator = products.multiply_two_together(b_n,a_dx_n, False)
-    term_one_denomenator = products.multiply_two_together(a_d,b_dx_d, False)
-    term_two_denomenator = products.multiply_two_together(b_d,a_dx_d, False)
-    denomenator = products.multiply_two_together(term_one_denomenator, term_two_denomenator, False)
-    numerator_a = products.multiply_two_together(term_one_numerator, term_two_denomenator, False)
-    numerator_b = products.multiply_two_together(term_one_denomenator, term_two_numerator, False)
-    return numerator_a, numerator_b, denomenator

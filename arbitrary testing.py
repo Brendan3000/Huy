@@ -41,7 +41,7 @@ print("done")
 
 
 
-for i in range(2000):
+for i in range(8000):
     weight_table = [0,0,0,0,1,1,1,2,2,3,3,3,4]
     path = weight_table[random.randint(0,12)]
     add_to_nice = True
