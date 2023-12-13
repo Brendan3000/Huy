@@ -38,6 +38,8 @@ def interpret(list):
         return [f"{master_key[function_determiner]}({nice_box}{shift}){index}", products.return_number(coefficient)]
     # for exponentials
     if function_determiner == 4:
+        if need_to_tidy_up:
+           power *= box_c_copy
         # powers for exponents play differently due to index laws
         if power == 1:
             power = ""
@@ -49,7 +51,7 @@ def interpret(list):
         else:
             base = f"({base})"
         if need_to_tidy_up:
-            return [f"{base}^({power*box_c_copy}{box_v}) ", products.return_number(coefficient)]
+            return [f"{base}^({power}{box_v}) ", products.return_number(coefficient)]
         else:
             return [f"{base}^({power}({nice_box}{shift})) ", products.return_number(coefficient)]
     # for logs

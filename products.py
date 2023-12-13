@@ -327,6 +327,9 @@ def factoriser_for_multiples(box_one, box_two):
         else:
             factor = box_two[:next_closed_bracket(box_two)+1]
             box_two, power, is_base_power, possible_factor = power_and_remover(box_two, next_closed_bracket(box_two))
+        # To deal with box^box
+        if is_base_power:
+            factor = possible_factor
         # To apply index laws
         if factor in table[0]:
             index = table[0].index(factor)

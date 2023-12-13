@@ -25,6 +25,7 @@ def power_returner(box_v):
 
 
 def power_adjuster(box_v):
+    print(box_v)
     if len(box_v) == 0:
         return box_v
     while True:
@@ -77,10 +78,12 @@ def power_adjuster(box_v):
                     else:
                         if under[0] == "(" and products.next_closed_bracket(under) == len(under) - 1:
                             under = under[1:len(under) - 1]
-                        box_v = box_v[:i] + f"√({power_denominator}&{under})" + box_v[index_next_closed_bracket+3+length_number:]
+                        box_v = box_v[:i] + f"√({power_denominator}&{under}) " + box_v[index_next_closed_bracket+3+length_number:]
                     break
         if i == len(box_v) - 1:
             break
+    print(box_v)
+    print(" ")
     return box_v
 
 
@@ -110,14 +113,16 @@ def for_presentation_table(box):
 
 def null_numerator(box):
     numerator, denominator = quotients.splitter(box)
-    if numerator == "":
+    if len(numerator) == 0:
         return True
     else:
         return False
 
 
-
-
-
-
+def null_denominator(box):
+    numerator, denominator = quotients.splitter(box)
+    if len(denominator) == 0:
+        return True
+    else:
+        return False
 

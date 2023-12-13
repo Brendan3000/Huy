@@ -47,7 +47,7 @@ def quotient(numerator, numerator_dx, denominator, denominator_dx):
     constant_product_b = -d_dx_c*n_c
     non_squared_denominator, non_squared_numerator = quotients.splitter(d_v)
     squared_denominator, squared_numerator = powers.power_distributor(non_squared_denominator, 2),powers.power_distributor(non_squared_numerator, 2)
-    numerator_a, numerator_b, denominator = products.product_short_cut(n_v, n_dx_v, d_v, d_dx_v)
+    numerator_a, numerator_b, denominator = products.product_short_cut(d_v, d_dx_v,n_v, n_dx_v)
     numerator, factor = products.a_sum([[numerator_a, products.return_number(constant_product_a)],[numerator_b, products.return_number(constant_product_b)]])
     numerator = products.multiply_two_together(numerator,squared_numerator, False)
     denominator = products.multiply_two_together(denominator,squared_denominator, False)
